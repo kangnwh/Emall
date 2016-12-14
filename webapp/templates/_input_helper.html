@@ -1,0 +1,14 @@
+{% macro input_helper(group_class,label,input,input_class="form-control",label_class='',default_value='') -%}
+
+{#    <div class="form-group {{ group_class }}">#}
+{#        {{ label(class=label_class) }}#}
+{#        {{ input(class=input_class,value=default_value) }}#}
+{#    </div>#}
+    <div class="{{ group_class }}" >
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ label(class=label_class) }}</div>
+        <div class="panel-body">
+            {{ input(class=input_class,value=default_value) }}
+        </div>
+    </div></div>
+{% endmacro %}

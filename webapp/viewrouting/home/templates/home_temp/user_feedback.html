@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}User_Feedback - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% from "_input_helper.html" import input_helper %}
+{% set active_page ='L5' %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
+
+{% endblock %}
+{% block jsref %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
+{% endblock %}
+{% block page %}
+
+    <div class="'row">
+        <button type="button" class="btn btn-primary trigger-add-new-comment"
+                data-izimodal-transitionin="fadeInDown"
+                data-izimodal-open="modal-add-new-comment">Add Your Comment
+        </button>
+    </div>
+    {{ pagination.info }}
+    <table class="table table-bordered" border="0">
+        <thead><tr>
+            <th>User Comments</th>
+            <th>Time</th>
+        </tr></thead>
+        <tbody>
+        {% for user_feedback in user_feedback_list.items %}
+            <tr>
+                <td>{{ user_feedback.user_comment }}</td>
+       <td align="right"> <small>Email:{{ user_feedback.email }} at:{{ user_feedback.user_comment_ts }}</small>  </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{{ pagination.links }}
+
+    <div id="add-new-comment" class="iziModal" data-izimodal-title="Add Your Comment">
+        <form action="{{ url_for('homeRoute.User_Feedback') }}" method="post" name="create">
+            {{ user_feedback_form.hidden_tag() }}
+{#            <dl class="dl-horizontal">#}
+                <div class="list-group-item">
+
+                    <div class="row">
+                        {{ input_helper('invisible',user_feedback_form.user_id.label,user_feedback_form.user_id,default_value=current_user.user_id ) }}
+                        {{ input_helper('invisible',user_feedback_form.user_name.label,user_feedback_form.user_name,default_value=current_user.user_name ) }}
+                        {{ input_helper('invisible',user_feedback_form.email.label,user_feedback_form.email,default_value=current_user.email ) }}
+                        {{ input_helper('col-md-12',user_feedback_form.user_comment.label,user_feedback_form.user_comment,default_value=current_user.user_name ) }}
+                    </div><!-- /.row -->
+{#                    <dt>Input your comment here:</dt>#}
+{#                    {{ user_feedback_form.user_comment(class="form-control",rows="5") }}#}
+{#                    <br>#}
+{#                    <div class="invisible">#}
+{#                        {{ user_feedback_form.user_id(value=current_user.user_id) }}#}
+{#                        {{ user_feedback_form.user_name(value=current_user.user_name) }}#}
+{#                        {{ user_feedback_form.email(value=current_user.email) }}#}
+{#                    </div>#}
+{#                    <br>#}
+                    <div class="row">
+                        <input type="submit" class='col-md-3 btn btn-primary' value="Add Comment">
+                    </div></div>
+{#            </dl>#}
+        </form>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(function () {
+            $("#add-new-comment").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)'
+            });
+            $(document).on('click', '.trigger-add-new-comment', function (event) {
+                event.preventDefault();
+                $('#add-new-comment').iziModal('open');
+            });
+        });
+    </script>
+{% endblock scripts %}

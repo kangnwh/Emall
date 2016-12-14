@@ -1,0 +1,58 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper %}
+{% set active_page = 4 %}
+{% block title %}Admin Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+
+{% endblock %}
+
+
+{% block page %}
+    <h2>Production Management</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary trigger-add-new-prod"
+                        data-izimodal-transitionin="fadeInDown"
+                        data-izimodal-open="modal-add-new-comment">Add New Production
+                </button>
+            </div>
+            <div class="btn-group">
+                <a type="button" class="btn btn-primary "
+                   href="{{ url_for('homeRoute.sub_category_list',sub_cat_id=0) }}" target="_blank">Update/Delete
+                    Production
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">
+
+    </div>
+
+    <br>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#add-new-prod").iziModal({
+                overlayClose: false,
+                iframe:true,
+                iframeURL:'{{ url_for('adminRoute.add_new_prod') }}',
+                width: 1200,
+                iframeHeight: 800,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)'
+            });
+            $(document).on('click', '.trigger-add-new-prod', function (event) {
+                event.preventDefault();
+                $('#add-new-prod').iziModal('open');
+            });
+
+        });
+    </script>
+{% endblock scripts %}

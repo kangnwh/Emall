@@ -1,0 +1,76 @@
+{% macro cascade_card(level_one,delete_level_one_form,update_level_one_form,delete_level_two_form,update_level_two_form) -%}
+    <div class="panel">
+        <div class="panel-heading " role="tab" id="heading{{ level_one.prod_cat_id }}">
+            <h4 class="panel-title ">
+
+                <a role="button" data-toggle="collapse" data-parent="#accordion" class=""
+                   href="#level_one{{ level_one.prod_cat_id }}"
+                   aria-expanded="false" aria-controls="level_one{{ level_one.prod_cat_id }}">
+                   {{ level_one.prod_cat_order }} - {{ level_one.prod_cat_name }}
+                </a>
+
+            </h4>
+
+        </div>
+
+        <div id="level_one{{ level_one.prod_cat_id }}" class="panel-collapse collapse" role="tabpanel"
+             aria-labelledby="level_one{{ level_one.prod_cat_id }}">
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="btn-group col-md-6">
+{#                        <form action="{{ url_for('adminRoute.update_level_one') }}" method="post" name="update">#}
+{##}
+{#                             <input type="submit" value="Update Level One" class=" btn-block btn btn-warning">#}
+{#                        </form>#}
+                        <input type="button" value="Update Level One" class=" btn-block btn btn-warning" onclick="updete_level_one({{ level_one.prod_cat_id }},'{{ level_one.prod_cat_name  }}','{{ level_one.prod_cat_desc }}',{{ level_one.valid_flg }},{{ level_one.prod_cat_order }})">
+
+                        <form action="{{ url_for('adminRoute.delete_level_one') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_one.prod_cat_name }}')">
+                                {{ delete_level_one_form.hidden_tag() }}
+                                <div class="invisible">{{ delete_level_one_form.prod_cat_id(value=level_one.prod_cat_id) }}</div>
+                            <input type="submit" value="Delete Level One" class="btn-block btn btn-warning" >
+                        </form>
+
+                    </div>
+                </div>
+                <div class="row">
+                    {% for level_two in level_one.prod_sub_cat %}
+
+                        <div class="btn-group col-md-6">
+                            <button type="button"
+                                    class="btn btn-default col-md-6">{{ level_two.prod_cat_sub_name }}</button>
+{#                            <button type="button" class="btn btn-primary col-md-3">Update</button>#}
+                            <button type="button" value="Update" class=" btn btn-primary col-md-3"  onclick="updete_level_two({{ level_two.prod_cat_sub_id }},{{ level_two.prod_cat_id  }},'{{ level_two.prod_cat_sub_name }}',{{ level_two.valid_flg }},'{{ level_two.prod_cat_sub_desc }}')">
+                                Update</button>
+                            <form action="{{ url_for('adminRoute.delete_level_two') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_two.prod_cat_sub_name }}')">
+                                {{ delete_level_two_form.hidden_tag() }}
+                                <div class="invisible">{{ delete_level_two_form.prod_cat_sub_id(value=level_two.prod_cat_sub_id) }}</div>
+                                <input type="submit" class="btn btn-primary col-md-3" value="Delete">
+                            </form>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="update-level-one-win-{{ level_one.prod_cat_id }}" class="iziModal" data-izimodal-title="Update Level One Category">
+        <form action="{{ url_for('adminRoute.update_level_one') }}" method="post" name="update">
+            {{ update_level_one_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                <dt>Level One Category Name:</dt>
+                <dd>{{ update_level_one_form.prod_cat_name }}</dd>
+                <br>
+                <dt>Description:</dt>
+                <dd>{{ update_level_one_form.prod_cat_desc }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary'  value="Add"></dt>
+            </dl>
+        </form>
+    </div>
+    <script>
+
+
+    </script>
+{% endmacro %}

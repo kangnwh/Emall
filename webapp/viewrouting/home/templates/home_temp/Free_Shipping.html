@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Free Shipping - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+{#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+{#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+
+{% endblock %}
+
+{% set active_page = "L3" %}
+
+{% block page %}
+    {{ super() }}
+    <div class="row">
+        <div class="">
+		<div id="slider">
+<p class="lead">No matter where you are in Australia we deliver your order to you. If a metro location – <strong> <font color="green"> for Free!</font> </strong> </p>
+
+            <p>Free delivery is based upon the most cost effective method for your items and location. Rush, same-day delivery etc may incur extra charges. All country locations freight is at cost – or possibly free (depending on location). Our Account Managers will provide a cost once we know your exact delivery location.</p>
+				<li><img class="img-thumbnail" src="{{ url_for("static",filename="img/free_delivery_shipping.png") }} "></li>
+            <p class="lead"><strong> <font color="green"> Don’t get caught with extra costs, at Brandconnect the price quoted is the price you pay.</font> </strong> </p>
+
+		</div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+		$(function() {
+			  $("#slider").easySlider({});
+		  });
+	</script>
+{% endblock scripts %}

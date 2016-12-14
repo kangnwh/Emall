@@ -1,0 +1,85 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 6 %}
+{% block title %}Profit Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+
+	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+        <div class="'row">
+          <button type="button" class="btn btn-primary trigger-new-profit-rate-win" data-izimodal-transitionin="fadeInDown" data-izimodal-open="modal-new-profit-rate-win">Add New</button>
+        </div>
+
+    <table class="table table-hover">
+        <thead><tr>
+            <th>Profit Rate</th>
+            <th>Is Valid</th>
+            <th></th>
+        </tr></thead>
+        <tbody>
+        {%  for profit in profit_list %}
+
+            <tr>
+                <form action="{{ url_for('adminRoute.update_profit') }}" method="post">
+                    {{ udpate_profit_rate_form.hidden_tag() }}
+                    {{ udpate_profit_rate_form.profit_id(value=profit.profit_id ,class="invisible",size=5) }}
+                    <td >{{udpate_profit_rate_form.profit_rate(value=profit.profit_rate,size=5)}}%</td>
+                    <td>{{ udpate_profit_rate_form.valid_flg(checked= true if profit.valid_flg==1 else false) }}</td>
+                     <td> <input type="submit" class="btn btn-primary"  value="Update"/></td>
+                </form>
+                    <td> <form action="{{ url_for('adminRoute.delete_profit') }}" method="post" name="delete">
+                             {{ delete_new_rate_form.hidden_tag() }}
+                             <div class="invisible" >{{ delete_new_rate_form.profit_id(value=profit.profit_id) }}</div>
+                        <input type="submit" class="btn btn-primary " value="Delete"/>
+                    </form>
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<div id="new-profit-rate-win" class="iziModal" data-izimodal-title="Create new profit rate">
+<form action="{{ url_for('adminRoute.add_profit') }}" method="post" name="create">
+        {{create_new_rate_form.hidden_tag()}}
+        <dl class="dl-horizontal">
+          <dt>New Profile Rate:</dt>
+          <dd>{{create_new_rate_form.profit_rate(size=5)}}</dd>
+            <br>
+          <dt>Is Valid</dt>
+          <dd>{{create_new_rate_form.valid_flg}}</dd>
+            <br>
+            <br>
+          <dt><input type="submit" class='btn btn-primary' value="Create"></dt>
+        </dl>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+		$(function() {
+{#			  $("#slider").easySlider({});#}
+            $("#new-profit-rate-win").iziModal({
+	        overlayClose: false,
+	        width: 600,
+	        autoOpen: false,
+	        overlayColor: 'rgba(0, 0, 0, 0.6)',
+	        onOpened: function() {
+	            console.log('onOpened');
+	        },
+	        onClosed: function() {
+	            console.log('onClosed');
+	        }
+	    });
+            $(document).on('click', '.trigger-new-profit-rate-win', function (event) {
+                event.preventDefault();
+                $('#new-profit-rate-win').iziModal('open');
+            });
+		  });
+
+	</script>
+{% endblock scripts %}

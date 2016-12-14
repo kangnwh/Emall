@@ -1,0 +1,208 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "admin_temp/_cascade_card.html" import cascade_card with context%}
+{% set active_page = 3 %}
+{% block title %}Admin Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">#}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/cascade/style.css") }}">
+{% endblock %}
+
+{% block page %}
+
+    <div class="">
+        <h3>Category Level One</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary trigger-new-level-one-win"
+                                data-izimodal-transitionin="fadeInDown"
+                                data-izimodal-open="modal-new-level-one-win">Add New Level One Category
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary trigger-new-level-two-win"
+                                data-izimodal-transitionin="fadeInDown"
+                                data-izimodal-open="modal-new-level-two-win">Add New Level Two Category
+                        </button>
+                    </div>
+
+            </div>
+        </div>
+        <div class="panel-group wrap" id="accordion" role="tablist" aria-multiselectable="true">
+            {% for level_one in level_one_list %}
+                {{ cascade_card(level_one,delete_level_one_form,update_level_one_form,delete_level_two_form,update_level_two_form) }}
+            {% endfor %}
+        </div>
+    </div>
+
+    {#    Pop window for add level one category#}
+    <div id="new-level-one-win" class="iziModal" data-izimodal-title="Create New Level One Category">
+        <form action="{{ url_for('adminRoute.add_level_one') }}" method="post" name="create">
+            {{ create_level_one_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                <dt>Level One Category Name:</dt>
+                <dd>{{ create_level_one_form.prod_cat_name }}</dd>
+                <br>
+                <dt>Description:</dt>
+                <dd>{{ create_level_one_form.prod_cat_desc }}</dd>
+                <br>
+                <dt>Order Number:</dt>
+                <dd>{{ create_level_one_form.prod_cat_order }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Add"></dt>
+            </dl>
+        </form>
+    </div>
+    {#    Pop window for add level two category#}
+    <div id="new-level-two-win" class="iziModal" data-izimodal-title="Create New Level Two Category">
+        <form action="{{ url_for('adminRoute.add_level_two') }}" method="post" name="create">
+            {{ create_level_two_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                <dt>Level Two Category Name:</dt>
+                <dd>{{ create_level_two_form.prod_cat_sub_name }}</dd>
+                <br>
+                <dt>Parent Category:</dt>
+                <dd>{{ create_level_two_form.prod_cat_id }}</dd>
+                <br>
+                <dt>Description:</dt>
+                <dd>{{ create_level_two_form.prod_cat_sub_desc }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Add"></dt>
+            </dl>
+        </form>
+    </div>
+    {#    Pop window for update level one category#}
+    <div id="update-level-one-win" class="iziModal" data-izimodal-title="Update Level One Category">
+        <form action="{{ url_for('adminRoute.update_level_one') }}" method="post" name="update">
+            {{ update_level_one_form.hidden_tag() }}
+            <div class="invisible disabled">{{ update_level_one_form.prod_cat_id(id='update_level_one_cat_id') }}</div>
+            <dl class="dl-horizontal">
+                <dt>Level One Category Name:</dt>
+                <dd>{{ update_level_one_form.prod_cat_name(id='update_level_one_cat_name') }}</dd>
+                <br>
+                <dt>Description:</dt>
+                <dd>{{ update_level_one_form.prod_cat_desc(id='update_level_one_cat_desc') }}</dd>
+                <br>
+                <dt>Order Number:</dt>
+                <dd>{{ update_level_one_form.prod_cat_order(id='update_level_one_cat_order') }}</dd>
+                <br>
+                <dt>Validate Flag:</dt>
+                <dd>{{ update_level_one_form.valid_flg(id='update_level_one_valid_flg') }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Update"></dt>
+            </dl>
+        </form>
+    </div>
+    {#    Pop window for update level two category#}
+    <div id="update-level-two-win" class="iziModal" data-izimodal-title="Update Level Two Category">
+        <form action="{{ url_for('adminRoute.update_level_two') }}" method="post" name="update">
+            {{ update_level_two_form.hidden_tag() }}
+            <div class="invisible disabled">{{ update_level_two_form.prod_cat_sub_id(id='update_level_two_sub_cat_id') }}</div>
+            <dl class="dl-horizontal">
+                <dt>Level Two Category Name:</dt>
+                <dd>{{ update_level_two_form.prod_cat_sub_name(id='update_level_two_sub_cat_name') }}</dd>
+                <br>
+                <dt>Parent Category:</dt>
+                <dd>{{ update_level_two_form.prod_cat_id(id='update_level_two_parent_id') }}</dd>
+                <br>
+                <dt>Description:</dt>
+                <dd>{{ update_level_two_form.prod_cat_sub_desc(id='update_level_two_sub_cat_desc') }}</dd>
+                <br>
+                <dt>Validate Flag:</dt>
+                <dd>{{ update_level_two_form.valid_flg(id='update_level_two_valid_flg') }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Update"></dt>
+            </dl>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#slider").easySlider({});
+            $(document).ready(function () {
+                $('.collapse.in').prev('.panel-heading').addClass('active');
+                $('#accordion, #bs-collapse')
+                        .on('show.bs.collapse', function (a) {
+                            $(a.target).prev('.panel-heading').addClass('active');
+                        })
+                        .on('hide.bs.collapse', function (a) {
+                            $(a.target).prev('.panel-heading').removeClass('active');
+                        });
+            });
+            //pop window for adding level one category
+            $("#new-level-one-win").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+
+            });
+            $(document).on('click', '.trigger-new-level-one-win', function (event) {
+                event.preventDefault();
+                $('#new-level-one-win').iziModal('open');
+            });
+            //pop window for adding level two category
+            $("#new-level-two-win").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+
+            });
+            $(document).on('click', '.trigger-new-level-two-win', function (event) {
+                event.preventDefault();
+                $('#new-level-two-win').iziModal('open');
+            });
+        });
+
+        //pop  window for update level one
+        $("#update-level-one-win").iziModal({
+            overlayClose: false,
+            width: 600,
+            autoOpen: false,
+            overlayColor: 'rgba(0, 0, 0, 0.6)',
+
+        });
+        function updete_level_one(id, name, desc, valid_flg, order) {
+            $("#update-level-one-win").iziModal('open');
+            $("#update_level_one_cat_name")[0].value = name;
+            $("#update_level_one_cat_desc")[0].value = desc;
+            $("#update_level_one_valid_flg")[0].checked = valid_flg;
+            $("#update_level_one_cat_id")[0].value = id;
+            $("#update_level_one_cat_order")[0].value = order;
+
+        }
+        //pop  window for update level two
+        $("#update-level-two-win").iziModal({
+            overlayClose: false,
+            width: 600,
+            autoOpen: false,
+            overlayColor: 'rgba(0, 0, 0, 0.6)',
+
+        });
+        function updete_level_two(id, parent_id, name, valid_flg, desc) {
+            $("#update-level-two-win").iziModal('open');
+            $("#update_level_two_sub_cat_name")[0].value = name;
+            $("#update_level_two_sub_cat_desc")[0].value = desc;
+            $("#update_level_two_valid_flg")[0].checked = valid_flg;
+            $("#update_level_two_sub_cat_id")[0].value = id;
+            $("#update_level_two_parent_id")[0].value = parent_id;
+        }
+        //confirm before delete
+        function deleteConfirm(name) {
+            if (confirm("Do you really want to delete [" + name + "] ? ")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+{% endblock scripts %}

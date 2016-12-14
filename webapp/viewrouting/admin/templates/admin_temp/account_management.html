@@ -1,0 +1,154 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 2 %}
+{% block title %}Account Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+    <div class="'row">
+        <button type="button" class="btn btn-primary trigger-new-user-win" data-izimodal-transitionin="fadeInDown"
+                data-izimodal-open="modal-new-user-win">Add New
+        </button>
+        {#          <button type="button" class="btn btn-primary">Delete Selected</button>#}
+        {#          <button type="button" class="btn btn-primary">Update Selected</button>#}
+    </div>
+
+    {{ pagination.info }}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            {#            <th>User ID</th>#}
+            <th>User Name</th>
+            {#            <th>Password</th>#}
+            <th>Email</th>
+            <th>Is Valid</th>
+            <th>Is Admin</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in user_list.items %}
+
+            <tr>
+{#                <form action="" method="post">#}
+{#                    {{ udpate_user_form.hidden_tag() }}#}
+{#                    {{ udpate_user_form.user_id(value=user.user_id ,class="invisible",size=5) }}#}
+                    <!--    <td ><input disabled value="{{ user.user_name }}"/></td>   -->
+
+                    <td>{{ user.user_name }}</td>
+                    {#                    <td>{{ udpate_user_form.password(value=user.password)  }}</td>#}
+                    <!--   <td><input disabled value="{{ user.email }}"/></td>   -->
+                    <td>{{ user.email }}</td>
+{#                    <td>{{ udpate_user_form.valid_flg(checked= true if user.valid_flg==1 else false) }}</td>#}
+                    <td><input type="checkbox" id="is_valid_{{ user.user_id }}"  {{ 'checked' if user.valid_flg==1 }} ></td>
+{#                    <td>{{ udpate_user_form.is_admin(checked=  true if  user.is_admin==1 else false) }}</td>#}
+                    <td><input type="checkbox" id="is_admin_{{ user.user_id }}" {{ 'checked' if user.is_admin==1 }} ></td>
+                    <td>
+                        <button class="btn btn-primary"
+                               onclick='ajax_update_user_form("{{ user.user_name }}",{{ user.user_id }})'>Update</button>
+                    </td>
+{#                </form>#}
+
+                <td>
+                    <button class="btn btn-primary "
+                           onclick='ajax_delete_user_form("{{ user.user_name }}",{{ user.user_id }})'>Delete </button>
+                </td>
+                <td>
+                    <form action="{{ url_for('adminRoute.reset_password') }}" method="post" name="reset">
+                        {{ reset_password_form.hidden_tag() }}
+                        <div class="invisible">{{ reset_password_form.user_id(value=user.user_id) }}
+                            {{ reset_password_form.email(value=user.email) }}
+                        </div>
+                        <input type="submit" class="btn btn-primary " value="Reset password"/>
+                    </form>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="new-user-win" class="iziModal" data-izimodal-title="Create new user account">
+        <form action="{{ url_for('adminRoute.add_user') }}" method="post" name="create">
+            {{ create_new_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                <dt>User Name:</dt>
+                <dd>{{ create_new_form.user_name(size=20) }}</dd>
+                <br>
+                <dt>Email:</dt>
+                <dd>{{ create_new_form.email(size=20) }}</dd>
+                <br>
+                <dt>Password:</dt>
+                <dd>{{ create_new_form.password(size=20) }}</dd>
+                <br>
+                <dt>Is Admin</dt>
+                <dd>{{ create_new_form.is_admin }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Create"></dt>
+            </dl>
+        </form>
+    </div>
+    {{ pagination.links }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            {#			  $("#slider").easySlider({});#}
+            $("#new-user-win").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+                onOpened: function () {
+                    console.log('onOpened');
+                },
+                onClosed: function () {
+                    console.log('onClosed');
+                }
+            });
+            $(document).on('click', '.trigger-new-user-win', function (event) {
+                event.preventDefault();
+                $('#new-user-win').iziModal('open');
+            });
+        });
+        function ajax_update_user_form(name, user_id ) {
+            if (confirm("Do you really want to update [" + name + "] ? ")) {
+                is_admin =0;
+                is_valid=0;
+                if($('#is_admin_'+user_id).is(':checked')){is_admin =1;}
+                if($('#is_valid_'+user_id).is(':checked')){is_valid =1;}
+                $.post("{{ url_for('adminRoute.update_user') }}", {
+                    user_id: user_id,
+                    is_admin: is_admin,
+                    valid_flg: is_valid
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+        function ajax_delete_user_form(name, user_id) {
+            if (confirm("Do you really want to delete [" + name + "] ? ")) {
+                console.log('begin')
+                $.post("{{ url_for('adminRoute.delete_user') }}", {user_id: user_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+    </script>
+{% endblock scripts %}

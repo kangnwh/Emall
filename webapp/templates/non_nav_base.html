@@ -1,0 +1,64 @@
+{% block head %}
+    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
+    {% block favicon %}
+        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">
+    {% endblock %}
+    {% block link_ref %}
+
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-switch.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
+
+        {#        <link rel="stylesheet" href="{{ url_for("static",filename="css/titatoggle-dist-min.css") }}">#}
+
+    {% endblock %}
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
+    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
+    {% block jsref %}
+
+        <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/bootstrap-switch.min.js") }}"></script>
+
+    {% endblock %}
+
+
+
+{% endblock head %}
+
+{% block content %}
+    {#    <div class="bs-docs-header" tabindex="-1">#}
+    {#        <div class="jumbotron no-padding-top no-padding-bottom">#}
+    {#            <div class="container">#}
+    {#                <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>#}
+    {#                <p>This is an empty system only providing limited functionalities.</p>#}
+    {#                <!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <div class="container alert-primary">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        <ul class='list-unstyled'>
+                            <li>{{ message }}</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block page %}{% endblock %}
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
+{% endblock scripts %}
+
+

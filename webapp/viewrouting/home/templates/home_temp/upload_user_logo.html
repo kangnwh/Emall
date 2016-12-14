@@ -1,0 +1,49 @@
+{% extends "form_base.html" %}
+{% from "_input_helper.html" import input_helper %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/ssi-uploader.min.css") }}">
+    <script src="{{ url_for("static",filename="js/ssi-uploader.min.js") }}"></script>
+    <style>
+
+    </style>
+{% endblock %}
+{% block form %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Processed Logo</div>
+                <div class="panel-body">
+                    <img class="material_img_box"
+                         src="{{ url_for("static",filename=("img/user_logos/GEN_"+ current_user.logo_link)) }}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Original Logo</div>
+                <div class="panel-body ">
+                    <img class="material_img_box"
+                         src="{{ url_for("static",filename=("img/user_logos/"+ current_user.logo_link)) }}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <input type="file" id="user_logo_file" name="user_logo_file"/>
+        </div>
+    </div>
+
+    <script>
+        $('#user_logo_file').ssi_uploader({
+            url: '{{ url_for('homeRoute.upload_user_logo') }}',
+            allowed:{{ allowed_files|safe }},
+            maxNumberOfFiles: 1,
+            onUpload: function () {
+                 location.reload();
+            }
+        });
+    </script>
+{% endblock %}

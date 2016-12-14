@@ -1,0 +1,183 @@
+{% block head %}
+    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
+    {% block favicon %}
+        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">
+    {% endblock %}
+    {% block link_ref %}
+
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-switch.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
+        <link rel="stylesheet" href=" {{ url_for("static",filename="css/zebra_dialog.css") }}">
+
+    {% endblock %}
+
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
+    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
+
+    {% block jsref %}
+
+        <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/bootstrap-switch.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/zebra_dialog.js") }}"></script>
+
+    {% endblock %}
+
+
+
+{% endblock head %}
+
+{% block content %}
+    <div class="bs-docs-header" tabindex="-1">
+        <div class="jumbotron no-padding-top no-padding-bottom">
+            <div class="container">
+                <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>
+                <p>This is an empty system only providing limited functionalities.</p>
+                <!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        <ul class='list-unstyled'>
+                            <li>{{ message }}</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="row">
+            <nav class="navbar navbar-default" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('homeRoute.index') }}">Home</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li {% if 'L2' == active_page %} class="active"{% endif %}>
+                            <a href="#">Free Artwork</a>
+                        </li>
+                        <li {% if 'L3' == active_page %} class="active"{% endif %}>
+                            <a href="{{ url_for('homeRoute.Free_Shipping') }}">Free Shipping</a>
+                        </li>
+                        <li {% if 'L4' == active_page %} class="active"{% endif %}>
+                            <a href="#">Free Catalogues</a>
+                        </li>
+                        <li {% if 'L5' == active_page %} class="active"{% endif %}>
+                            <a href="{{ url_for('homeRoute.User_Feedback') }}">User Feedback</a>
+                        </li>
+                        <li {% if 'L6' == active_page %} class="active"{% endif %}>
+                            <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
+                        </li>
+
+
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+
+                        {% if current_user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle"
+                                   data-toggle="dropdown">Hello {{ current_user.user_name }} ! <span
+                                        class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Actions...</a></li>
+                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>
+
+                                    {% if current_user.is_administrator %}
+                                        <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>
+                                    {% endif %}
+
+                                    <li class="divider"></li>
+                                    <li><a href="{{ url_for("userRoute.logout") }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="dropdown"><a href="{{ url_for('userRoute.register') }}" role="button"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                Register</a>
+                            </li>
+                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                Login</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-md-3 no-padding-left">
+
+                {% include('sidebar.html') %}
+
+                {% block undersidebar %} {% endblock %}
+            </div>
+            <div class="col-md-9">
+
+                {% block page %}{% endblock %}
+                <div id="upload-user-logo-win" class="iziModal" data-izimodal-title="Upload Your Logo">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% block footer %}
+        {% include("footer.html") %}
+    {% endblock footer %}
+
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
+    <script>
+        $(function () {
+
+            $("#upload-user-logo-win").iziModal({
+                overlayClose: false,
+                iframe: true,
+                iframeURL: '{{ url_for('homeRoute.upload_user_logo') }}',
+                width: 1200,
+                iframeHeight: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+                onClosing: function () {
+                    location.reload();
+                },
+
+            });
+            $.sidebarMenu($('.sidebar-menu'));
+        });
+        function onUploadLogo() {
+            {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
+            $('#upload-user-logo-win').iziModal('open');
+        }
+        function switchShowLogo(checkbox) {
+            if ($(checkbox).prop("checked")) {
+                $('.user-logo').removeClass('invisible');
+            } else {
+                $('.user-logo').addClass('invisible');
+            }
+        }
+    </script>
+{% endblock scripts %}
+
+

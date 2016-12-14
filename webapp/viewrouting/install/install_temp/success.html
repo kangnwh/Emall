@@ -1,0 +1,51 @@
+{% extends "bootstrap/base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block head %}
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
+    {% block favicon %}
+        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">{% endblock %}
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
+    <script src="{{ url_for("static",filename="js/jquery-1.11.3.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
+
+{% endblock head %}
+
+
+{% block title %}Report.py Installation Guide{% endblock title %}
+{% block meta %}
+    <meta charset="UTF-8">  {% endblock meta %}
+
+
+
+{% block content %}
+    <div class="bs-docs-header" tabindex="-1">
+
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Report.py Installation Guide</h1>
+                <p><a class="btn btn-primary btn-lg" href="https://github.com/kangnwh/emypySystem" target="_blank"
+                      role="button">Learn more</a></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+
+{#        <h4><strong>请提供以下信息来完成本系统的部署</strong></h4>#}
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <strong>安装成功</strong>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <p>安装成功，配置信息在目录 $project/webapp/config.py</p>
+                        <p>如有变动，需要重新运行  $project/webapp/Install.py重新配置。</p>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
