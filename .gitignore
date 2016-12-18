@@ -1,0 +1,5 @@
+install_config.py
+*.db
+*.pyc
+sidebar.html
+config.py

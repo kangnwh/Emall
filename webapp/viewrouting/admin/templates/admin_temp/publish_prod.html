@@ -13,10 +13,9 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary trigger-add-new-prod"
-                        data-izimodal-transitionin="fadeInDown"
-                        data-izimodal-open="modal-add-new-comment">Add New Production
-                </button>
+                <a  href="{{ url_for('adminRoute.add_new_prod') }}"  class="btn btn-primary"
+                     >Add New Production
+                </a>
             </div>
             <div class="btn-group">
                 <a type="button" class="btn btn-primary "
@@ -27,9 +26,6 @@
         </div>
     </div>
 
-    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">
-
-    </div>
 
     <br>
 {% endblock %}
@@ -38,21 +34,6 @@
     {{ super() }}
     <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
     <script type="text/javascript">
-        $(function () {
-            $("#add-new-prod").iziModal({
-                overlayClose: false,
-                iframe:true,
-                iframeURL:'{{ url_for('adminRoute.add_new_prod') }}',
-                width: 1200,
-                iframeHeight: 800,
-                autoOpen: false,
-                overlayColor: 'rgba(0, 0, 0, 0.6)'
-            });
-            $(document).on('click', '.trigger-add-new-prod', function (event) {
-                event.preventDefault();
-                $('#add-new-prod').iziModal('open');
-            });
 
-        });
     </script>
 {% endblock scripts %}
