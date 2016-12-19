@@ -116,6 +116,8 @@ def _add_user():
         u.email = create_user_form.email.data
         u.password = generate_md5(create_user_form.password.data)
         u.valid_flg = 1
+        u.is_paid = 0
+        u.credit_points = 0
         u.is_admin = create_user_form.is_admin.data
 
         s = Session()

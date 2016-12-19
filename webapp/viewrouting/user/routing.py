@@ -92,6 +92,8 @@ def register():
         u.logo_link ='default_logo.png'
         u.valid_flg = 1
         u.is_admin = 0
+        u.is_paid = 0
+        u.credit_points = 0
 
         s = Session()
         s.add(u)
