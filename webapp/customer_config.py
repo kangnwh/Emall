@@ -10,3 +10,12 @@ USER_NUM_PER_PAGE = 10
 FEEDBACK_NUM_PER_PAGE = 10
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
+
+
+MAIL_SERVER = 'smtp.tom.com'# 'smtp.163.com'
+MAIL_PORT = 25
+MAIL_USE_SSL = False
+MAIL_USE_TLS = False
+MAIL_USERNAME = 'emalltest'
+MAIL_DEFAULT_SENDER = 'emalltest@tom.com'
+MAIL_PASSWORD = 'passw0rd'

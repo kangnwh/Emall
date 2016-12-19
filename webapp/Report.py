@@ -14,7 +14,9 @@ from webapp.viewrouting.admin.routing import adminRoute
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
 
-
+#flask mail
+import flask_mail
+mail = flask_mail.Mail()
 
 login_manager = LoginManager()
 login_manager.login_view="userRoute.login"
@@ -30,8 +32,10 @@ Report_Modules={
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=False)
+app.config.from_pyfile('customer_config.py', silent=False)
 bootstrap = Bootstrap(app)
 login_manager.init_app(app)
+mail.init_app(app)
 
 
 for module,url_prefix in Report_Modules:

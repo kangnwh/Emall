@@ -135,3 +135,9 @@ def upload_user_logo():
 
     return render_template('home_temp/upload_user_logo.html',
                            allowed_files = list(customer_config.ALLOWED_EXTENSIONS))
+
+@homeRoute.route('/sendmail/<to>')
+def sendtest(to):
+    from webapp.common.mails import send_email_indiv
+    send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
+    render_template("home_temp/index.html")
