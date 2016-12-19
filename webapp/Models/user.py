@@ -15,6 +15,8 @@ class User(Base):
     valid_flg=Column(Integer,default=0)
     is_admin = Column(Integer,default = 0)
     logo_link=Column(String(200),default='default_logo.png')
+    is_paid = Column(Integer,default = 0)
+    credit_points = Column(Integer,default = 0)
     user_create_ts = Column(DateTime,default=func.now())
 
 
@@ -37,6 +39,10 @@ class User(Base):
     @property
     def is_administrator(self):
         return self.is_admin==1
+
+    @property
+    def is_member_paid(self):
+        return self.is_paid==1
 
 class AnonymousUser(AnonymousUserMixin):
     logo_link='default_logo.png'
