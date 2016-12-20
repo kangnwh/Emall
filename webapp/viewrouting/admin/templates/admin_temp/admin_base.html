@@ -8,15 +8,18 @@
     {% endblock %}
     {% block link_ref %}
 
-        {#        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->#}
         <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">
         <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
+         <link rel="stylesheet" href="{{ url_for("static",filename="css/datepicker.min.css") }}">
+
     {% endblock %}
     <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
 
     <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/datepicker.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/i18n/datepicker.en.js") }}"></script>
 
 
 {% endblock head %}
@@ -59,8 +62,8 @@
                     <a href="{{ url_for('adminRoute.account_management') }}">Account Management</a></li>
                 <li {% if 3 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Categroy Management</a></li>
-                <li {% if 4 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.publish_prod') }}">Publish Product</a>
+{#                <li {% if 4 == active_page %} class="active"{% endif %}>#}
+{#                    <a href="{{ url_for('adminRoute.publish_prod') }}">Publish Product</a>#}
                 </li>
                 <li {% if 5 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.spec_links') }}">Specialist Links</a>
@@ -88,8 +91,6 @@
 {% block scripts %}
     <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
     <script>
-        $.sidebarMenu($('.sidebar-menu'));
-
         {% block script_code %}{% endblock %}
     </script>
 {% endblock scripts %}

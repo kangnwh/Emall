@@ -22,7 +22,7 @@ class LoginForm(Form):
     email = StringField('Email', validators = [DataRequired()])
     password = PasswordField('password', validators = [DataRequired()])
     remember_me = BooleanField('remember_me', default = False)
-
+    next = StringField()
 
 class ChangePasswordForm(Form):
     # email = StringField('Email', validators = [DataRequired()])
@@ -40,3 +40,4 @@ class RegistrationForm(Form):
     user_name = StringField('User Name', validators = [DataRequired(),name_not_exists_check])
     password = PasswordField('password', validators = [DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
+    next = StringField()

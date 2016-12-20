@@ -1,6 +1,6 @@
 {% extends "admin_temp/admin_base.html" %}
 {% from "_input_helper.html" import input_helper %}
-{% set active_page = 4 %}
+{% set active_page = 3 %}
 {% block title %}Admin Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
 {% block link_ref %}
     {{ super() }}
@@ -13,7 +13,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="btn-group">
-                <a  href="{{ url_for('adminRoute.add_new_prod') }}"  class="btn btn-primary"
+                <a  href="{{ url_for('supplierRoute.add_new_prod') }}"  class="btn btn-primary"
                      >Add New Production
                 </a>
             </div>

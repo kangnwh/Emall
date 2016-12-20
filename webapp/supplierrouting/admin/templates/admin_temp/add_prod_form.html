@@ -1,0 +1,137 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper %}
+{% from "_input_helper.html" import date_input_helper %}
+
+{% set active_page = 4 %}
+{% block page %}
+    {#    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">#}
+    <form action="{{ url_for('supplierRoute.add_new_prod') }}" method="post" name="create"
+          enctype="multipart/form-data" class="form" autocomplete="off">
+        {{ add_form.hidden_tag() }}
+
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <button type="submit" class='col-md-12 btn btn-primary' value="Update">Add</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div style=" overflow:scroll;  height:500px;">
+                {#                <div class="row">#}
+                {{ input_helper('col-md-6',add_form.prod_name ) }}
+                {{ input_helper('col-md-6',add_form.lead_time ) }}
+                {{ input_helper('col-md-12',add_form.prod_desc ) }}
+
+                {{ input_helper('col-md-6',add_form.prod_size ) }}
+
+                {{ input_helper('col-md-6',add_form.imprint_size ) }}
+                {{ input_helper('col-md-6',add_form.price_basis ) }}
+
+                {{ input_helper('col-md-12',add_form.colors ) }}
+                {{ input_helper('col-md-6',add_form.prod_cat_sub_id ) }}
+                {{ input_helper('col-md-6',add_form.cover_img_file ) }}
+
+                {{ input_helper('col-md-3 is_special',add_form.is_special_price_flg ) }}
+
+                {{ input_helper('col-md-3',add_form.is_clearance ) }}
+                {{ input_helper('col-md-3',add_form.is_new_prod ) }}
+                {{ input_helper('col-md-3',add_form.is_patent_prod ) }}
+
+                {{ input_helper('col-md-3 special_info invisible',add_form.special_price_old ) }}
+                {{ input_helper('col-md-3 special_info invisible',add_form.special_price_new ) }}
+                {{ date_input_helper('col-md-3 special_info invisible',add_form.special_price_campaign_time ) }}
+
+
+                <!-- Pic upload -->
+                {#                <div class="row">#}
+                {#                    {{ input_helper('col-md-6',add_form.cover_img_file,'' ) }}#}
+                {#                </div>#}
+                <div class="row" id="for_extr_pics">
+
+                </div>
+                <br>
+                <div class="row">
+                    <a onclick="add_new_pic()" class="form-group col-md-4 btn btn-primary">Add a New Picture</a>
+                </div>
+                <br>
+                <!-- price range -->
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from1 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to1 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost1 ,default_value=0.0) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from2 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to2 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price2 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices2 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost2 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost2 ,default_value=0.0) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from3 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to3 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price3 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices3 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost3 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost3 ,default_value=0.0) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from4 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to4 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price4 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices4 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost4 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost4 ,default_value=0.0) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from5 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to5 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price5 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices5 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost5 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost5 ,default_value=0.0) }}
+                        </div>
+                    </li>
+
+                </ul>
+
+
+            </div>
+
+        </div>
+    </form>
+    </div>
+    {#    </div>#}
+    <script>
+        function add_new_pic() {
+            // extra file with form name=extra_img_file and desc name=extra_img_desc
+            $("#for_extr_pics").append('<div class="col-md-12"><div class="form-group col-md-6"><label for="extra_img_file">Upload Extra Picture</label><input class="" id="cover_img_file" name="extra_img_file" type="file"></div><div class="form-group col-md-6"><label for="cover_img_desc">Extra Picture Desc</label><input class="form-control" id="extra_img_desc" name="extra_img_desc" value="" type="text"></div></div>');
+        }
+        $("#is_special_price_flg").bind("click", function () {
+            if($("#is_special_price_flg").is(":checked")){
+                $(".special_info").removeClass("invisible");
+            }else{
+                $(".special_info").addClass("invisible");
+            }
+        });
+
+    </script>
+{% endblock %}

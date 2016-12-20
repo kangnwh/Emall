@@ -1,0 +1,205 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper %}
+{% from "_input_helper.html" import date_input_helper %}
+
+{% set active_page = 4 %}
+{% block page %}
+    {#    <div id="update-prod" class="iziModal" data-izimodal-title="Update Production" enctype="multipart/form-data">#}
+    <form action="{{ url_for('supplierRoute.update_prod') }}" method="post" name="update"
+          enctype="multipart/form-data">
+        {{ update_form.hidden_tag() }}
+        <div class="invisible">{{ update_form.prod_id(value=this_prod.prod_id) }}</div>
+        <div class="list-group-item">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <button type="submit" class='col-md-12 btn btn-primary' value="Update">Update</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+                <div style=" overflow:scroll;  height:500px;">
+                     <div class="row">
+                    {{ input_helper('col-md-6',update_form.prod_name,default_value=this_prod.prod_name ) }}
+                    {{ input_helper('col-md-6',update_form.lead_time,default_value=this_prod.lead_time ) }}
+                    {{ input_helper('col-md-12',update_form.prod_desc,default_value=this_prod.prod_desc ) }}
+
+                    {{ input_helper('col-md-6',update_form.prod_size,default_value=this_prod.prod_size ) }}
+
+                    {{ input_helper('col-md-6',update_form.imprint_size,default_value=this_prod.imprint_size ) }}
+                    {{ input_helper('col-md-6',update_form.price_basis,default_value=this_prod.price_basis ) }}
+
+                    {{ input_helper('col-md-12',update_form.colors,default_value=this_prod.colors ) }}
+                    <div class="col-md-6">
+                        Level One Category
+                    </div>
+                    {{ input_helper('col-md-6',update_form.prod_cat_sub_id,default_value=this_prod.prod_cat_sub_id ) }}
+                    {#                {{ input_helper('col-md-6',update_form.cover_img_file,default_value=this_prod.cover_img_file ) }}#}
+
+                    {{ input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}
+
+                    {{ input_helper('col-md-3',update_form.is_clearance,default_value=this_prod.is_clearance ) }}
+                    {{ input_helper('col-md-3',update_form.is_new_prod,default_value=this_prod.is_new_prod ) }}
+                    {{ input_helper('col-md-3',update_form.is_patent_prod,default_value=this_prod.is_patent_prod ) }}
+
+                    {{ input_helper('col-md-3 special_info invisible',update_form.special_price_old,default_value=this_prod.special_price_old ) }}
+                    {{ input_helper('col-md-3 special_info invisible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}
+                    {{ date_input_helper('col-md-3 special_info invisible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time ) }}
+                </div>
+
+                <!-- Pic upload -->
+                <div class="row">
+                    <div id="upload-div"
+                         class="{{ 'col-md-12' if this_prod.cover_img == 'default.png' else 'invisible' }}">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ update_form.cover_img_file.label() }}</div>
+                            <div class="panel-body" style="text-align: center;">
+                                {{ update_form.cover_img_file() }}
+                            </div>
+                        </div>
+                    </div>
+                    {#                {{ input_helper('col-md-12' if this_prod.cover_img == 'default.png' else 'invisible',update_form.cover_img_file.label,update_form.cover_img_file) }}#}
+                    <div class="col-md-2 ">
+                        <div class="panel panel-default {{ 'invisible' if this_prod.cover_img == 'default.png' else'' }}">
+                            <div class="panel-heading">Cover Page</div>
+                            <div class="panel-body " style="text-align: center;">
+                                <div class="row">
+                                    <img class="img-responsive img-thumbnail img-100"
+                                         src="{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}">
+                                </div>
+                                <div class="row">
+                                    <input class="btn btn-danger col-md-12"
+                                           onclick="ajax_delete_cover_page(this,{{ this_prod.prod_id }})"
+                                           value="Delete"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% for pic in this_prod.prod_pics %}
+                                    <div class="col-md-2">
+                                        <div class="panel panel-default ">
+                                            <div class="panel-heading">Extra Pictures</div>
+                                            <div class="panel-body" style="text-align: center;">
+                                                <div class="row">
+                                                    <img class="img-responsive img-thumbnail img-100"
+                                                         src="{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}"/>
+                                                </div>
+                                                <div class="row">
+                                                    <input class="btn btn-danger col-md-12"
+                                                           onclick="ajax_delete_extra_pic_form(this,{{ pic.prod_pic_id }})"
+                                                           value="Delete"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row" id="for_extr_pics">
+                            {#     add extra picture upload forms       #}
+                        </div>
+                        <div class="row">
+                            <a onclick="add_new_pic()" class="form-group col-md-4 btn btn-primary">Add a New Picture</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- price range -->
+                <div class="row">
+                    {{ input_helper('col-md-2',update_form.quantity_from1 ,default_value=this_prod.price_ranges[0].quantity_from1) }}
+                    {{ input_helper('col-md-2',update_form.quantity_to1 ,default_value=this_prod.price_ranges[0].quantity_to1) }}
+                    {{ input_helper('col-md-2',update_form.unit_price1 ,default_value=this_prod.price_ranges[0].unit_price1) }}
+                    {{ input_helper('col-md-2',update_form.imprinting_prices1 ,default_value=this_prod.price_ranges[0].imprinting_prices1) }}
+                    {{ input_helper('col-md-2',update_form.setup_cost1 ,default_value=this_prod.price_ranges[0].setup_cost1) }}
+                    {{ input_helper('col-md-2',update_form.freight_cost1 ,default_value=this_prod.price_ranges[0].freight_cost1) }}
+                </div>
+                <div class="row">
+                    {{ input_helper('col-md-2',update_form.quantity_from2 ,default_value=this_prod.price_ranges[0].quantity_from2) }}
+                    {{ input_helper('col-md-2',update_form.quantity_to2 ,default_value=this_prod.price_ranges[0].quantity_to2) }}
+                    {{ input_helper('col-md-2',update_form.unit_price2 ,default_value=this_prod.price_ranges[0].unit_price2) }}
+                    {{ input_helper('col-md-2',update_form.imprinting_prices2 ,default_value=this_prod.price_ranges[0].imprinting_prices2) }}
+                    {{ input_helper('col-md-2',update_form.setup_cost2 ,default_value=this_prod.price_ranges[0].setup_cost2) }}
+                    {{ input_helper('col-md-2',update_form.freight_cost2 ,default_value=this_prod.price_ranges[0].freight_cost2) }}
+                </div>
+                <div class="row">
+                    {{ input_helper('col-md-2',update_form.quantity_from3 ,default_value=this_prod.price_ranges[0].quantity_from3) }}
+                    {{ input_helper('col-md-2',update_form.quantity_to3 ,default_value=this_prod.price_ranges[0].quantity_to3) }}
+                    {{ input_helper('col-md-2',update_form.unit_price3 ,default_value=this_prod.price_ranges[0].unit_price3) }}
+                    {{ input_helper('col-md-2',update_form.imprinting_prices3 ,default_value=this_prod.price_ranges[0].imprinting_prices3) }}
+                    {{ input_helper('col-md-2',update_form.setup_cost3 ,default_value=this_prod.price_ranges[0].setup_cost3) }}
+                    {{ input_helper('col-md-2',update_form.freight_cost3 ,default_value=this_prod.price_ranges[0].freight_cost3) }}
+                </div>
+                <div class="row">
+                    {{ input_helper('col-md-2',update_form.quantity_from4 ,default_value=this_prod.price_ranges[0].quantity_from4) }}
+                    {{ input_helper('col-md-2',update_form.quantity_to4 ,default_value=this_prod.price_ranges[0].quantity_to4) }}
+                    {{ input_helper('col-md-2',update_form.unit_price4 ,default_value=this_prod.price_ranges[0].unit_price4) }}
+                    {{ input_helper('col-md-2',update_form.imprinting_prices4 ,default_value=this_prod.price_ranges[0].imprinting_prices4) }}
+                    {{ input_helper('col-md-2',update_form.setup_cost4 ,default_value=this_prod.price_ranges[0].setup_cost4) }}
+                    {{ input_helper('col-md-2',update_form.freight_cost4 ,default_value=this_prod.price_ranges[0].freight_cost4) }}
+                </div>
+                <div class="row">
+                    {{ input_helper('col-md-2',update_form.quantity_from5 ,default_value=this_prod.price_ranges[0].quantity_from5) }}
+                    {{ input_helper('col-md-2',update_form.quantity_to5 ,default_value=this_prod.price_ranges[0].quantity_to5) }}
+                    {{ input_helper('col-md-2',update_form.unit_price5 ,default_value=this_prod.price_ranges[0].unit_price5) }}
+                    {{ input_helper('col-md-2',update_form.imprinting_prices5 ,default_value=this_prod.price_ranges[0].imprinting_prices5) }}
+                    {{ input_helper('col-md-2',update_form.setup_cost5 ,default_value=this_prod.price_ranges[0].setup_cost5) }}
+                    {{ input_helper('col-md-2',update_form.freight_cost5 ,default_value=this_prod.price_ranges[0].freight_cost5) }}
+                </div>
+            </div>
+        </div>
+    </form>
+    {#    </div>#}
+    <script>
+        $(function () {
+            $("#prod_cat_sub_id").val("{{ this_prod.prod_cat_sub_id }}");
+            $('#valid_flg').attr('checked', {{ 'true' if this_prod.valid_flg == 1 else 'false' }});
+        });
+
+        function add_new_pic() {
+            // extra file with form name=extra_img_file and desc name=extra_img_desc
+            $("#for_extr_pics").append('<div class="row"><div class="form-group col-md-6"><label for="extra_img_file">Upload Extra Picture</label><input class="" id="extra_img_file" name="extra_img_file" type="file"></div><div class="form-group col-md-6"><label for="cover_img_desc">Extra Picture Desc</label><input class="form-control" id="extra_img_desc" name="extra_img_desc" value="" type="text"></div></div>');
+        }
+        function ajax_delete_cover_page(button, prod_id) {
+
+            $.post("{{ url_for('supplierRoute.delete_cover_page') }}", {prod_id: prod_id}, function (result) {
+                if (result = 'succ') {
+
+                    $(button).parent().parent().parent().remove();
+
+                    var upDiv = $('#upload-div');
+                    upDiv.removeClass('invisible');
+                    upDiv.addClass('col-md-12');
+
+                } else {
+                    alert(result);
+                }
+            });
+        }
+
+        function ajax_delete_extra_pic_form(button, prod_pic_id) {
+            $.post("{{ url_for('supplierRoute.delete_extra_pics') }}", {prod_pic_id: prod_pic_id}, function (result) {
+                if (result = 'succ') {
+                    $(button).parent().parent().parent().remove();
+                } else {
+                    alert(result);
+                }
+            });
+        }
+        $("#is_special_price_flg").bind("click", function () {
+            if ($("#is_special_price_flg").is(":checked")) {
+                $(".special_info").removeClass("invisible");
+            } else {
+                $(".special_info").addClass("invisible");
+            }
+        });
+
+    </script>
+{% endblock %}

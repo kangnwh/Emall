@@ -26,7 +26,7 @@ class Supplier(Base):
         return self.valid_flg==1
     @property
     def is_active(self):
-        return self.valid_flg
+        return self.valid_flg==1
 
     @property
     def is_anonymous(self):

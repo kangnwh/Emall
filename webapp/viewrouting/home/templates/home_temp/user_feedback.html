@@ -44,10 +44,10 @@
                 <div class="list-group-item">
 
                     <div class="row">
-                        {{ input_helper('invisible',user_feedback_form.user_id.label,user_feedback_form.user_id,default_value=current_user.user_id ) }}
-                        {{ input_helper('invisible',user_feedback_form.user_name.label,user_feedback_form.user_name,default_value=current_user.user_name ) }}
-                        {{ input_helper('invisible',user_feedback_form.email.label,user_feedback_form.email,default_value=current_user.email ) }}
-                        {{ input_helper('col-md-12',user_feedback_form.user_comment.label,user_feedback_form.user_comment,default_value=current_user.user_name ) }}
+                        {{ input_helper('invisible',user_feedback_form.user_id,default_value=current_user.user_id ) }}
+                        {{ input_helper('invisible',user_feedback_form.user_name,default_value=current_user.user_name ) }}
+                        {{ input_helper('invisible',user_feedback_form.email,default_value=current_user.email ) }}
+                        {{ input_helper('col-md-12',user_feedback_form.user_comment,default_value=current_user.user_name ) }}
                     </div><!-- /.row -->
 {#                    <dt>Input your comment here:</dt>#}
 {#                    {{ user_feedback_form.user_comment(class="form-control",rows="5") }}#}

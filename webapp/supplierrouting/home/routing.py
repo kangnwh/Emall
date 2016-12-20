@@ -23,16 +23,19 @@ homeRoute = Blueprint('homeRoute', __name__,
 
 
 @homeRoute.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     return render_template('home_temp/index.html')
 
 
 @homeRoute.route('/Free_Shipping', methods=['GET', 'POST'])
+@login_required
 def Free_Shipping():
     return render_template('home_temp/Free_Shipping.html')
 
 
 @homeRoute.route('/document', methods=['GET', 'POST'])
+@login_required
 def document():
     return render_template('home_temp/document.html')
 
@@ -76,6 +79,7 @@ def User_Feedback():
 
 
 @homeRoute.route('/sub-category/<int:sub_cat_id>', methods=['GET'])
+@login_required
 def sub_category_list(sub_cat_id):
     search = False
     q = request.args.get('q')
@@ -88,11 +92,7 @@ def sub_category_list(sub_cat_id):
     sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
     prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
 
-    if current_user.is_administrator:
-        prod_list = BaseQuery(Prod_info,s).filter_by(prod_cat_sub_id=sub_cat_id).paginate(page,
-                                                                                          customer_config.PROD_NUM_PER_PAGE, False)
-    else:
-        prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,prod_cat_sub_id=sub_cat_id).paginate(page,
+    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,prod_cat_sub_id=sub_cat_id,supplier_id=current_user.supplier_id).paginate(page,
                                                                                                       customer_config.PROD_NUM_PER_PAGE, False)
 
     pagination = Pagination(page=page, total=prod_list.total,
@@ -109,6 +109,7 @@ def sub_category_list(sub_cat_id):
 
 
 @homeRoute.route('/indiv_prod', methods=['GET'])
+@login_required
 def indiv_prod():
     s = Session()
     prod_id = request.args.get('prod_id', 1)
@@ -139,6 +140,7 @@ def upload_user_logo():
                            allowed_files = list(customer_config.ALLOWED_EXTENSIONS))
 
 @homeRoute.route('/sendmail/<to>')
+@login_required
 def sendtest(to):
     from webapp.common.mails import send_email_indiv
     send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")

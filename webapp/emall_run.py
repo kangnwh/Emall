@@ -2,7 +2,7 @@ import os,sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
 #flask related packages
-from flask import Flask
+from flask import Flask,redirect,request,flash,url_for
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 
@@ -46,6 +46,11 @@ for module,url_prefix in Report_Modules:
 def load_user(user_id):
     s = Session()
     return s.query(User).filter_by(user_id=user_id).first()
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    flash("Please Login First",'danger')
+    return redirect(url_for("userRoute.register_login",next=request.path))
 
 if __name__ == '__main__':
     # app = create_app()

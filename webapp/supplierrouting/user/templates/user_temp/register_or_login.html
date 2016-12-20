@@ -1,4 +1,4 @@
-{% extends "non_nav_base.html" %}
+{% extends "admin_temp/admin_base.html" %}
 {% from "_input_helper.html" import input_helper %}
 
 {% block link_ref %}
@@ -10,8 +10,9 @@
     <script src="{{ url_for("static",filename="js/jquery-tab.js") }}"></script>
 {% endblock %}
 
-{% block page %}
-    <div class="tab-group">
+{% block content %}
+    <h3>Please Login or Register</h3>
+    <div class="tab-group  col-md-6 col-md-offset-3">
         <section id="tab1" title="Login">
 
             <form action="{{ url_for("userRoute.login") }}" method="post" name="create">
@@ -42,10 +43,11 @@
                 {{ registerForm.hidden_tag() }}
                 <div class="row">
                     {{ input_helper('invisible',registerForm.next,default_value=next ) }}
-                    {{ input_helper('col-md-12',registerForm.user_name ) }}
+                    {{ input_helper('col-md-12',registerForm.supplier_name ) }}
                     {{ input_helper('col-md-12',registerForm.email ) }}
                     {{ input_helper('col-md-12',registerForm.password ) }}
                     {{ input_helper('col-md-12',registerForm.confirm ) }}
+                    {{ input_helper('col-md-12',registerForm.address ) }}
                     <br>
                     <div class="col-md-5">
                         <input type="submit" class='btn btn-primary input-group' value="Create">
@@ -60,11 +62,8 @@
 
     </div>
     <script>
-        $(function () {
-            // Calling the plugin
-            $('.tab-group').tabify();
-        });
 
+        $('.tab-group').tabify();
         var el = $("#remember_me_switch").bootstrapSwitch();
         el.bootstrapSwitch('state', false);
         el.on('switchChange.bootstrapSwitch', function (event, state) {
@@ -75,7 +74,7 @@
             }
         });
     </script>
-{% endblock page %}
+{% endblock content %}
 
 
 

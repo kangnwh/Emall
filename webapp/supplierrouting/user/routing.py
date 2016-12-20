@@ -1,9 +1,9 @@
  # -*- coding: utf-8 -*-
-from flask import Blueprint,request,render_template,redirect,url_for,flash
-from webapp.viewrouting.user.forms.login_form import LoginForm,ChangePasswordForm,RegistrationForm
-from webapp.viewrouting.admin.forms.user_forms import CreateNewForm
+from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string
+from webapp.supplierrouting.user.forms.login_form import LoginForm,ChangePasswordForm,RegistrationForm
 
-from webapp.Models.user import User
+# from webapp.Models.user import User
+from webapp.Models.supplier import Supplier
 from webapp.Models.db_basic import Session
 from webapp.common import generate_md5
 from flask_login import current_user,login_required
@@ -13,13 +13,12 @@ from flask_login import login_user,logout_user,login_required
 userRoute = Blueprint('userRoute', __name__,
                       template_folder='templates', static_folder='static')
 
-##TODO customer views for login and registration https://github.com/flask-admin/flask-admin/blob/master/examples/auth-flask-login/app.py
 @userRoute.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('user_temp/index.html')
+    return render_template('admin_temp/index.html')
 
 
-@userRoute.route('/login', methods=['GET', 'POST'])
+@userRoute.route('/login', methods=[ 'POST'])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -30,7 +29,7 @@ def login():
         password = passwd_md5
 
         s = Session()
-        user = s.query(User).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
+        user = s.query(Supplier).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
         if user :
             login_user(user,remember = login_form.remember_me.data)
             next = request.args.get('next')
@@ -39,73 +38,57 @@ def login():
             # permission to access the `next` url
             #if not next_is_valid(next):
             #    return abort(400)
-            return redirect(next or url_for('homeRoute.index'))
+            #return redirect(next or url_for('userRoute.index'))
+            flash("User {user_name} login successfully.".format(user_name=user.user_name),'success')
+            next = login_form.next.data
+            return redirect(next)
 
         else:
             flash("User ID or Password invalid.",category='danger')
 
-    return render_template('user_temp/login.html', form=login_form)
+    return redirect(url_for("userRoute.register_login"))
 
 
 @userRoute.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect(url_for('userRoute.login'))
+    return redirect(url_for('homeRoute.index'))
 
-
-@userRoute.route('/admin_login', methods=['GET', 'POST'])
-def admin_login():
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-        email = login_form.email.data
-        passwd_md5 = generate_md5(login_form.password.data) # hashlib.md5(login_form.password.data.encode('ascii'))
-        password = passwd_md5
-
-        s = Session()
-        user = s.query(User).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
-        if user :
-            login_user(user,remember = login_form.remember_me.data)
-            next = request.args.get('next')
-            # TODO
-            # next_is_valid should check if the user has valid
-            # permission to access the `next` url
-            #if not next_is_valid(next):
-            #    return abort(400)
-            return redirect(next or url_for('homeRoute.index'))
-
-        else:
-            flash("User ID or Password invalid.",category='danger')
-
-    return render_template('user_temp/admin_login.html', form=login_form)
-
-
-@userRoute.route('/register', methods=['GET', 'POST'])
+@userRoute.route('/register', methods=['POST'])
 def register():
     register_user_form = RegistrationForm()
     if register_user_form.validate_on_submit():
-        u = User()
-        u.user_name = register_user_form.user_name.data
-        u.email = register_user_form.email.data
-        u.password = generate_md5(register_user_form.password.data)
-        u.logo_link ='default_logo.png'
-        u.valid_flg = 1
-        u.is_admin = 0
-        u.is_paid = 0
-        u.credit_points = 0
+        supplier = Supplier()
+        supplier.supplier_name = register_user_form.supplier_name.data
+        supplier.email = register_user_form.email.data
+        supplier.password = generate_md5(register_user_form.password.data)
+        supplier.address =register_user_form.address.data
+        supplier.valid_flg = 1
+        supplier.supplier_points = 0
 
         s = Session()
-        s.add(u)
+        s.add(supplier)
         s.commit()
-        user = s.query(User).filter_by(email=u.email, password=u.password).first()  # User.query.filter_by(email=email,password=password).first()
+        user = s.query(Supplier).filter_by(email=supplier.email, password=supplier.password).first()  # User.query.filter_by(email=email,password=password).first()
         s.close()
         login_user(user)
-        return redirect(url_for("homeRoute.index"))
+        flash("User {user_name} registerd successfully.".format(user_name=supplier.supplier_name),'success')
+        next = register_user_form.next.data
+        return redirect(next)
     elif request.method == 'POST':
         flash(register_user_form.errors,category='danger')
 
-    return render_template('user_temp/register.html', form=register_user_form)
+    return redirect(url_for("userRoute.register_login"))
+
+@userRoute.route('/register_login', methods=['GET'])
+def register_login():
+    next = request.args.get("next","")
+    register_user_form = RegistrationForm()
+    login_form = LoginForm()
+    return render_template('user_temp/register_or_login.html',
+                           loginForm=login_form,
+                           registerForm=register_user_form,
+                           next=next)
 
 
 @userRoute.route('/change_password', methods=['GET', 'POST'])
@@ -120,12 +103,12 @@ def change_password():
 
         password_md5=generate_md5(password_old)
         session = Session()
-        if session.query(User).filter_by(email=email,password=password_md5).first() is None:
+        if session.query(Supplier).filter_by(email=email,password=password_md5).first() is None:
             flash("Your old password is not right !",category='danger')
         else:
             password=generate_md5(password_new)
             s = Session()
-            s.query(User).filter_by(email=email).update(
+            s.query(Supplier).filter_by(email=email).update(
                 {
                     "password": password
                 }

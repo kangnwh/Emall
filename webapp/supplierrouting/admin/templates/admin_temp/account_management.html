@@ -1,0 +1,19 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 2 %}
+{% block title %}Account Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+    Update Supplier Infomation
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock scripts %}

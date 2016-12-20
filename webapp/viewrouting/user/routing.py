@@ -33,7 +33,7 @@ def login():
         user = s.query(User).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
         if user :
             login_user(user,remember = login_form.remember_me.data)
-            next = request.args.get('next')
+            next = login_form.next.data
             # TODO
             # next_is_valid should check if the user has valid
             # permission to access the `next` url
@@ -46,7 +46,7 @@ def login():
         else:
             flash("User ID or Password invalid.",category='danger')
 
-    return render_template('user_temp/register_or_login.html', form=login_form)
+    return redirect(url_for("userRoute.register_login"))
 
 
 @userRoute.route('/logout', methods=['GET', 'POST'])
@@ -74,18 +74,23 @@ def register():
         user = s.query(User).filter_by(email=u.email, password=u.password).first()  # User.query.filter_by(email=email,password=password).first()
         s.close()
         login_user(user)
+        next = register_user_form.next.data
         flash("User {user_name} registerd successfully.".format(user_name=u.user_name),'success')
-        return render_template("reload_parent.html")
+        return redirect(next) if next else render_template("reload_parent.html")
     elif request.method == 'POST':
         flash(register_user_form.errors,category='danger')
 
-    return render_template('user_temp/register.html', form=register_user_form)
+    return redirect(url_for("userRoute.register_login"))
 
 @userRoute.route('/register_login', methods=['GET'])
 def register_login():
+    next = request.args.get('next','')
     register_user_form = RegistrationForm()
     login_form = LoginForm()
-    return render_template('user_temp/register_or_login.html', loginForm=login_form,registerForm=register_user_form)
+    return render_template('user_temp/register_or_login.html',
+                           loginForm=login_form,
+                           registerForm=register_user_form,
+                           next=next)
 
 
 @userRoute.route('/change_password', methods=['GET', 'POST'])

@@ -1,0 +1,80 @@
+
+
+{% block head %}
+    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
+    {% block favicon %}
+        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">
+    {% endblock %}
+    {% block link_ref %}
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-switch.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/datepicker.min.css") }}">
+    {% endblock %}
+    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
+    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
+    {% block jsref %}
+        <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/bootstrap-switch.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/datepicker.min.js") }}"></script>
+        <script src="{{ url_for("static",filename="js/i18n/datepicker.en.js") }}"></script>
+    {% endblock %}
+
+{% endblock head %}
+
+<div class="bs-docs-header" tabindex="-1">
+    <div class="jumbotron no-padding-top no-padding-bottom">
+        <div class="container">
+            <h1>{{ config.get('APP_NAME','Reprot.py') }} Admin Console</h1>
+            <p>Admin Console for Logo Show !</p>
+            <!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class="alert alert-{{ category }}" role="alert">
+                    <ul class='list-unstyled'>
+                        <li>{{ message }}</li>
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}
+        <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li class="btn btn-warning">
+                    <a href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
+                <li {% if 1 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
+                <li {% if 2 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('supplierRoute.account_management') }}">Account Management</a></li>
+                <li {% if 3 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('supplierRoute.publish_prod') }}">Publish Prod</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <div class="row">
+                {% block page %}{% endblock %}
+            </div>
+        </div>
+    {% endblock content %}
+
+</div>
+{% block footer %}
+    {% include("footer.html") %}
+{% endblock footer %}
+</div>
+
+
+
+

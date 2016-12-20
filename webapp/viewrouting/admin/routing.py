@@ -1,11 +1,11 @@
  # -*- coding: utf-8 -*-
 from flask import Blueprint,request
 from flask_login import login_required,current_user
-from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_publish_prod,_spec_links,_delete_user,_add_user,_update_user,\
+from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
                                                     _add_level_one,_delete_level_one,_update_level_one,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
-                                                    _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit
+                                                    #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
 
@@ -28,10 +28,10 @@ def account_management():
 def prod_cate_mgt():
     return _prod_cate_mgt()
 
-@adminRoute.route('/publish_prod', methods=['GET', 'POST'])
-@login_required
-def publish_prod():
-    return _publish_prod()
+# @adminRoute.route('/publish_prod', methods=['GET', 'POST'])
+# @login_required
+# def publish_prod():
+#     return _publish_prod()
 
 
 @adminRoute.route('/spec_links', methods=['GET'])
@@ -92,31 +92,31 @@ def update_level_two():
 @login_required
 def reset_password():
     return _reset_password()
-
-@adminRoute.route('/add_new_prod', methods=['GET','POST'])
-@login_required
-def add_new_prod():
-    return _add_new_prod()
-
-@adminRoute.route('/update_prod', methods=['GET','POST'])
-@login_required
-def update_prod():
-    return _update_prod()
-
-@adminRoute.route('/delete_prod', methods=['POST'])
-@login_required
-def delete_prod():
-    return _delete_prod()
-
-@adminRoute.route('/delete_cover_page', methods=['POST'])
-@login_required
-def delete_cover_page():
-    return _delete_cover_page()
-
-@adminRoute.route('/delete_extra_pics', methods=['POST'])
-@login_required
-def delete_extra_pics():
-    return _delete_extra_pics()
+#
+# @adminRoute.route('/add_new_prod', methods=['GET','POST'])
+# @login_required
+# def add_new_prod():
+#     return _add_new_prod()
+#
+# @adminRoute.route('/update_prod', methods=['GET','POST'])
+# @login_required
+# def update_prod():
+#     return _update_prod()
+#
+# @adminRoute.route('/delete_prod', methods=['POST'])
+# @login_required
+# def delete_prod():
+#     return _delete_prod()
+#
+# @adminRoute.route('/delete_cover_page', methods=['POST'])
+# @login_required
+# def delete_cover_page():
+#     return _delete_cover_page()
+#
+# @adminRoute.route('/delete_extra_pics', methods=['POST'])
+# @login_required
+# def delete_extra_pics():
+#     return _delete_extra_pics()
 
 
 @adminRoute.route('/manage_profit_rate', methods=['GET', 'POST'])
