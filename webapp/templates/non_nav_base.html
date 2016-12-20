@@ -29,6 +29,7 @@
 {% endblock head %}
 
 {% block content %}
+    <div class="container">
     {#    <div class="bs-docs-header" tabindex="-1">#}
     {#        <div class="jumbotron no-padding-top no-padding-bottom">#}
     {#            <div class="container">#}
@@ -52,13 +53,13 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        {% block page %}{% endblock %}
+
     </div>
-
+{% block page %}{% endblock %}
 {% endblock content %}
-
+</div>
 {% block scripts %}
-    <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
+
 {% endblock scripts %}
 
 

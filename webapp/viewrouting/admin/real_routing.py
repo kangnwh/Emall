@@ -1,28 +1,25 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, url_for, flash, request, abort
+from flask import Blueprint, url_for, flash, request
 from flask import render_template, redirect,jsonify
+from flask_paginate import Pagination
+from flask_sqlalchemy import BaseQuery
+
+import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
-from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.prod_cat import Prod_cat
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
-from webapp.Models.user import User
 from webapp.Models.prod_profit_rate import Prod_profit_rate
-
-from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
+from webapp.Models.prod_sub_cat import Prod_sub_cat
+from webapp.Models.user import User
+from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
     UpdateProfitRateForm,DeleteProfitRateForm
+from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
 
-from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage
-
-
-from flask_paginate import Pagination
-import webapp.customer_config  as customer_config
-from flask_sqlalchemy import BaseQuery
-from sqlalchemy import func
 adminRoute = Blueprint('adminRoute', __name__,
                        template_folder='templates', static_folder='static')
 
@@ -45,7 +42,7 @@ def _account_management():
     delete_user_form = DeleteUserForm()
     reset_password_form = ResetPassForm()
     s = Session()
-    user_list = BaseQuery(User,s).order_by(User.user_create_ts.desc()).paginate(page,customer_config.USER_NUM_PER_PAGE,False)
+    user_list = BaseQuery(User,s).order_by(User.user_create_ts.desc()).paginate(page, customer_config.USER_NUM_PER_PAGE, False)
     s.close
     pagination = Pagination(page=page, total=user_list.total,
                             search=search, css_framework='bootstrap3',

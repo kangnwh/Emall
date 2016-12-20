@@ -1,30 +1,43 @@
-{% extends "form_base.html" %}
+{% extends "admin_temp/admin_base.html" %}
 {% from "_input_helper.html" import input_helper %}
-{% block form %}
-{#    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">#}
-        <form action="{{ url_for('adminRoute.add_new_prod') }}" method="post" name="create"
-              enctype="multipart/form-data">
-            {{ add_form.hidden_tag() }}
 
-            <div class="list-group-item">
-                <div class="row">
-                <input type="submit" class='col-md-3 btn btn-primary' value="Add">
+{% set active_page = 4 %}
+{% block page %}
+    {#    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">#}
+    <form action="{{ url_for('adminRoute.add_new_prod') }}" method="post" name="create"
+          enctype="multipart/form-data">
+        {{ add_form.hidden_tag() }}
+
+        <div class="list-group-item">
+            {#                <div class="row">#}
+            {#                <input type="submit" class='col-md-3 btn btn-primary' value="Add">#}
+            {#                    </div>#}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <button type="submit" class='col-md-12 btn btn-primary' value="Update">Add</button>
+                        </div>
                     </div>
+
+                </div>
+            </div>
+            <div style=" overflow:scroll;  height:500px;">
                 <div class="row">
-                    {{ input_helper('col-md-6',add_form.prod_name.label,add_form.prod_name ) }}
-                    {{ input_helper('col-md-6',add_form.prod_desc.label,add_form.prod_desc ) }}
+                    {{ input_helper('col-md-12',add_form.prod_name.label,add_form.prod_name ) }}
+                    {{ input_helper('col-md-12',add_form.prod_desc.label,add_form.prod_desc ) }}
                 </div><!-- /.row -->
                 <div class="row">
-                    {{ input_helper('col-md-6',add_form.lead_time.label,add_form.lead_time ) }}
-                    {{ input_helper('col-md-6',add_form.prod_size.label,add_form.prod_size ) }}
+                    {{ input_helper('col-md-12',add_form.lead_time.label,add_form.lead_time ) }}
+                    {{ input_helper('col-md-12',add_form.prod_size.label,add_form.prod_size ) }}
                 </div><!-- /.row -->
                 <div class="row">
-                    {{ input_helper('col-md-6',add_form.imprint_size.label,add_form.imprint_size ) }}
-                    {{ input_helper('col-md-6',add_form.price_basis.label,add_form.price_basis ) }}
+                    {{ input_helper('col-md-12',add_form.imprint_size.label,add_form.imprint_size ) }}
+                    {{ input_helper('col-md-12',add_form.price_basis.label,add_form.price_basis ) }}
                 </div><!-- /.row -->
                 <div class="row">
-                    {{ input_helper('col-md-6',add_form.prod_cat_sub_id.label,add_form.prod_cat_sub_id ) }}
-                    {{ input_helper('col-md-6',add_form.colors.label,add_form.colors ) }}
+                    {{ input_helper('col-md-12',add_form.prod_cat_sub_id.label,add_form.prod_cat_sub_id ) }}
+                    {{ input_helper('col-md-12',add_form.colors.label,add_form.colors ) }}
 
                 </div><!-- /.row -->
 
@@ -34,64 +47,75 @@
                     {{ input_helper('col-md-6',add_form.cover_img_file.label,add_form.cover_img_file,'' ) }}
 
                 </div>
-                <div id="for_extr_pics"></div>
+                <div class="row" id="for_extr_pics">
+
+                </div>
                 <div class="row">
                     <a onclick="add_new_pic()" class="form-group col-md-4 btn btn-primary">Add a New Picture</a>
                 </div>
                 <!-- price range -->
-                <div class="row">
-                    {{ input_helper('col-md-2',add_form.quantity_from1.label,add_form.quantity_from1 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.quantity_to1.label,add_form.quantity_to1 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.unit_price1.label,add_form.unit_price1 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.imprinting_prices1.label,add_form.imprinting_prices1 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.setup_cost1.label,add_form.setup_cost1 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.freight_cost1.label,add_form.freight_cost1 ,default_value=0.0) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',add_form.quantity_from2.label,add_form.quantity_from2 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.quantity_to2.label,add_form.quantity_to2 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.unit_price2.label,add_form.unit_price2 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.imprinting_prices2.label,add_form.imprinting_prices2 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.setup_cost2.label,add_form.setup_cost2 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.freight_cost2.label,add_form.freight_cost2 ,default_value=0.0) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',add_form.quantity_from3.label,add_form.quantity_from3 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.quantity_to3.label,add_form.quantity_to3 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.unit_price3.label,add_form.unit_price3 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.imprinting_prices3.label,add_form.imprinting_prices3 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.setup_cost3.label,add_form.setup_cost3 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.freight_cost3.label,add_form.freight_cost3 ,default_value=0.0) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',add_form.quantity_from4.label,add_form.quantity_from4 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.quantity_to4.label,add_form.quantity_to4 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.unit_price4.label,add_form.unit_price4 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.imprinting_prices4.label,add_form.imprinting_prices4 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.setup_cost4.label,add_form.setup_cost4 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.freight_cost4.label,add_form.freight_cost4 ,default_value=0.0) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',add_form.quantity_from5.label,add_form.quantity_from5 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.quantity_to5.label,add_form.quantity_to5 ,default_value=0) }}
-                    {{ input_helper('col-md-2',add_form.unit_price5.label,add_form.unit_price5 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.imprinting_prices5.label,add_form.imprinting_prices5 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.setup_cost5.label,add_form.setup_cost5 ,default_value=0.0) }}
-                    {{ input_helper('col-md-2',add_form.freight_cost5.label,add_form.freight_cost5 ,default_value=0.0) }}
-                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',add_form.quantity_from1.label,add_form.quantity_from1 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.quantity_to1.label,add_form.quantity_to1 ,default_value=0) }}
+                            {{ input_helper('col-md-4',add_form.unit_price1.label,add_form.unit_price1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.imprinting_prices1.label,add_form.imprinting_prices1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.setup_cost1.label,add_form.setup_cost1 ,default_value=0.0) }}
+                            {{ input_helper('col-md-4',add_form.freight_cost1.label,add_form.freight_cost1 ,default_value=0.0) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                    <div class="row">
+                        {{ input_helper('col-md-4',add_form.quantity_from2.label,add_form.quantity_from2 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.quantity_to2.label,add_form.quantity_to2 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.unit_price2.label,add_form.unit_price2 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.imprinting_prices2.label,add_form.imprinting_prices2 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.setup_cost2.label,add_form.setup_cost2 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.freight_cost2.label,add_form.freight_cost2 ,default_value=0.0) }}
+                    </div>
+                        </li>
+                     <li class="list-group-item">
+                    <div class="row">
+                        {{ input_helper('col-md-4',add_form.quantity_from3.label,add_form.quantity_from3 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.quantity_to3.label,add_form.quantity_to3 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.unit_price3.label,add_form.unit_price3 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.imprinting_prices3.label,add_form.imprinting_prices3 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.setup_cost3.label,add_form.setup_cost3 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.freight_cost3.label,add_form.freight_cost3 ,default_value=0.0) }}
+                    </div></li>
+                          <li class="list-group-item">
+                    <div class="row">
+                        {{ input_helper('col-md-4',add_form.quantity_from4.label,add_form.quantity_from4 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.quantity_to4.label,add_form.quantity_to4 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.unit_price4.label,add_form.unit_price4 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.imprinting_prices4.label,add_form.imprinting_prices4 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.setup_cost4.label,add_form.setup_cost4 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.freight_cost4.label,add_form.freight_cost4 ,default_value=0.0) }}
+                    </div></li>
+                     <li class="list-group-item">
+                    <div class="row">
+                        {{ input_helper('col-md-4',add_form.quantity_from5.label,add_form.quantity_from5 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.quantity_to5.label,add_form.quantity_to5 ,default_value=0) }}
+                        {{ input_helper('col-md-4',add_form.unit_price5.label,add_form.unit_price5 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.imprinting_prices5.label,add_form.imprinting_prices5 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.setup_cost5.label,add_form.setup_cost5 ,default_value=0.0) }}
+                        {{ input_helper('col-md-4',add_form.freight_cost5.label,add_form.freight_cost5 ,default_value=0.0) }}
+                    </div></li>
+
+                </ul>
 
 
             </div>
 
-
-            </dl>
-        </form>
+        </div>
+    </form>
     </div>
-{#    </div>#}
+    {#    </div>#}
     <script>
         function add_new_pic() {
             // extra file with form name=extra_img_file and desc name=extra_img_desc
-            $("#for_extr_pics").append('<div class="row"><div class="form-group col-md-6"><label for="extra_img_file">Upload Extra Picture</label><input class="" id="cover_img_file" name="extra_img_file" type="file"></div><div class="form-group col-md-6"><label for="cover_img_desc">Extra Picture Desc</label><input class="form-control" id="extra_img_desc" name="extra_img_desc" value="" type="text"></div></div>');
+            $("#for_extr_pics").append('<div class="col-md-12"><div class="form-group col-md-6"><label for="extra_img_file">Upload Extra Picture</label><input class="" id="cover_img_file" name="extra_img_file" type="file"></div><div class="form-group col-md-6"><label for="cover_img_desc">Extra Picture Desc</label><input class="form-control" id="extra_img_desc" name="extra_img_desc" value="" type="text"></div></div>');
         }
 
     </script>

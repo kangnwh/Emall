@@ -1,0 +1,80 @@
+{% extends "non_nav_base.html" %}
+{% from "_input_helper.html" import input_helper %}
+
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/js-tabs.css") }}"> <!-- Resource style -->
+{% endblock %}
+{% block jsref %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/jquery-tab.js") }}"></script>
+{% endblock %}
+
+{% block page %}
+    <div class="tab-group">
+        <section id="tab1" title="Login">
+
+            <form action="{{ url_for("userRoute.login") }}" method="post" name="create">
+                {{ loginForm.hidden_tag() }}
+                <div class="row">
+                    {{ input_helper('col-md-5',loginForm.email.label,loginForm.email ) }}
+                    {{ input_helper('col-md-5',loginForm.password.label,loginForm.password ) }}
+                    <div class="col-md-5">
+                        <br>
+                        <div class="input-group">
+                            <span class=""></span>
+                            {{ loginForm.remember_me(class='invisible') }}
+                            <input id="remember_me_switch" type="checkbox" class="input-group"#}
+                                   data-label-text="Remember">
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <input type="submit" class='btn btn-primary' value="Login"><!-- /.row -->
+            </form>
+
+        </section>
+        <section id="tab2" title="User Register">
+
+            <form action="{{ url_for("userRoute.register") }}" method="post" name="create">
+                {{ registerForm.hidden_tag() }}
+                <div class="row">
+                    {{ input_helper('col-md-5',registerForm.user_name.label,registerForm.user_name ) }}
+                    {{ input_helper('col-md-5',registerForm.email.label,registerForm.email ) }}
+                    {{ input_helper('col-md-5',registerForm.password.label,registerForm.password ) }}
+                    {{ input_helper('col-md-5',registerForm.confirm.label,registerForm.confirm ) }}
+                    <br>
+                    <div class="col-md-5">
+                        <input type="submit" class='btn btn-primary input-group' value="Create">
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+    </div>
+    <script>
+        $(function () {
+            // Calling the plugin
+            $('.tab-group').tabify();
+        });
+
+        var el = $("#remember_me_switch").bootstrapSwitch();
+        el.bootstrapSwitch('state', false);
+        el.on('switchChange.bootstrapSwitch', function (event, state) {
+            if (state) {
+                $('#remember_me').attr('checked', true);
+            } else {
+                $('#remember_me').removeAttr('checked');
+            }
+        });
+    </script>
+{% endblock page %}
+
+
+
+

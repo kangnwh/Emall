@@ -10,6 +10,7 @@ from flask_bootstrap import Bootstrap
 from webapp.viewrouting.home.routing import homeRoute
 from webapp.viewrouting.user.routing import userRoute
 from webapp.viewrouting.admin.routing import adminRoute
+from webapp.common import get_host_info
 #Models
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
@@ -31,8 +32,8 @@ Report_Modules={
 
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py', silent=False)
-app.config.from_pyfile('customer_config.py', silent=False)
+app.config.from_pyfile('config/config.py', silent=False)
+app.config.from_pyfile('config/customer_config.py', silent=False)
 bootstrap = Bootstrap(app)
 login_manager.init_app(app)
 mail.init_app(app)
@@ -48,7 +49,8 @@ def load_user(user_id):
 
 if __name__ == '__main__':
     # app = create_app()
-    app.run(host=app.config.get("HOST", "127.0.0.1"), port=app.config.get("PORT", "5002"), threaded=True)
+    ip,port = get_host_info('SUPPLIER_HOST')
+    app.run(host=ip, port=port, threaded=True)
 
 def create_app():
     return app

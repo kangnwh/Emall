@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine,MetaData
 from sqlalchemy.orm import sessionmaker
-from webapp.config import META_DB
+from webapp.config.config import META_DB
 
 
 Base = declarative_base()

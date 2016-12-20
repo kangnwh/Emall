@@ -86,6 +86,12 @@
                         <li {% if 'L6' == active_page %} class="active"{% endif %}>
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
 
 
                     </ul>
@@ -110,14 +116,14 @@
                                 </ul>
                             </li>
                         {% else %}
-                            <li class="dropdown"><a href="{{ url_for('userRoute.register') }}" role="button"
+                            <li class="dropdown"><a class="btn" role="button" onclick="onRegister()"
                                                     aria-haspopup="true" aria-expanded="false">
-                                Register</a>
+                                Register/Login</a>
                             </li>
-                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                Login</a>
-                            </li>
+{#                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"#}
+{#                                                    aria-haspopup="true" aria-expanded="false">#}
+{#                                Login</a>#}
+{#                            </li>#}
                         {% endif %}
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -134,6 +140,9 @@
 
                 {% block page %}{% endblock %}
                 <div id="upload-user-logo-win" class="iziModal" data-izimodal-title="Upload Your Logo">
+
+                </div>
+                <div id="register-win" class="iziModal">
 
                 </div>
             </div>
@@ -164,11 +173,31 @@
                 },
 
             });
+            $("#register-win").iziModal({
+                title: 'Login/Register',
+                subtitle: '',
+                overlayClose: false,
+                iframe: true,
+                iframeURL: '{{ url_for('userRoute.register_login') }}',
+                width: 600,
+                iframeHeight:400,
+                autoOpen: false,
+                radius:15,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+                onClosing: function () {
+                    location.reload();
+                },
+
+            });
             $.sidebarMenu($('.sidebar-menu'));
         });
         function onUploadLogo() {
             {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
             $('#upload-user-logo-win').iziModal('open');
+        }
+        function onRegister() {
+            {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
+            $('#register-win').iziModal('open');
         }
         function switchShowLogo(checkbox) {
             if ($(checkbox).prop("checked")) {

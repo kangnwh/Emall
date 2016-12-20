@@ -1,5 +1,5 @@
  # -*- coding: utf-8 -*-
-from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string
+from flask import Blueprint,request,render_template,redirect,url_for,flash
 from webapp.viewrouting.user.forms.login_form import LoginForm,ChangePasswordForm,RegistrationForm
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm
 
@@ -39,20 +39,47 @@ def login():
             # permission to access the `next` url
             #if not next_is_valid(next):
             #    return abort(400)
-            #return redirect(next or url_for('userRoute.index'))
-            flash("User {user_name} login successfully.".format(user_name=user.user_name),'success')
-            return redirect(next) if next else render_template("reload_parent.html")
+            return redirect(next or url_for('homeRoute.index'))
 
         else:
             flash("User ID or Password invalid.",category='danger')
 
-    return render_template('user_temp/register_or_login.html', form=login_form)
+    return render_template('user_temp/login.html', form=login_form)
 
 
 @userRoute.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect(url_for('homeRoute.index'))
+    return redirect(url_for('userRoute.login'))
+
+
+@userRoute.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        # Login and validate the user.
+        # user should be an instance of your `User` class
+        email = login_form.email.data
+        passwd_md5 = generate_md5(login_form.password.data) # hashlib.md5(login_form.password.data.encode('ascii'))
+        password = passwd_md5
+
+        s = Session()
+        user = s.query(User).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
+        if user :
+            login_user(user,remember = login_form.remember_me.data)
+            next = request.args.get('next')
+            # TODO
+            # next_is_valid should check if the user has valid
+            # permission to access the `next` url
+            #if not next_is_valid(next):
+            #    return abort(400)
+            return redirect(next or url_for('homeRoute.index'))
+
+        else:
+            flash("User ID or Password invalid.",category='danger')
+
+    return render_template('user_temp/admin_login.html', form=login_form)
+
 
 @userRoute.route('/register', methods=['GET', 'POST'])
 def register():
@@ -74,18 +101,11 @@ def register():
         user = s.query(User).filter_by(email=u.email, password=u.password).first()  # User.query.filter_by(email=email,password=password).first()
         s.close()
         login_user(user)
-        flash("User {user_name} registerd successfully.".format(user_name=u.user_name),'success')
-        return render_template("reload_parent.html")
+        return redirect(url_for("homeRoute.index"))
     elif request.method == 'POST':
         flash(register_user_form.errors,category='danger')
 
     return render_template('user_temp/register.html', form=register_user_form)
-
-@userRoute.route('/register_login', methods=['GET'])
-def register_login():
-    register_user_form = RegistrationForm()
-    login_form = LoginForm()
-    return render_template('user_temp/register_or_login.html', loginForm=login_form,registerForm=register_user_form)
 
 
 @userRoute.route('/change_password', methods=['GET', 'POST'])

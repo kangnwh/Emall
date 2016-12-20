@@ -1,0 +1,22 @@
+{% extends "non_nav_base.html" %}
+{% block page %}
+    <div class="container">
+        <div class="progress ">
+            <div id="progress_bar" class="progress-bar progress-bar-success" role="progressbar"
+                 aria-valuemax="100"
+                 style="width: 100%;">
+            </div>
+        </div>
+    </div>
+    <script>
+        var max = 100;
+        function progressDown() {
+            max = max - 15;
+            $("#progress_bar").width(max + '%');
+        }
+        var p = setInterval(progressDown, 150);
+        window.onload = function () {
+            var t = setTimeout("window.parent.location.reload(false)", 1650);
+        }
+    </script>
+{% endblock %}

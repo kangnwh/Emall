@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% set active_page = "document" %}
+
+
+{% block title %}Report.py{% endblock %}
+
+{% block page %}
+
+    <div class="list-group-item">
+
+      <h4><strong>This system provides some default models</strong></h4>
+      <ul>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              System isntallation demo, you can customize your installation steps.</li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Tag based permission control.
+          </li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Home Page/User Page
+          </li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Admin Console</li>
+          <br>
+          <li class="list-group-item active">
+              <strong>More detail documents is coming...</strong>
+          </li>
+      </ul>
+
+</div>
+<br>
+{% endblock %}
+{% block script %}
+    {{ super() }}
+    {{ script }}
+{% endblock script %}
