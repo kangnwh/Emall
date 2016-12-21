@@ -15,6 +15,7 @@ class Supplier(Base):
     address = Column(String(300))
     valid_flg=Column(Integer,default=0)
     supplier_points = Column(Integer,default = 0)
+    tel = Column(String(20))
     supplier_create_ts = Column(DateTime,default=func.now())
 
 

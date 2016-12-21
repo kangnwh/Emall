@@ -38,6 +38,7 @@ class Quote_system(Base):
     supplier_perfer_comment = Column(String(300))
     user_last_quote_time = Column(DateTime)
     supplier_last_quote_time = Column(DateTime)
+    is_return_flg=Column(Integer,default=0)
     valid_flg=Column(Integer,default=0)
     quote_create_time = Column(DateTime,default=func.now())
 

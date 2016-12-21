@@ -16,6 +16,7 @@ class User(Base):
     is_admin = Column(Integer,default = 0)
     logo_link=Column(String(200),default='default_logo.png')
     is_paid = Column(Integer,default = 0)
+    is_subscribe = Column(Integer,default = 0)
     credit_points = Column(Integer,default = 0)
     user_create_ts = Column(DateTime,default=func.now())
 
