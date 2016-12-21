@@ -92,7 +92,7 @@ def sub_category_list(sub_cat_id):
     sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
     prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
 
-    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,prod_cat_sub_id=sub_cat_id,supplier_id=current_user.supplier_id).paginate(page,
+    prod_list = BaseQuery(Prod_info,s).filter_by(prod_cat_sub_id=sub_cat_id,supplier_id=current_user.supplier_id).paginate(page,
                                                                                                       customer_config.PROD_NUM_PER_PAGE, False)
 
     pagination = Pagination(page=page, total=prod_list.total,

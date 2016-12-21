@@ -20,8 +20,8 @@
                 </div>
             </div>
 
-                <div style=" overflow:scroll;  height:500px;">
-                     <div class="row">
+            <div style=" overflow:scroll;  height:500px;">
+                <div class="row">
                     {{ input_helper('col-md-6',update_form.prod_name,default_value=this_prod.prod_name ) }}
                     {{ input_helper('col-md-6',update_form.lead_time,default_value=this_prod.lead_time ) }}
                     {{ input_helper('col-md-12',update_form.prod_desc,default_value=this_prod.prod_desc ) }}
@@ -38,7 +38,7 @@
                     {{ input_helper('col-md-6',update_form.prod_cat_sub_id,default_value=this_prod.prod_cat_sub_id ) }}
                     {#                {{ input_helper('col-md-6',update_form.cover_img_file,default_value=this_prod.cover_img_file ) }}#}
 
-{#                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}#}
+                    {#                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}#}
                     {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg ,is_checked=this_prod.is_special_price_flg,func=' function (event, state) {
                         if (state) {
                             $(".special_info").removeClass("invisible");
@@ -118,46 +118,59 @@
                 </div>
 
                 <!-- price range -->
-                <div class="row">
-                    {{ input_helper('col-md-2',update_form.quantity_from1 ,default_value=this_prod.price_ranges[0].quantity_from1) }}
-                    {{ input_helper('col-md-2',update_form.quantity_to1 ,default_value=this_prod.price_ranges[0].quantity_to1) }}
-                    {{ input_helper('col-md-2',update_form.unit_price1 ,default_value=this_prod.price_ranges[0].unit_price1) }}
-                    {{ input_helper('col-md-2',update_form.imprinting_prices1 ,default_value=this_prod.price_ranges[0].imprinting_prices1) }}
-                    {{ input_helper('col-md-2',update_form.setup_cost1 ,default_value=this_prod.price_ranges[0].setup_cost1) }}
-                    {{ input_helper('col-md-2',update_form.freight_cost1 ,default_value=this_prod.price_ranges[0].freight_cost1) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',update_form.quantity_from2 ,default_value=this_prod.price_ranges[0].quantity_from2) }}
-                    {{ input_helper('col-md-2',update_form.quantity_to2 ,default_value=this_prod.price_ranges[0].quantity_to2) }}
-                    {{ input_helper('col-md-2',update_form.unit_price2 ,default_value=this_prod.price_ranges[0].unit_price2) }}
-                    {{ input_helper('col-md-2',update_form.imprinting_prices2 ,default_value=this_prod.price_ranges[0].imprinting_prices2) }}
-                    {{ input_helper('col-md-2',update_form.setup_cost2 ,default_value=this_prod.price_ranges[0].setup_cost2) }}
-                    {{ input_helper('col-md-2',update_form.freight_cost2 ,default_value=this_prod.price_ranges[0].freight_cost2) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',update_form.quantity_from3 ,default_value=this_prod.price_ranges[0].quantity_from3) }}
-                    {{ input_helper('col-md-2',update_form.quantity_to3 ,default_value=this_prod.price_ranges[0].quantity_to3) }}
-                    {{ input_helper('col-md-2',update_form.unit_price3 ,default_value=this_prod.price_ranges[0].unit_price3) }}
-                    {{ input_helper('col-md-2',update_form.imprinting_prices3 ,default_value=this_prod.price_ranges[0].imprinting_prices3) }}
-                    {{ input_helper('col-md-2',update_form.setup_cost3 ,default_value=this_prod.price_ranges[0].setup_cost3) }}
-                    {{ input_helper('col-md-2',update_form.freight_cost3 ,default_value=this_prod.price_ranges[0].freight_cost3) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',update_form.quantity_from4 ,default_value=this_prod.price_ranges[0].quantity_from4) }}
-                    {{ input_helper('col-md-2',update_form.quantity_to4 ,default_value=this_prod.price_ranges[0].quantity_to4) }}
-                    {{ input_helper('col-md-2',update_form.unit_price4 ,default_value=this_prod.price_ranges[0].unit_price4) }}
-                    {{ input_helper('col-md-2',update_form.imprinting_prices4 ,default_value=this_prod.price_ranges[0].imprinting_prices4) }}
-                    {{ input_helper('col-md-2',update_form.setup_cost4 ,default_value=this_prod.price_ranges[0].setup_cost4) }}
-                    {{ input_helper('col-md-2',update_form.freight_cost4 ,default_value=this_prod.price_ranges[0].freight_cost4) }}
-                </div>
-                <div class="row">
-                    {{ input_helper('col-md-2',update_form.quantity_from5 ,default_value=this_prod.price_ranges[0].quantity_from5) }}
-                    {{ input_helper('col-md-2',update_form.quantity_to5 ,default_value=this_prod.price_ranges[0].quantity_to5) }}
-                    {{ input_helper('col-md-2',update_form.unit_price5 ,default_value=this_prod.price_ranges[0].unit_price5) }}
-                    {{ input_helper('col-md-2',update_form.imprinting_prices5 ,default_value=this_prod.price_ranges[0].imprinting_prices5) }}
-                    {{ input_helper('col-md-2',update_form.setup_cost5 ,default_value=this_prod.price_ranges[0].setup_cost5) }}
-                    {{ input_helper('col-md-2',update_form.freight_cost5 ,default_value=this_prod.price_ranges[0].freight_cost5) }}
-                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',update_form.quantity_from1 ,default_value=this_prod.price_ranges[0].quantity_from1) }}
+                            {{ input_helper('col-md-4',update_form.quantity_to1 ,default_value=this_prod.price_ranges[0].quantity_to1) }}
+                            {{ input_helper('col-md-4',update_form.unit_price1 ,default_value=this_prod.price_ranges[0].unit_price1) }}
+                            {{ input_helper('col-md-4',update_form.imprinting_prices1 ,default_value=this_prod.price_ranges[0].imprinting_prices1) }}
+                            {{ input_helper('col-md-4',update_form.setup_cost1 ,default_value=this_prod.price_ranges[0].setup_cost1) }}
+                            {{ input_helper('col-md-4',update_form.freight_cost1 ,default_value=this_prod.price_ranges[0].freight_cost1) }}
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',update_form.quantity_from2 ,default_value=this_prod.price_ranges[0].quantity_from2) }}
+                            {{ input_helper('col-md-4',update_form.quantity_to2 ,default_value=this_prod.price_ranges[0].quantity_to2) }}
+                            {{ input_helper('col-md-4',update_form.unit_price2 ,default_value=this_prod.price_ranges[0].unit_price2) }}
+                            {{ input_helper('col-md-4',update_form.imprinting_prices2 ,default_value=this_prod.price_ranges[0].imprinting_prices2) }}
+                            {{ input_helper('col-md-4',update_form.setup_cost2 ,default_value=this_prod.price_ranges[0].setup_cost2) }}
+                            {{ input_helper('col-md-4',update_form.freight_cost2 ,default_value=this_prod.price_ranges[0].freight_cost2) }}
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',update_form.quantity_from3 ,default_value=this_prod.price_ranges[0].quantity_from3) }}
+                            {{ input_helper('col-md-4',update_form.quantity_to3 ,default_value=this_prod.price_ranges[0].quantity_to3) }}
+                            {{ input_helper('col-md-4',update_form.unit_price3 ,default_value=this_prod.price_ranges[0].unit_price3) }}
+                            {{ input_helper('col-md-4',update_form.imprinting_prices3 ,default_value=this_prod.price_ranges[0].imprinting_prices3) }}
+                            {{ input_helper('col-md-4',update_form.setup_cost3 ,default_value=this_prod.price_ranges[0].setup_cost3) }}
+                            {{ input_helper('col-md-4',update_form.freight_cost3 ,default_value=this_prod.price_ranges[0].freight_cost3) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',update_form.quantity_from4 ,default_value=this_prod.price_ranges[0].quantity_from4) }}
+                            {{ input_helper('col-md-4',update_form.quantity_to4 ,default_value=this_prod.price_ranges[0].quantity_to4) }}
+                            {{ input_helper('col-md-4',update_form.unit_price4 ,default_value=this_prod.price_ranges[0].unit_price4) }}
+                            {{ input_helper('col-md-4',update_form.imprinting_prices4 ,default_value=this_prod.price_ranges[0].imprinting_prices4) }}
+                            {{ input_helper('col-md-4',update_form.setup_cost4 ,default_value=this_prod.price_ranges[0].setup_cost4) }}
+                            {{ input_helper('col-md-4',update_form.freight_cost4 ,default_value=this_prod.price_ranges[0].freight_cost4) }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            {{ input_helper('col-md-4',update_form.quantity_from5 ,default_value=this_prod.price_ranges[0].quantity_from5) }}
+                            {{ input_helper('col-md-4',update_form.quantity_to5 ,default_value=this_prod.price_ranges[0].quantity_to5) }}
+                            {{ input_helper('col-md-4',update_form.unit_price5 ,default_value=this_prod.price_ranges[0].unit_price5) }}
+                            {{ input_helper('col-md-4',update_form.imprinting_prices5 ,default_value=this_prod.price_ranges[0].imprinting_prices5) }}
+                            {{ input_helper('col-md-4',update_form.setup_cost5 ,default_value=this_prod.price_ranges[0].setup_cost5) }}
+                            {{ input_helper('col-md-4',update_form.freight_cost5 ,default_value=this_prod.price_ranges[0].freight_cost5) }}
+                        </div>
+                    </li>
             </div>
         </div>
     </form>
