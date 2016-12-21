@@ -1,14 +1,17 @@
-{% extends "form_base.html" %}
+{% extends "non_nav_base.html" %}
 {% from "_input_helper.html" import input_helper %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/ssi-uploader.min.css") }}">
-    <script src="{{ url_for("static",filename="js/ssi-uploader.min.js") }}"></script>
-    <style>
 
-    </style>
 {% endblock %}
-{% block form %}
+
+
+{% block jsref %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/ssi-uploader.min.js") }}"></script>
+{% endblock %}
+{% block mainpage %}
     <div class="row">
         <div class="col-md-4">
             <div class="panel panel-primary">
@@ -46,4 +49,4 @@
             }
         });
     </script>
-{% endblock %}
+{% endblock mainpage %}

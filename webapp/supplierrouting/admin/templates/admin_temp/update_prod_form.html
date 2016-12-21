@@ -1,6 +1,5 @@
 {% extends "admin_temp/admin_base.html" %}
-{% from "_input_helper.html" import input_helper %}
-{% from "_input_helper.html" import date_input_helper %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
 
 {% set active_page = 4 %}
 {% block page %}
@@ -39,11 +38,17 @@
                     {{ input_helper('col-md-6',update_form.prod_cat_sub_id,default_value=this_prod.prod_cat_sub_id ) }}
                     {#                {{ input_helper('col-md-6',update_form.cover_img_file,default_value=this_prod.cover_img_file ) }}#}
 
-                    {{ input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}
-
-                    {{ input_helper('col-md-3',update_form.is_clearance,default_value=this_prod.is_clearance ) }}
-                    {{ input_helper('col-md-3',update_form.is_new_prod,default_value=this_prod.is_new_prod ) }}
-                    {{ input_helper('col-md-3',update_form.is_patent_prod,default_value=this_prod.is_patent_prod ) }}
+{#                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}#}
+                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg ,default_value=this_prod.is_special_price_flg,func=' function (event, state) {
+                        if (state) {
+                            $(".special_info").removeClass("invisible");
+                        } else {
+                            $(".special_info").addClass("invisible");
+                        }
+                    }'|safe) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_clearance,default_value=this_prod.is_clearance ) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_new_prod,default_value=this_prod.is_new_prod ) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_patent_prod,default_value=this_prod.is_patent_prod ) }}
 
                     {{ input_helper('col-md-3 special_info invisible',update_form.special_price_old,default_value=this_prod.special_price_old ) }}
                     {{ input_helper('col-md-3 special_info invisible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}

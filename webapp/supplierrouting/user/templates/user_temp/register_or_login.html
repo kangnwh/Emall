@@ -1,5 +1,5 @@
 {% extends "admin_temp/admin_base.html" %}
-{% from "_input_helper.html" import input_helper %}
+{% from "_input_helper.html" import input_helper,bool_input_helper %}
 
 {% block link_ref %}
     {{ super() }}
@@ -23,13 +23,16 @@
                     {{ input_helper('invisible',loginForm.next,default_value=next ) }}
                     <div class="col-md-5">
                         <br>
-                        <div class="input-group">
-                            <span class=""></span>
-                            {{ loginForm.remember_me(class='invisible') }}
-                            <input id="remember_me_switch" type="checkbox" class="input-group"#}
-                                   data-label-text="Remember">
+{#                        <div class="input-group">#}
+{#                            <span class=""></span>#}
+                            {#                            {{ loginForm.remember_me(class='invisible') }}#}
+                            {#                            <input id="remember_me_switch" type="checkbox" class="input-group"#}
+                            {#                                   data-label-text="Remember">#}
+                            {{ bool_input_helper('col-md-6',loginForm.remember_me,is_checked=1) }}
+{#                            <input name="{{ input.id }}" id="{{ input.id }}" type="checkbox" class="input-group"#}
+{#                                   data-label-text="{{ input.label }}" onload="initSwitch(id,true)">#}
 
-                        </div>
+{#                        </div>#}
                     </div>
                 </div>
                 <br>

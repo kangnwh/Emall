@@ -1,39 +1,39 @@
-{% block head %}
-    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
-    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
-    {% block favicon %}
-        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">
-    {% endblock %}
-    {% block link_ref %}
+{#{% block head %}#}
+{#    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>#}
+{#    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">#}
+{#    {% block favicon %}#}
+{#        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">#}
+{#    {% endblock %}#}
+{#    {% block link_ref %}#}
+{##}
+{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->#}
+{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">#}
+{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-switch.min.css") }}">#}
+{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">#}
+{#        <link rel="stylesheet" href=" {{ url_for("static",filename="css/zebra_dialog.css") }}">#}
+{##}
+{##}
+{#    {% endblock %}#}
+{##}
+{#    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">#}
+{#    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>#}
+{#    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>#}
+{##}
+{##}
+{#    {% block jsref %}#}
+{##}
+{#        <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>#}
+{#        <script src="{{ url_for("static",filename="js/bootstrap-switch.min.js") }}"></script>#}
+{#        <script src="{{ url_for("static",filename="js/zebra_dialog.js") }}"></script>#}
+{##}
+{#    {% endblock %}#}
+{#    <script src="{{ url_for("static",filename="js/myjs.js") }}"></script>#}
+{##}
+{#{% endblock head %}#}
 
-        <link rel="stylesheet" href="{{ url_for("static",filename="css/sidebar-menu.css") }}"> <!-- Resource style -->
-        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">
-        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-switch.min.css") }}">
-        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">
-        <link rel="stylesheet" href=" {{ url_for("static",filename="css/zebra_dialog.css") }}">
-        
+{% extends "headers.html" %}
 
-    {% endblock %}
-
-    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
-    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
-    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>
-
-
-    {% block jsref %}
-
-        <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>
-        <script src="{{ url_for("static",filename="js/bootstrap-switch.min.js") }}"></script>
-        <script src="{{ url_for("static",filename="js/zebra_dialog.js") }}"></script>
-
-
-    {% endblock %}
-
-
-
-{% endblock head %}
-
-{% block content %}
+{% block mainpage %}
     <div class="bs-docs-header" tabindex="-1">
         <div class="jumbotron no-padding-top no-padding-bottom">
             <div class="container">
@@ -156,7 +156,7 @@
         {% include("footer.html") %}
     {% endblock footer %}
 
-{% endblock content %}
+{% endblock mainpage %}
 
 {% block scripts %}
     <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>

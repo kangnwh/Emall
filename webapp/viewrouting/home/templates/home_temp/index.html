@@ -2,8 +2,6 @@
 {% block title %}Home Page - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
 {% block link_ref %}
     {{ super() }}
-{#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
-{#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
 	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
 {% endblock %}
 {% set active_page = "index" %}

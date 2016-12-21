@@ -27,7 +27,6 @@ def login():
         email = login_form.email.data
         passwd_md5 = generate_md5(login_form.password.data) #hashlib.md5(login_form.password.data.encode('ascii'))
         password = passwd_md5
-
         s = Session()
         user = s.query(Supplier).filter_by(email=email, password=password).first()  # User.query.filter_by(email=email,password=password).first()
         if user :
@@ -39,7 +38,7 @@ def login():
             #if not next_is_valid(next):
             #    return abort(400)
             #return redirect(next or url_for('userRoute.index'))
-            flash("User {user_name} login successfully.".format(user_name=user.user_name),'success')
+            flash("User {user_name} login successfully.".format(user_name=user.supplier_name),'success')
             next = login_form.next.data
             return redirect(next)
 
