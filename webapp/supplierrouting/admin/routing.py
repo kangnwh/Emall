@@ -191,7 +191,7 @@ def update_prod():
         prod.prod_size = update_form.prod_size.data
         prod.imprint_size = update_form.imprint_size.data
         prod.price_basis = update_form.price_basis.data
-        prod.valid_flg = 1 if update_form.valid_flg.data else 0 # add_form.valid_flg.data
+        prod.valid_flg = update_form.valid_flg.data #1 if update_form.valid_flg.data else 0 # add_form.valid_flg.data
         prod.prod_cat_sub_id = update_form.prod_cat_sub_id.data
         prod.colors = update_form.colors.data
         prod.is_special_price_flg = update_form.is_special_price_flg.data
@@ -247,21 +247,6 @@ def update_prod():
         prod.prod_pics=[]
 
         #Pictures
-
-        # cover_img_file = request.files['cover_img_file']
-        # if  cover_img_file.filename :
-        #     if allowed_file(cover_img_file.filename):
-        #             filename = "{prod_name}{time}.{ext}".format( prod_name=prod.prod_name ,
-        #                                                          time=datetime.datetime.now().isoformat().replace(':','_').replace('.','_') ,
-        #                                                          ext=secure_filename(cover_img_file.filename)[-3:])
-        #             prod.cover_img = filename #os.path.join(PROD_UPLOAD_PATH, filename)
-        #             cover_img_file.save(os.path.join(PROD_UPLOAD_PATH, filename))
-        #     else :
-        #             flash("Only accept {types} file".format(types=ALLOWED_EXTENSIONS),category='danger')
-        #             prod.cover_img = this_prod.cover_img
-        # else:
-        #     prod.cover_img = this_prod.cover_img
-
         cover_img_file = request.files['cover_img_file']
         filename = saveImage(cover_img_file,prod)
         prod.cover_img = filename if filename else this_prod.cover_img

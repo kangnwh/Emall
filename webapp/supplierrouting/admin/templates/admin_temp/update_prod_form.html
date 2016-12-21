@@ -22,6 +22,7 @@
 
             <div style=" overflow:scroll;  height:500px;">
                 <div class="row">
+                    {{ bool_input_helper('col-md-12',update_form.valid_flg,is_checked=this_prod.valid_flg ) }}
                     {{ input_helper('col-md-6',update_form.prod_name,default_value=this_prod.prod_name ) }}
                     {{ input_helper('col-md-6',update_form.lead_time,default_value=this_prod.lead_time ) }}
                     {{ input_helper('col-md-12',update_form.prod_desc,default_value=this_prod.prod_desc ) }}
@@ -52,7 +53,7 @@
 
                     {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible' ,update_form.special_price_old,default_value=this_prod.special_price_old ) }}
                     {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}
-                    {{ date_input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time ) }}
+                    {{ date_input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time.date() ) }}
                 </div>
 
                 <!-- Pic upload -->
