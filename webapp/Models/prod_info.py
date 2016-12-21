@@ -27,6 +27,8 @@ class Prod_info(Base):
     is_clearance=Column(Integer,default=0)
     is_new_prod=Column(Integer,default=0)
     is_patent_prod=Column(Integer,default=0)
+    is_hot_prod=Column(Integer,default=0)
+    is_del_flg=Column(Integer,default=0)
     supplier_id= Column(Integer,ForeignKey('supplier.supplier_id'))
     supplier = relationship(Supplier,backref='prod_info')
     prod_create_ts = Column(DateTime,default=func.now())
