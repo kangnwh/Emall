@@ -22,13 +22,13 @@
                         <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">
                             Detail
                         </a>
-                        <a class="btn btn-primary " role="button"
-                                href="{{ url_for('adminRoute.update_prod') }}"
-                        >Update Info
-                        </a>
-                        <a href="#" class="btn btn-danger " role="button" onclick='ajax_delete_prod_form("{{ indiv_prod_info.prod_name }}",{{ indiv_prod_info.prod_id }})'>
-                            Delete
-                        </a>
+{#                        <a class="btn btn-primary " role="button"#}
+{#                                href="{{ url_for('adminRoute.update_prod') }}"#}
+{#                        >Update Info#}
+{#                        </a>#}
+{#                        <a href="#" class="btn btn-danger " role="button" onclick='ajax_delete_prod_form("{{ indiv_prod_info.prod_name }}",{{ indiv_prod_info.prod_id }})'>#}
+{#                            Delete#}
+{#                        </a>#}
                     </div>
                 {% else %}
                     <p>
