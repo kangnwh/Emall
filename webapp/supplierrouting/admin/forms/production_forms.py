@@ -27,7 +27,7 @@ class ProductionBase(Form):
     is_special_price_flg = BooleanField('Is Special Price?')
     special_price_old = DecimalField("Original Price")
     special_price_new = DecimalField("New Price")
-    special_price_campaign_time = DateField("Campaign Begin Time",format='%Y-%m-%d')
+    special_price_campaign_time = DateTimeField("Campaign Begin Time",format='%Y-%m-%d %H:%M:%S')
     is_clearance = BooleanField("Is Clearance ?")
     is_new_prod = BooleanField("Is New Production?")
     is_patent_prod = BooleanField("Is Patent Production?")

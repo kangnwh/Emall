@@ -23,7 +23,7 @@
                             Detail
                         </a>
                         <a class="btn btn-primary " role="button"
-                                href="{{ url_for('supplierRoute.update_prod') }}"
+                                href="{{ url_for('supplierRoute.update_prod',prod_id= indiv_prod_info.prod_id ) }}"
                         >Update Info
                         </a>
                         <a href="#" class="btn btn-danger " role="button" onclick='ajax_delete_prod_form("{{ indiv_prod_info.prod_name }}",{{ indiv_prod_info.prod_id }})'>

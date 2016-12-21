@@ -1,7 +1,7 @@
 {% extends "admin_temp/admin_base.html" %}
 {% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
 
-{% set active_page = 4 %}
+{% set active_page = 3 %}
 {% block page %}
     {#    <div id="update-prod" class="iziModal" data-izimodal-title="Update Production" enctype="multipart/form-data">#}
     <form action="{{ url_for('supplierRoute.update_prod') }}" method="post" name="update"
@@ -39,20 +39,20 @@
                     {#                {{ input_helper('col-md-6',update_form.cover_img_file,default_value=this_prod.cover_img_file ) }}#}
 
 {#                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg,default_value=this_prod.is_special_price_flg ) }}#}
-                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg ,default_value=this_prod.is_special_price_flg,func=' function (event, state) {
+                    {{ bool_input_helper('col-md-3 is_special',update_form.is_special_price_flg ,is_checked=this_prod.is_special_price_flg,func=' function (event, state) {
                         if (state) {
                             $(".special_info").removeClass("invisible");
                         } else {
                             $(".special_info").addClass("invisible");
                         }
                     }'|safe) }}
-                    {{ bool_input_helper('col-md-3',update_form.is_clearance,default_value=this_prod.is_clearance ) }}
-                    {{ bool_input_helper('col-md-3',update_form.is_new_prod,default_value=this_prod.is_new_prod ) }}
-                    {{ bool_input_helper('col-md-3',update_form.is_patent_prod,default_value=this_prod.is_patent_prod ) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_clearance,is_checked=this_prod.is_clearance ) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_new_prod,is_checked=this_prod.is_new_prod ) }}
+                    {{ bool_input_helper('col-md-3',update_form.is_patent_prod,is_checked=this_prod.is_patent_prod ) }}
 
-                    {{ input_helper('col-md-3 special_info invisible',update_form.special_price_old,default_value=this_prod.special_price_old ) }}
-                    {{ input_helper('col-md-3 special_info invisible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}
-                    {{ date_input_helper('col-md-3 special_info invisible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time ) }}
+                    {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible' ,update_form.special_price_old,default_value=this_prod.special_price_old ) }}
+                    {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}
+                    {{ date_input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info visible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time ) }}
                 </div>
 
                 <!-- Pic upload -->
@@ -198,13 +198,5 @@
                 }
             });
         }
-        $("#is_special_price_flg").bind("click", function () {
-            if ($("#is_special_price_flg").is(":checked")) {
-                $(".special_info").removeClass("invisible");
-            } else {
-                $(".special_info").addClass("invisible");
-            }
-        });
-
     </script>
 {% endblock %}

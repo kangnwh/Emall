@@ -63,24 +63,24 @@
         $(function () {
 
         });
-        function onUpdateProd(prod_id) {
-
-            new $.Zebra_Dialog('', {
-                source: {
-                    'iframe': {
-                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,
-                        'height': 600
-                    }
-                },
-                position: ['center', 'top + 5'],
-                width: 1200,
-                title: 'Production Information',
-                buttons:[],
-                'onClose': function () {
-                    location.reload();
-                }
-            });
-        }
+{#        function onUpdateProd(prod_id) {#}
+{##}
+{#            new $.Zebra_Dialog('', {#}
+{#                source: {#}
+{#                    'iframe': {#}
+{#                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,#}
+{#                        'height': 600#}
+{#                    }#}
+{#                },#}
+{#                position: ['center', 'top + 5'],#}
+{#                width: 1200,#}
+{#                title: 'Production Information',#}
+{#                buttons:[],#}
+{#                'onClose': function () {#}
+{#                    location.reload();#}
+{#                }#}
+{#            });#}
+{#        }#}
         function onShowProd(prod_id) {
             new $.Zebra_Dialog('', {
                 source: {

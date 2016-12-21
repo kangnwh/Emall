@@ -1,7 +1,7 @@
 {% extends "admin_temp/admin_base.html" %}
 {% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
 
-{% set active_page = 4 %}
+{% set active_page = 3 %}
 {% block page %}
     {#    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">#}
     <form action="{{ url_for('supplierRoute.add_new_prod') }}" method="post" name="create"
@@ -32,6 +32,9 @@
                 {{ input_helper('col-md-6',add_form.cover_img_file ) }}
 
                 {{ input_helper('col-md-12',add_form.colors ) }}
+                <div class="col-md-6">
+                    Level One Category
+                </div>
                 {{ input_helper('col-md-6',add_form.prod_cat_sub_id ) }}
 
                 {{ bool_input_helper('col-md-3 is_special',add_form.is_special_price_flg ,func=' function (event, state) {
@@ -42,6 +45,7 @@
                         }
                     }'|safe) }}
 
+
                 {{ bool_input_helper('col-md-3',add_form.is_clearance ) }}
                 {{ bool_input_helper('col-md-3',add_form.is_new_prod ) }}
                 {{ bool_input_helper('col-md-3',add_form.is_patent_prod ) }}
@@ -50,11 +54,6 @@
                 {{ input_helper('col-md-3 special_info invisible',add_form.special_price_new ) }}
                 {{ date_input_helper('col-md-3 special_info invisible',add_form.special_price_campaign_time ) }}
 
-
-                <!-- Pic upload -->
-                {#                <div class="row">#}
-                {#                    {{ input_helper('col-md-6',add_form.cover_img_file,'' ) }}#}
-                {#                </div>#}
                 <div class="row" id="for_extr_pics">
 
                 </div>
@@ -130,14 +129,5 @@
             // extra file with form name=extra_img_file and desc name=extra_img_desc
             $("#for_extr_pics").append('<div class="col-md-12"><div class="form-group col-md-6"><label for="extra_img_file">Upload Extra Picture</label><input class="" id="cover_img_file" name="extra_img_file" type="file"></div><div class="form-group col-md-6"><label for="cover_img_desc">Extra Picture Desc</label><input class="form-control" id="extra_img_desc" name="extra_img_desc" value="" type="text"></div></div>');
         }
-        {#        $("#is_special_price_flg").bind("click", function () {#}
-        {#            if($("#is_special_price_flg").is(":checked")){#}
-        {#                $(".special_info").removeClass("invisible");#}
-        {#            }else{#}
-        {#                $(".special_info").addClass("invisible");#}
-        {#            }#}
-        {#        });#}
-
-
     </script>
 {% endblock %}

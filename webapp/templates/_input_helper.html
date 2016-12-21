@@ -18,15 +18,15 @@
 {% macro date_input_helper(group_class,input,input_class="form-control",label_class='labels',default_value='') -%}
     <div class="form-group {{ group_class }}">
         {{ input.label(class=label_class) }}
-        <input name="{{ input.id }}" id="{{ input.id }}" data-date-format="yyyy-mm-dd" data-auto-close="true"
-               class={{ input_class }} type="text" data-language="en" class="datepicker-here form-control" readonly>
+        <input name="{{ input.id }}" id="{{ input.id }}" data-date-format="yyyy-mm-dd" data-auto-close="true" value="{{ default_value }}"
+              type="text" data-language="en" class="{{ input_class }} datepicker-here" readonly/>
     </div>
 
 {% endmacro %}
 
 
 {% macro bool_input_helper(group_class,input,input_class="form-control",label_class='labels',is_checked=0,func=0) -%}
-    <div class="input-group {{ group_class }}">
+    <div class="form-group {{ group_class }}">
         {{ input.label(class=label_class) }}
         <input name="{{ input.id }}"  id="{{ input.id }}" type="checkbox" class={{ input_class }}
                data-label-text="?">
