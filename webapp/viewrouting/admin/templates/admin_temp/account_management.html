@@ -21,10 +21,12 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            {#            <th>User ID</th>#}
-            <th>User Name</th>
+            <th>ID</th>
+            <th>Name</th>
             {#            <th>Password</th>#}
             <th>Email</th>
+            <th>Credit Pts</th>
+            <th>Is Subscribe</th>
             <th>Is Valid</th>
             <th>Is Admin</th>
             <th></th>
@@ -40,11 +42,14 @@
 {#                    {{ udpate_user_form.user_id(value=user.user_id ,class="invisible",size=5) }}#}
                     <!--    <td ><input disabled value="{{ user.user_name }}"/></td>   -->
 
+                    <td>{{ user.user_id }}</td>
                     <td>{{ user.user_name }}</td>
                     {#                    <td>{{ udpate_user_form.password(value=user.password)  }}</td>#}
                     <!--   <td><input disabled value="{{ user.email }}"/></td>   -->
                     <td>{{ user.email }}</td>
+                    <td>{{ user.credit_points }}</td>
 {#                    <td>{{ udpate_user_form.valid_flg(checked= true if user.valid_flg==1 else false) }}</td>#}
+                    <td><input type="checkbox" id="is_sbs_{{ user.user_id }}" disabled {{ 'checked' if user.is_subscribe==1 }} ></td>
                     <td><input type="checkbox" id="is_valid_{{ user.user_id }}"  {{ 'checked' if user.valid_flg==1 }} ></td>
 {#                    <td>{{ udpate_user_form.is_admin(checked=  true if  user.is_admin==1 else false) }}</td>#}
                     <td><input type="checkbox" id="is_admin_{{ user.user_id }}" {{ 'checked' if user.is_admin==1 }} ></td>
@@ -54,17 +59,18 @@
                     </td>
 {#                </form>#}
 
-                <td>
+{#                 <td>
                     <button class="btn btn-primary "
                            onclick='ajax_delete_user_form("{{ user.user_name }}",{{ user.user_id }})'>Delete </button>
                 </td>
+ #}
                 <td>
                     <form action="{{ url_for('adminRoute.reset_password') }}" method="post" name="reset">
                         {{ reset_password_form.hidden_tag() }}
                         <div class="invisible">{{ reset_password_form.user_id(value=user.user_id) }}
                             {{ reset_password_form.email(value=user.email) }}
                         </div>
-                        <input type="submit" class="btn btn-primary " value="Reset password"/>
+                        <input type="submit" class="btn btn-primary " value="Reset PWD"/>
                     </form>
                 </td>
 
@@ -88,6 +94,9 @@
                 <br>
                 <dt>Is Admin</dt>
                 <dd>{{ create_new_form.is_admin }}</dd>
+                <br>
+                <dt>Is Subscribe</dt>
+                <dd>{{ create_new_form.is_subscribe }}</dd>
                 <br>
                 <dt><input type="submit" class='btn btn-primary' value="Create"></dt>
             </dl>

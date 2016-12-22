@@ -22,6 +22,7 @@ class CreateNewForm(Form):
     password = PasswordField('Password', validators = [DataRequired()])
     valid_flg=BooleanField('Is Valid', default = False)
     is_admin = BooleanField('Is Admin', default = False)
+    is_subscribe=BooleanField('Is Subscribe', default = False)
 
 
 class UpdateUserForm(Form):
@@ -42,4 +43,3 @@ class ResetPassForm(Form):
     user_id = StringField("User ID", validators = [DataRequired()])
     email = StringField('Email')
     password = PasswordField('Password')
-

@@ -1,0 +1,86 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 4 %}
+{% block title %}Supplier Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+
+    {{ pagination.info }}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Supplier Pts</th>
+            <th>Is Valid</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for supplier in supplier_list.items %}
+
+            <tr>
+                    <td>{{ supplier.supplier_id }}</td>
+                    <td>{{ supplier.supplier_name }}</td>
+                    <td>{{ supplier.email }}</td>
+                    <td>{{ supplier.supplier_points }}</td>
+                    <td><input type="checkbox" id="is_valid_{{ supplier.supplier_id }}"  {{ 'checked' if supplier.valid_flg==1 }} ></td>
+                    <td>
+                        <button class="btn btn-primary"
+                               onclick='ajax_update_supplier_form("{{ supplier.supplier_name }}",{{ supplier.supplier_id }})'>Update</button>
+                    </td>
+
+
+                <td>
+                        <button class="btn btn-primary"
+                               onclick='ajax_reset_passwd_supplier_form("{{ supplier.supplier_id }}",{{ supplier.email }})'>Reset Password</button>
+
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ pagination.links }}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        function ajax_update_supplier_form(name, supplier_id ) {
+            if (confirm("Do you really want to update [" + name + "] ? ")) {
+                is_valid=0;
+                if($('#is_valid_'+user_id).is(':checked')){is_valid =1;}
+                $.post("{{ url_for('adminRoute.update_supplier') }}", {
+                    supplier_id: supplier_id,
+                    valid_flg: is_valid
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+    function ajax_reset_passwd_supplier_form(supplier_id,email ) {
+                $.post("{{ url_for('adminRoute.reset_supp_passwd') }}", {
+                    supplier_id: supplier_id,
+                    email: email
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+        }
+    </script>
+{% endblock scripts %}

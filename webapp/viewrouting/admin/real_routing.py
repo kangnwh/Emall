@@ -7,6 +7,7 @@ from flask_sqlalchemy import BaseQuery
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
+from webapp.Models.supplier import Supplier
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
@@ -57,6 +58,63 @@ def _account_management():
                            create_new_form=create_new_form,
                            pagination=pagination)
 
+@admin_check
+def _supplier_management():
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+    s = Session()
+    supplier_list = BaseQuery(Supplier,s).order_by(Supplier.supplier_create_ts.desc()).paginate(page, customer_config.USER_NUM_PER_PAGE, False)
+    s.close
+    pagination = Pagination(page=page, total=supplier_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Supplier Information',
+                            per_page=customer_config.USER_NUM_PER_PAGE)
+
+    return render_template('admin_temp/supplier_management.html',
+                           supplier_list=supplier_list,
+                           pagination=pagination)
+
+
+@admin_check
+def _update_supplier():
+    supplier_id = request.form.get('supplier_id')
+    valid_flg=request.form.get('valid_flg')
+    if supplier_id:
+        s = Session()
+        s.query(Supplier).filter_by(supplier_id=supplier_id).update(
+                {
+                    "valid_flg": valid_flg
+                }
+        )
+        s.commit()
+        s.close()
+        return jsonify(result='succ')
+    else:
+        flash('No Valid information for update supplier',category='danger')
+        return jsonify(result='failed')
+
+@admin_check
+def _reset_supp_passwd():
+    supplier_id = request.form.get('supplier_id')
+    email=request.form.get('email')
+    password = generate_md5(email)
+    if supplier_id:
+        s = Session()
+        s.query(Supplier).filter_by(supplier_id=supplier_id).update(
+                {
+                    "password": password
+                }
+        )
+        s.commit()
+        s.close()
+        return jsonify(result='succ')
+    else:
+        flash('Reset Password error',category='danger')
+        return jsonify(result='failed')
 
 @admin_check
 def _prod_cate_mgt():
@@ -115,6 +173,7 @@ def _add_user():
         u.valid_flg = 1
         u.is_paid = 0
         u.credit_points = 0
+        u.is_subscribe = create_user_form.is_subscribe.data
         u.is_admin = create_user_form.is_admin.data
 
         s = Session()
@@ -131,9 +190,6 @@ def _update_user():
     user_id = request.form.get('user_id')
     is_admin=request.form.get('is_admin')
     valid_flg=request.form.get('valid_flg')
-    print(user_id)
-    print(is_admin)
-    print(valid_flg)
     if user_id:
         s = Session()
         s.query(User).filter_by(user_id=user_id).update(
