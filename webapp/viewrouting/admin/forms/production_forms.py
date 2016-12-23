@@ -100,3 +100,23 @@ class UpdateProfitRateForm(Form):
 
 class DeleteProfitRateForm(Form):
     profit_id = IntegerField('ProfitId', validators = [DataRequired()])
+
+
+class CreateNewRebateForm(Form):
+    supplier_points_from = IntegerField('Pts From')
+    supplier_points_to = IntegerField('Pts To', validators = [DataRequired()])
+    rebate_rate=DecimalField('Rebate Rate')
+    supplier_level = IntegerField('Supplier Level', validators = [DataRequired()])
+    rebate_desc = StringField('Desc')
+
+
+class UpdateRebateForm(Form):
+    rebate_ref_id = IntegerField('Rebate Ref Id', validators = [DataRequired()])
+    supplier_points_from = IntegerField('Pts From')
+    supplier_points_to = IntegerField('Pts To', validators = [DataRequired()])
+    rebate_rate=DecimalField('Rebate Rate')
+    supplier_level = IntegerField('Supplier Level', validators = [DataRequired()])
+    rebate_desc = StringField('Desc')
+
+class DeleteRebateForm(Form):
+    rebate_ref_id = IntegerField('Rebate Ref Id', validators = [DataRequired()])

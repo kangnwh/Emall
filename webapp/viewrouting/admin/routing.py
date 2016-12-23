@@ -4,6 +4,7 @@ from flask_login import login_required,current_user
 from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
                                                     _add_level_one,_delete_level_one,_update_level_one,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
+                                                    _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
@@ -153,3 +154,23 @@ def add_profit():
 @login_required
 def update_profit():
     return _update_profit()
+
+@adminRoute.route('/manage_supplier_rebate_rate', methods=['GET', 'POST'])
+@login_required
+def manage_supplier_rebate_rate():
+    return _manage_supplier_rebate_rate()
+
+@adminRoute.route('/delete_rebate', methods=['POST'])
+@login_required
+def delete_rebate():
+    return _delete_rebate()
+
+@adminRoute.route('/add_rebate', methods=['POST'])
+@login_required
+def add_rebate():
+    return _add_rebate()
+
+@adminRoute.route('/update_rebate', methods=['POST'])
+@login_required
+def update_rebate():
+    return _update_rebate()

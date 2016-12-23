@@ -8,6 +8,7 @@ import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
 from webapp.Models.supplier import Supplier
+from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
@@ -18,7 +19,7 @@ from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
-from webapp.viewrouting.admin.forms.production_forms import CreateNewProfitRateForm,UpdateProfitRateForm,DeleteProfitRateForm
+from webapp.viewrouting.admin.forms.production_forms import CreateNewProfitRateForm,UpdateProfitRateForm,DeleteProfitRateForm,CreateNewRebateForm,UpdateRebateForm,DeleteRebateForm
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
 
 adminRoute = Blueprint('adminRoute', __name__,
@@ -755,3 +756,75 @@ def _delete_profit():
 
     return redirect(url_for('adminRoute.manage_profit_rate'))
 
+@admin_check
+def _manage_supplier_rebate_rate():
+    udpate_rebate_rate_form = UpdateRebateForm()
+    create_rebate_form = CreateNewRebateForm()
+    delete_rebate_form=DeleteRebateForm()
+    s = Session()
+    rebate_list = s.query(Supplier_rebate_ref).order_by(Supplier_rebate_ref.supplier_points_from)
+    return render_template('admin_temp/manage_supplier_rebate_rate.html',
+                           rebate_list=rebate_list,
+                           udpate_rebate_rate_form=udpate_rebate_rate_form,
+                           delete_rebate_form=delete_rebate_form,
+                           create_rebate_form=create_rebate_form)
+
+@admin_check
+def _add_rebate():
+    create_rebate_form = CreateNewRebateForm()
+    if create_rebate_form.validate_on_submit():
+        p = Supplier_rebate_ref()
+        p.supplier_points_from = create_rebate_form.supplier_points_from.data
+        p.supplier_points_to = create_rebate_form.supplier_points_to.data
+        p.rebate_rate = create_rebate_form.rebate_rate.data
+        p.supplier_level = create_rebate_form.supplier_level.data
+        p.rebate_desc = create_rebate_form.rebate_desc.data
+        s = Session()
+        s.add(p)
+        s.commit()
+        s.close()
+    else:
+        flash(create_rebate_form.errors, category='danger')
+    return redirect(url_for('adminRoute.manage_supplier_rebate_rate'))
+
+
+@admin_check
+def _update_rebate():
+    udpate_rebate_rate_form = UpdateRebateForm()
+    if udpate_rebate_rate_form.validate_on_submit():
+        rebate_ref_id = udpate_rebate_rate_form.rebate_ref_id.data
+        supplier_points_from = udpate_rebate_rate_form.supplier_points_from.data
+        supplier_points_to = udpate_rebate_rate_form.supplier_points_to.data
+        rebate_rate = udpate_rebate_rate_form.rebate_rate.data
+        supplier_level = udpate_rebate_rate_form.supplier_level.data
+        rebate_desc = udpate_rebate_rate_form.rebate_desc.data
+
+        s = Session()
+        s.query(Supplier_rebate_ref).filter_by(rebate_ref_id=rebate_ref_id).update(
+                {
+                    "supplier_points_from": supplier_points_from,
+                    "supplier_points_to": supplier_points_to,
+                    "rebate_rate": rebate_rate,
+                    "supplier_level": supplier_level,
+                    "rebate_desc": rebate_desc
+                }
+        )
+        s.commit()
+        s.close()
+    else:
+        flash(udpate_rebate_rate_form.errors, category='danger')
+    return redirect(url_for('adminRoute.manage_supplier_rebate_rate'))
+
+
+@admin_check
+def _delete_rebate():
+    delete_rebate_form=DeleteRebateForm()
+    if delete_rebate_form.validate_on_submit():
+        rebate_ref_id = delete_rebate_form.rebate_ref_id.data
+
+        s = Session()
+        s.query(Supplier_rebate_ref).filter_by(rebate_ref_id=rebate_ref_id).delete()
+        s.commit()
+        s.close()
+
+    return redirect(url_for('adminRoute.manage_supplier_rebate_rate'))
