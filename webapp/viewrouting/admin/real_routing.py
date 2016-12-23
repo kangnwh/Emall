@@ -102,6 +102,8 @@ def _reset_supp_passwd():
     supplier_id = request.form.get('supplier_id')
     email=request.form.get('email')
     password = generate_md5(email)
+    print(supplier_id)
+    print(email)
     if supplier_id:
         s = Session()
         s.query(Supplier).filter_by(supplier_id=supplier_id).update(

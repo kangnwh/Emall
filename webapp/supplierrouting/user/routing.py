@@ -62,6 +62,7 @@ def register():
         supplier.email = register_user_form.email.data
         supplier.password = generate_md5(register_user_form.password.data)
         supplier.address =register_user_form.address.data
+        supplier.tel=register_user_form.tel.data
         supplier.valid_flg = 1
         supplier.supplier_points = 0
 

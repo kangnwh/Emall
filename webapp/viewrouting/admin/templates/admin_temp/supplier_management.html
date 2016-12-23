@@ -18,6 +18,8 @@
             <th>Name</th>
             <th>Email</th>
             <th>Supplier Pts</th>
+            <th>Tel</th>
+            <th>Address</th>
             <th>Is Valid</th>
             <th></th>
             <th></th>
@@ -31,6 +33,8 @@
                     <td>{{ supplier.supplier_name }}</td>
                     <td>{{ supplier.email }}</td>
                     <td>{{ supplier.supplier_points }}</td>
+                    <td>{{ supplier.tel }}</td>
+                    <td>{{ supplier.address }}</td>
                     <td><input type="checkbox" id="is_valid_{{ supplier.supplier_id }}"  {{ 'checked' if supplier.valid_flg==1 }} ></td>
                     <td>
                         <button class="btn btn-primary"
@@ -40,7 +44,7 @@
 
                 <td>
                         <button class="btn btn-primary"
-                               onclick='ajax_reset_passwd_supplier_form("{{ supplier.supplier_id }}",{{ supplier.email }})'>Reset Password</button>
+                               onclick='ajax_reset_passwd_supplier_form({{ supplier.supplier_id }},"{{ supplier.email }}")'>Reset PWD</button>
 
                 </td>
 
@@ -59,7 +63,7 @@
         function ajax_update_supplier_form(name, supplier_id ) {
             if (confirm("Do you really want to update [" + name + "] ? ")) {
                 is_valid=0;
-                if($('#is_valid_'+user_id).is(':checked')){is_valid =1;}
+                if($('#is_valid_'+supplier_id).is(':checked')){is_valid =1;}
                 $.post("{{ url_for('adminRoute.update_supplier') }}", {
                     supplier_id: supplier_id,
                     valid_flg: is_valid

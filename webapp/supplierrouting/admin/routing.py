@@ -8,6 +8,7 @@ from flask_login import login_required,current_user
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
+from webapp.Models.supplier import Supplier
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
@@ -18,6 +19,7 @@ from webapp.common import saveImage
 
 from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction
 #from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
+from webapp.supplierrouting.user.forms.login_form import UpdateSupplierForm
 
 supplierRoute = Blueprint('supplierRoute', __name__,
                        template_folder='templates', static_folder='static')
@@ -172,6 +174,37 @@ def add_new_prod():
 
 
 
+@supplierRoute.route("/update_supplier",methods=['GET','POST'])
+@login_required
+def update_supplier():
+    update_supp_form = UpdateSupplierForm()
+    s = Session()
+    if update_supp_form.validate_on_submit():
+        supplier_name=update_supp_form.supplier_name.data
+        address=update_supp_form.address.data
+        tel=update_supp_form.tel.data
+        print(supplier_name)
+        print(address)
+        print(tel)
+        s.query(Supplier).filter_by(supplier_id=current_user.supplier_id).update({
+            'supplier_name' : supplier_name,
+            'address' : address,
+            'tel' : tel
+        })
+        message = "Update successfully!"
+        flash(message,category='info')
+        s.commit()
+        s.close()
+        return redirect(url_for('supplierRoute.update_supplier'))
+    else:
+        supplier_id = current_user.supplier_id
+        print(supplier_id)
+        this_supplier = s.query(Supplier).filter_by(supplier_id=supplier_id).first()
+
+    return render_template("admin_temp/account_management.html",
+                           update_supp_form=update_supp_form,
+                           this_supplier=this_supplier)
+
 @supplierRoute.route("/update_prod",methods=['GET','POST'])
 @login_required
 def update_prod():
@@ -305,7 +338,6 @@ def update_prod():
     return render_template("admin_temp/update_prod_form.html",
                            update_form=update_form,
                            this_prod=this_prod)
-
 
 @supplierRoute.route("/delete_prod",methods=['GET','POST'])
 @login_required
