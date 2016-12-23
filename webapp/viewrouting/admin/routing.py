@@ -4,7 +4,7 @@ from flask_login import login_required,current_user
 from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
                                                     _add_level_one,_delete_level_one,_update_level_one,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
-                                                    _manage_profit_rate,_delete_profit,_add_profit,_update_profit
+                                                    _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -22,6 +22,11 @@ def index():
 @login_required
 def account_management():
     return _account_management()
+
+@adminRoute.route('/supplier_management', methods=['GET', 'POST'])
+@login_required
+def supplier_management():
+    return _supplier_management()
 
 @adminRoute.route('/prod_cate_mgt', methods=['GET', 'POST'])
 @login_required
@@ -54,6 +59,11 @@ def add_user():
 @login_required
 def update_user():
     return _update_user()
+
+@adminRoute.route('/update_supplier', methods=['POST'])
+@login_required
+def update_supplier():
+    return _update_supplier()
 
 @adminRoute.route('/add_level_one', methods=['POST'])
 @login_required
@@ -92,6 +102,11 @@ def update_level_two():
 @login_required
 def reset_password():
     return _reset_password()
+
+@adminRoute.route('/reset_supp_passwd', methods=['POST'])
+@login_required
+def reset_supp_passwd():
+    return _reset_supp_passwd()
 #
 # @adminRoute.route('/add_new_prod', methods=['GET','POST'])
 # @login_required

@@ -40,4 +40,5 @@ class RegistrationForm(Form):
     user_name = StringField('User Name', validators = [DataRequired(),name_not_exists_check])
     password = PasswordField('password', validators = [DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
+    is_subscribe=BooleanField('Is Subscribe', default = False)
     next = StringField()

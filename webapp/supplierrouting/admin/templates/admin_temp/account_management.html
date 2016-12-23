@@ -1,4 +1,5 @@
 {% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
 {% set active_page = 2 %}
 {% block title %}Account Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
 {% block link_ref %}
@@ -9,11 +10,26 @@
 {% endblock %}
 
 {% block page %}
-    Update Supplier Infomation
-
+        <h2>Update Supplier Infomation</h2>
+    <div class="panel panel-default">
+        <form action="{{ url_for('supplierRoute.update_supplier') }}" method="post" name="update"
+          enctype="multipart/form-data">
+        {{ update_supp_form.hidden_tag() }}
+<div class="row">
+                    {{ input_helper('col-md-12',update_supp_form.supplier_id,default_value=this_supplier.supplier_id ) }}
+                    {{ input_helper('col-md-12',update_supp_form.email,default_value=this_supplier.email ) }}
+                    {{ input_helper('col-md-12',update_supp_form.supplier_points,default_value=this_supplier.supplier_points ) }}
+                    {{ input_helper('col-md-12',update_supp_form.supplier_name,default_value=this_supplier.supplier_name ) }}
+                    {{ input_helper('col-md-12',update_supp_form.address,default_value=this_supplier.address ) }}
+                    {{ input_helper('col-md-12',update_supp_form.tel,default_value=this_supplier.tel ) }}
+</div>
+                                <div class="panel-body">
+                            <button type="submit" class='col-md-12 btn btn-primary' value="Update">Update</button>
+                        </div>
+        </form>
+    </div>
 {% endblock %}
 
 {% block scripts %}
-    {{ super() }}
 
 {% endblock scripts %}

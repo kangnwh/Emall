@@ -67,6 +67,7 @@ def register():
         u.is_admin = 0
         u.is_paid = 0
         u.credit_points = 0
+        u.is_subscribe = register_user_form.is_subscribe.data
 
         s = Session()
         s.add(u)

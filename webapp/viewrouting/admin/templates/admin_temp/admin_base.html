@@ -59,11 +59,11 @@
                 <li {% if 1 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.index') }}">Dashboard</a></li>
                 <li {% if 2 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.account_management') }}">Account Management</a></li>
+                    <a href="{{ url_for('adminRoute.account_management') }}">User Account Management</a></li>
+                <li {% if 4 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.supplier_management') }}">Supplier Account Management</a>
                 <li {% if 3 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Categroy Management</a></li>
-{#                <li {% if 4 == active_page %} class="active"{% endif %}>#}
-{#                    <a href="{{ url_for('adminRoute.publish_prod') }}">Publish Product</a>#}
+                    <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Category Management</a></li>
                 </li>
                 <li {% if 5 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.spec_links') }}">Specialist Links</a>

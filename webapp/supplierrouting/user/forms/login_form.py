@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField,BooleanField,PasswordField
+from wtforms import StringField,BooleanField,PasswordField,IntegerField
 from wtforms.validators import DataRequired, ValidationError,EqualTo
 from webapp.Models.supplier import Supplier
 from webapp.Models.db_basic import Session
@@ -41,4 +41,13 @@ class RegistrationForm(Form):
     password = PasswordField('Password', validators = [DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
     address = StringField('Address', validators = [DataRequired(),name_not_exists_check])
+    tel = StringField('Tel',validators = [DataRequired()])
     next = StringField()
+
+class UpdateSupplierForm(Form):
+    supplier_id=IntegerField('Supplier Id', validators = [DataRequired()])
+    supplier_name = StringField('Supplier Name', validators = [DataRequired(),name_not_exists_check])
+    email = StringField('Email', validators = [DataRequired()])
+    supplier_points = StringField('Supplier Points')
+    address = StringField('Address', validators = [DataRequired()])
+    tel = StringField('Tel',validators = [DataRequired()])
