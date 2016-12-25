@@ -29,6 +29,8 @@ class Order_system(Base):
     freight_cost=Column(DECIMAL(12,2),default=0)
     total_price=Column(DECIMAL(12,2),default=0)
     need_pay_supplier=Column(DECIMAL(12,2),default=0)
+    is_used_points=Column(Integer,default=0)
+    used_points=Column(Integer,default=0)
     supplier_target_dt = Column(DateTime)
     user_comments = Column(String(500))
     supplier_comments = Column(String(500))

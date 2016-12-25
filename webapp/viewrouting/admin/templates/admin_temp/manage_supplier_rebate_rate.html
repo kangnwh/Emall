@@ -1,0 +1,101 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 7 %}
+{% block title %}Supplier Rebate Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+
+	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+        <div class="'row">
+          <button type="button" class="btn btn-primary trigger-new-rebate-rate-win" data-izimodal-transitionin="fadeInDown" data-izimodal-open="modal-new-rebate-rate-win">Add New</button>
+        </div>
+
+    <table class="table table-hover">
+        <thead><tr>
+            <th>Supplier Pts from</th>
+            <th>Pts to</th>
+            <th>Rebate Rate</th>
+            <th>Supplier level</th>
+            <th>Desc</th>
+            <th></th>
+        </tr></thead>
+        <tbody>
+        {%  for rebate in rebate_list %}
+
+            <tr>
+                <form action="{{ url_for('adminRoute.update_rebate') }}" method="post">
+                    {{ udpate_rebate_rate_form.hidden_tag() }}
+                    {{ udpate_rebate_rate_form.rebate_ref_id(value=rebate.rebate_ref_id ,class="invisible",size=5) }}
+                    <td >{{udpate_rebate_rate_form.supplier_points_from(value=rebate.supplier_points_from,size=5)}}</td>
+                    <td >{{udpate_rebate_rate_form.supplier_points_to(value=rebate.supplier_points_to,size=5)}}</td>
+                    <td >{{udpate_rebate_rate_form.rebate_rate(value=rebate.rebate_rate,size=5)}}%</td>
+                    <td >{{udpate_rebate_rate_form.supplier_level(value=rebate.supplier_level,size=5)}}</td>
+                    <td >{{udpate_rebate_rate_form.rebate_desc(value=rebate.rebate_desc,size=20)}}</td>
+                     <td> <input type="submit" class="btn btn-primary"  value="Update"/></td>
+                </form>
+                    <td> <form action="{{ url_for('adminRoute.delete_rebate') }}" method="post" name="delete">
+                             {{ delete_rebate_form.hidden_tag() }}
+                             <div class="invisible" >{{ delete_rebate_form.rebate_ref_id(value=rebate.rebate_ref_id) }}</div>
+                        <input type="submit" class="btn btn-primary " value="Delete"/>
+                    </form>
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<div id="new-rebate-rate-win" class="iziModal" data-izimodal-title="Create new rebate rate">
+<form action="{{ url_for('adminRoute.add_rebate') }}" method="post" name="create">
+        {{create_rebate_form.hidden_tag()}}
+        <dl class="dl-horizontal">
+          <dt>New Pts From:</dt>
+          <dd>{{create_rebate_form.supplier_points_from(size=10)}}</dd>
+            <br>
+          <dt>New Pts To:</dt>
+          <dd>{{create_rebate_form.supplier_points_to(size=10)}}</dd>
+            <br>
+          <dt>New Rebate rate:</dt>
+          <dd>{{create_rebate_form.rebate_rate(size=5)}}%</dd>
+            <br>
+          <dt>New level:</dt>
+          <dd>{{create_rebate_form.supplier_level(size=5)}}</dd>
+            <br>
+            <br>
+          <dt>Desc:</dt>
+          <dd>{{create_rebate_form.rebate_desc(size=30)}}</dd>
+            <br>
+            <br>
+          <dt><input type="submit" class='btn btn-primary' value="Create"></dt>
+        </dl>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+		$(function() {
+{#			  $("#slider").easySlider({});#}
+            $("#new-rebate-rate-win").iziModal({
+	        overlayClose: false,
+	        width: 600,
+	        autoOpen: false,
+	        overlayColor: 'rgba(0, 0, 0, 0.6)',
+	        onOpened: function() {
+	            console.log('onOpened');
+	        },
+	        onClosed: function() {
+	            console.log('onClosed');
+	        }
+	    });
+            $(document).on('click', '.trigger-new-rebate-rate-win', function (event) {
+                event.preventDefault();
+                $('#new-rebate-rate-win').iziModal('open');
+            });
+		  });
+
+	</script>
+{% endblock scripts %}
