@@ -30,3 +30,7 @@ HOST_INFO={
         'PORT':5003
     }
 }
+# user discount rate
+USER_POINT_DISCOUNT_RATE = 0.01
+#Reminders should be sent %d days before end date
+REMINDER_PRE_DAYS = 3

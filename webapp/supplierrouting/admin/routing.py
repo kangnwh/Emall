@@ -11,7 +11,7 @@ from webapp.Models.prod_cat import Prod_cat
 from webapp.Models.supplier import Supplier
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
-from webapp.Models.prod_price_range import Prod_price_range
+from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 
@@ -82,7 +82,8 @@ def add_new_prod():
         prod.is_special_price_flg = add_form.is_special_price_flg.data
         prod.special_price_old = add_form.special_price_old.data
         prod.special_price_new = add_form.special_price_new.data
-        prod.special_price_campaign_time = add_form.special_price_campaign_time.data
+        print(add_form.special_price_campaign_time.data)
+        prod.special_price_campaign_time = add_form.special_price_campaign_time.data if add_form.special_price_campaign_time else None
         prod.is_clearance = add_form.is_clearance.data
         prod.is_new_prod = add_form.is_new_prod.data
         prod.is_patent_prod = add_form.is_patent_prod.data
@@ -165,8 +166,9 @@ def add_new_prod():
         flash(message,category='success')
 
     elif request.method == 'POST':
-
+        flash(add_form.special_price_campaign_time.data,category='danger')
         flash(add_form.errors, category='danger')
+
 
     else:
         pass
@@ -228,9 +230,16 @@ def update_prod():
         prod.prod_cat_sub_id = update_form.prod_cat_sub_id.data
         prod.colors = update_form.colors.data
         prod.is_special_price_flg = update_form.is_special_price_flg.data
-        prod.special_price_old = update_form.special_price_old.data
-        prod.special_price_new = update_form.special_price_new.data
-        prod.special_price_campaign_time = update_form.special_price_campaign_time.data
+        if prod.is_special_price_flg:
+
+            prod.special_price_old = update_form.special_price_old.data
+            prod.special_price_new = update_form.special_price_new.data
+            prod.special_price_campaign_time = update_form.special_price_campaign_time.data
+        else :
+            prod.special_price_old = None
+            prod.special_price_new = None
+            prod.special_price_campaign_time = None
+
         prod.is_clearance = update_form.is_clearance.data
         prod.is_new_prod = update_form.is_new_prod.data
         prod.is_patent_prod = update_form.is_patent_prod.data

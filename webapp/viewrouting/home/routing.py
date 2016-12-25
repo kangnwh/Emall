@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
+from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
