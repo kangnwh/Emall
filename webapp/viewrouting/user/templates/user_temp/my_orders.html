@@ -1,15 +1,7 @@
-{% extends "user_temp/user_base.html" %}
+{% extends "user_temp/order_base.html" %}
 {% set active_page = 3 %}
-{% from "order_temp/_order_card.html" import material_card with context %}
 
-
-{% block title %}Settings - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
-{% block link_ref %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
-{% endblock %}
-
-{% block page %}
+{% block orderlist %}
 
     <div class="list-group">
 
@@ -25,13 +17,3 @@
     </div>
 
 {% endblock %}
-
-{% block scripts %}
-    {{ super() }}
-    {#    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>#}
-    {#    <script type="text/javascript">#}
-    {#		$(function() {#}
-    {#			  $("#slider").easySlider({});#}
-    {#		  });#}
-    {#	</script>#}
-{% endblock scripts %}

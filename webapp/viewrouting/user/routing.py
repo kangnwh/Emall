@@ -184,7 +184,7 @@ def user_orders(type):
                             record_name='Order List',
                             per_page=customer_config.USER_ORDER_PER_PAGE)
 
-    return render_template('user_temp/my_orders.html',
+    return render_template('user_temp/my_orders.html',order_active=type,
                            order_list=order_list,
                            pagination=pagination)
 
