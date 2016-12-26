@@ -12,6 +12,7 @@ from webapp.Models.supplier import Supplier
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
+from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 

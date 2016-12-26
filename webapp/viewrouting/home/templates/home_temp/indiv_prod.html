@@ -41,7 +41,7 @@
                                             <div class="indiv_pic_size "
                                                  style="background-image: url('{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}')">
                                                 <img class="indiv-user-logo invisible" name='img-logo-original'
-                                                      src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
+                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
                                                 <img class="indiv-user-logo invisible" name='img-logo-processed'
                                                      src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
                                             </div>
@@ -105,53 +105,85 @@
                 </div>
             </div>
             <div id="price_detail" class="row well"><!-- price range -->
-
-                <div class="col-md-7">
-                    <div class="row">
-                        <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
-                    </div>
-                    <div class="row" style="padding-top: 30px;">
-                        <div class="col-md-9">
-                            <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
-                                   data-slider-max="20000"
-                                   data-slider-step="1" data-slider-value="14"/></div>
-                        <div class="col-md-3">
-                            <input id="input_qty" min="1" id="qty-input" class="form-control "
-                                   onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
+                        </div>
+                        <div class="row" style="padding-top: 30px;">
+                            <div class="col-md-9">
+                                <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                       data-slider-max="20000"
+                                       data-slider-step="1" data-slider-value="14"/></div>
+                            <div class="col-md-3">
+                                <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                       onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                            </div>
+                            <div class="col-md-12" ><!-- select quantity -->
+{#                                <div class="panel panel-success">#}
+{#                                    <div class="panel-heading ">#}
+{#                                        Price Ranges#}
+{#                                    </div>#}
+                                    <div class="panel-body">
+                                        <div id="price_selection"></div>
+                                    </div>
+{#                                </div>#}
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-offset-1 col-md-4">
+                        <table class="table table-hover text-right">
+                            <thead>
+                            <tr>
+                                <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                        id="unit_price"></span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="">Setup</td>
+                                <td><span>$</span><span id="setup_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Imprinting Prices</td>
+                                <td><span>$</span><span id="imprinting_prices"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Freight Cost</td>
+                                <td><span>$</span><span id="freight_cost"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="indiv-price-big"><strong>Total</strong></td>
+                                <td class="indiv-price-big"><strong><span>$</span><span
+                                        id="total_price"></span></strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-md-offset-1 col-md-4">
-                    <table class="table table-hover text-right">
-                        <thead>
-                        <tr>
-                            <th class="indiv-price-big col-md-7 ">Unit Price</th>
-                            <th class="indiv-price-big col-md-5 text-right"><span>$</span><span id="unit_price"></span>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="">Setup</td>
-                            <td><span>$</span><span id="setup_price"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="">Imprinting Prices</td>
-                            <td><span>$</span><span id="imprinting_prices"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="">Freight Cost</td>
-                            <td><span>$</span><span id="freight_cost"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="indiv-price-big"><strong>Total</strong></td>
-                            <td class="indiv-price-big"><strong><span>$</span><span
-                                    id="total_price"></span></strong></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <a class="col-md-2 btn btn-primary" role="button"
+                       href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">
+                        Buy
+                    </a>
+                    <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"
+                       href="{{ url_for('homeRoute.indiv_prod') }}">
+                        Quote
+                    </a>
                 </div>
             </div>
+            {#            <div class="row"><!-- select quantity -->#}
+            {#                <div class="panel panel-success">#}
+            {#                    <div class="panel-heading ">#}
+            {#                        Price Ranges#}
+            {#                    </div>#}
+            {#                    <div class="panel-body">#}
+            {#                        <div id="price_selection"></div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
     </div>
 
@@ -212,15 +244,25 @@
                     $('#setup_price').text(price_range[i].setup_cost);
                     $('#imprinting_prices').text(price_range[i].imprinting_prices);
                     $('#freight_cost').text(price_range[i].freight_cost);
-                    if (val > 0) {
                     var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost).toFixed(2);
-                        } else {
-                        var total = 0;
-                    }
                     $('#total_price').text(total);
                     break;
                 }
             }
+        }
+        function init_price_selection(id) {
+            var parent = $("#" + id);
+            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
+            for (i = 0; i < price_range.length; i++) {
+                parent.find("tbody").append('<tr group="price_group" onclick="switch_group(\'price_group\',this)"><td ><span name="price_base">' + price_range[i].quantity_from + '</span> - ' + price_range[i].quantity_to + '</td>	<td>' + price_range[i].unit_price + '</td><td>' + price_range[i].setup_cost + '</td><td>' + price_range[i].imprinting_prices + '</td><td>' + price_range[i].freight_cost + '</td></tr>');
+            }
+            parent.append('</tbody></table>');
+        }
+        function switch_group(group, active) {
+            $("[group='" + group + "']").removeClass('success');
+            $(active).addClass('success');
+            $("#input_qty").val(parseInt($(active).find("[name=price_base]").text()));
+            refreshPrice();
         }
 
         var el = $("#switch-offColor").bootstrapSwitch();
@@ -273,6 +315,7 @@
         });
 
         refreshPrice();
+        init_price_selection('price_selection')
 
 
     </script>

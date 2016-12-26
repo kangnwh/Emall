@@ -10,6 +10,7 @@ from flask_bootstrap import Bootstrap
 from webapp.viewrouting.home.routing import homeRoute
 from webapp.viewrouting.user.routing import userRoute
 from webapp.viewrouting.admin.routing import adminRoute
+from webapp.viewrouting.order.routing import orderRoute
 from webapp.common import get_host_info
 #Models
 from webapp.Models.db_basic import Session
@@ -27,7 +28,8 @@ login_manager.anonymous_user = AnonymousUser
 Report_Modules={
     (homeRoute, ''),
     (userRoute,'/user'),
-    (adminRoute,'/admin')
+    (adminRoute,'/admin'),
+    (orderRoute,'/orders')
 }
 
 

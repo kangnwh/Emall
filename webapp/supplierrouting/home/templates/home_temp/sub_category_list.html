@@ -5,11 +5,11 @@
 
 {% block undersidebar %}
 
-{#    <div class="panel panel-success">#}
-{#        <div class="panel-heading ">#}
-{#            <input id="switch-offColor" type="checkbox" data-off-color="warning"#}
-{#                   data-label-text="Show Logo">#}
-{#        </div>#}
+    <div class="panel panel-success">
+        <div class="panel-heading ">
+            <input id="switch-offColor" type="checkbox" data-off-color="warning"
+                   data-label-text="Show Logo">
+        </div>
 {#        <div class="panel-body">#}
 {#            <div class="col-md-6">#}
 {#                <div class="panel panel-primary invisible " id="control-logo-processed" style="cursor: pointer;"#}
@@ -33,7 +33,7 @@
 {#                </div>#}
 {#            </div>#}
 {#        </div>#}
-{#    </div>#}
+    </div>
 {% endblock %}
 {% block page %}
 
@@ -47,13 +47,13 @@
         {% endif %}
     </div>
     {{ pagination.links }}
-{#    <div id="update-prod-win" class="iziModal" data-izimodal-title="Update Production">#}
-{##}
-{#    </div>#}
-{##}
-{#    <div id="show-prod-win" class="iziModal" data-izimodal-title="Production Detail">#}
-{##}
-{#    </div>#}
+    <div id="update-prod-win" class="iziModal" data-izimodal-title="Update Production">
+
+    </div>
+
+    <div id="show-prod-win" class="iziModal" data-izimodal-title="Production Detail">
+
+    </div>
 {% endblock %}
 
 {% block scripts %}
@@ -63,24 +63,24 @@
         $(function () {
 
         });
-{#        function onUpdateProd(prod_id) {#}
-{##}
-{#            new $.Zebra_Dialog('', {#}
-{#                source: {#}
-{#                    'iframe': {#}
-{#                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,#}
-{#                        'height': 600#}
-{#                    }#}
-{#                },#}
-{#                position: ['center', 'top + 5'],#}
-{#                width: 1200,#}
-{#                title: 'Production Information',#}
-{#                buttons:[],#}
-{#                'onClose': function () {#}
-{#                    location.reload();#}
-{#                }#}
-{#            });#}
-{#        }#}
+        function onUpdateProd(prod_id) {
+
+            new $.Zebra_Dialog('', {
+                source: {
+                    'iframe': {
+                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,
+                        'height': 600
+                    }
+                },
+                position: ['center', 'top + 5'],
+                width: 1200,
+                title: 'Production Information',
+                buttons:[],
+                'onClose': function () {
+                    location.reload();
+                }
+            });
+        }
         function onShowProd(prod_id) {
             new $.Zebra_Dialog('', {
                 source: {

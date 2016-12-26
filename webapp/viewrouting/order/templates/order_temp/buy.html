@@ -1,0 +1,274 @@
+{% extends "non_nav_base.html" %}
+{% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
+    <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+
+{% endblock %}
+
+{% block page %}
+    <form action="{{ url_for("orderRoute.create_order") }}" method="post">
+    {{ user_order_form.hidden_tag() }}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12 middle-line"><h1>{{ this_prod.prod_name }}<small>({{ this_prod.prod_sub_cat.prod_cat_sub_name }})</small></h1>
+                    {#                    <div class=" right-line"><kbd>Prod ID:{{ this_prod.prod_id }}</kbd></div>#}
+                </div>
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <img src="{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}"
+                             alt="{{ this_prod.prod_name }}" class="col-md-2 img-responsive material_img_box ">
+                    </div>
+                    <div class="col-md-9">
+
+                        {{ input_helper("invisible",user_order_form.prod_id,default_value=this_prod.prod_id) }}
+                        {{ input_helper("invisible",user_order_form.supplier_id,default_value=this_prod.supplier_id) }}
+                        {{ readonly_input_helper("col-md-6",user_order_form.prod_name,input_class="form-control",default_value = this_prod.prod_name) }}
+                        {{ readonly_input_helper("col-md-6",user_order_form.lead_time,input_class="form-control ",default_value = this_prod.lead_time) }}
+                        {{ input_helper("col-md-6",user_order_form.prod_size,input_class="form-control ",input_comment = this_prod.prod_size) }}
+                        {{ input_helper("col-md-6",user_order_form.imprint_info,input_class="form-control",input_comment = this_prod.imprint_size) }}
+                        {{ input_helper("col-md-6",user_order_form.colors,input_class="form-control",input_comment = this_prod.colors) }}
+                        {{ input_helper("col-md-6",user_order_form.user_comments,input_class="form-control",input_comment = "Comments you want supplier to know") }}
+
+                        {#                        {{ input_helper("invisible",user_order_form.prod_quantity) }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.unit_price,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.imprinting_prices,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.setup_cost,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.freight_cost,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.total_price,input_class="form-control ") }}#}
+                    </div>
+
+                </div>
+
+                <div id="price_detail" class="row well"><!-- price range -->
+                    <div class="row">
+                        <div class="col-md-7">
+{#                            <div class="row">#}
+{#                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>#}
+{#                            </div>#}
+                            <div class="row" style="padding-top: 30px;">
+
+                                <div class="col-md-12">
+                                    <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                           data-slider-max="20000"
+                                           data-slider-step="1" data-slider-value="14"/>
+                                </div>
+                                <div class="col-md-3">
+                                    {{ user_order_form.prod_quantity.label() }}
+                                    <input id="prod_quantity" min="1" name="prod_quantity" class="form-control "
+                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                                </div>
+
+                                {#                           {{ input_helper("col-md-3",user_order_form.prod_quantity,input_class="form-control ") }}#}
+
+                                <div class="col-md-12"><!-- select quantity -->
+{#                                    <div class="panel panel-success">#}
+{#                                        <div class="panel-heading ">#}
+{#                                            Price Ranges#}
+{#                                        </div>#}
+                                        <div class="panel-body">
+                                            <div id="price_selection"></div>
+                                        </div>
+{#                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-4 ">
+                            <table class="table table-hover text-right">
+                                <thead>
+                                <tr>
+                                    <th class="indiv-price-big col-md-5 ">Unit Price</th>
+
+                                    <th class="one-line col-md-4">
+                                        <span>$</span>{{ user_order_form.unit_price(readonly=1,class="form-control",style="display:inline;") }}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="">Setup</td>
+
+                                    <td class="one-line">
+                                        <span>$</span>{{ user_order_form.setup_cost(readonly=1,class="form-control",style="display:inline;") }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td class="one-line">
+                                        <span>$</span>{{ user_order_form.imprinting_prices(readonly=1,class="form-control",style="display:inline;") }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td class="one-line">
+                                        <span>$</span>{{ user_order_form.freight_cost(readonly=1,class="form-control",style="display:inline;") }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                    <td class="one-line">
+                                        <span>$</span>{{ user_order_form.total_price(readonly=1,class="form-control",style="display:inline;") }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {{ bool_input_helper('col-md-4',user_order_form.is_used_points,func='function (event, state) {
+                        if (state) {
+                            $("#used_points").attr("readonly",false);
+                        } else {
+                            $("#used_points").attr("readonly",true);
+                        }
+                    }'|safe) }}
+                {{ readonly_input_helper('col-md-4',user_order_form.used_points,input_class="form-control col-md-3",input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
+                </div>
+
+
+                <button class="col-md-3 btn btn-primary" type="submit">Go</button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+
+        {#        function change_logo_choice(state) {#}
+        {#            var processed = $("#control-logo-processed");#}
+        {#            var original = $("#control-logo-original");#}
+        {#            if (state) {#}
+        {#                processed.removeClass('invisible');#}
+        {#                original.removeClass('invisible');#}
+        {#                if (processed.hasClass('panel-primary')) {#}
+        {#                    $("[name='img-logo-processed']").removeClass('invisible');#}
+        {#                    $("[name='img-logo-original']").addClass('invisible');#}
+        {#                } else {#}
+        {#                    console.log('original');#}
+        {#                    $("[name='img-logo-original']").removeClass('invisible');#}
+        {#                    $("[name='img-logo-processed']").addClass('invisible');#}
+        {#                }#}
+        {#            } else {#}
+        {#                $("[name='img-logo-processed']").addClass('invisible');#}
+        {#                $("[name='img-logo-original']").addClass('invisible');#}
+        {#                processed.addClass('invisible');#}
+        {#                original.addClass('invisible');#}
+        {#            }#}
+        {#        }#}
+        {#        function switch_logo(active, inactive) {#}
+        {#            $("#" + active).removeClass('panel-default');#}
+        {#            $("#" + active).addClass('panel-primary');#}
+        {##}
+        {#            $("#" + inactive).removeClass('panel-primary');#}
+        {#            $("#" + inactive).addClass('panel-default');#}
+        {##}
+        {#            change_logo_choice(true);#}
+        {#        }#}
+
+        function qtyChange(input) {
+            var val = $(input).val();
+            slider_block.slider('setValue', parseInt(val));
+            refreshPrice();
+        }
+
+        function refreshPrice() {
+            var val = parseInt(input_qty.val());
+            slider_block.slider('setValue', val);
+            if (val > price_range[price_range.length - 1].quantity_to) {
+                $('#unit_price').val(price_range[price_range.length - 1].unit_price);
+                $('#setup_price').val(price_range[price_range.length - 1].setup_cost);
+                $('#imprinting_prices').val(price_range[price_range.length - 1].imprinting_prices);
+                $('#freight_cost').val(price_range[price_range.length - 1].freight_cost);
+                var total = price_range[price_range.length - 1].unit_price * val + price_range[price_range.length - 1].setup_cost + price_range[price_range.length - 1].imprinting_prices + price_range[price_range.length - 1].freight_cost;
+                $('#total_price').val(total);
+                return;
+            }
+            for (i = 0; i < price_range.length; i++) {
+                if (val >= price_range[i].quantity_from && val <= price_range[i].quantity_to) {
+                    $('#unit_price').val(price_range[i].unit_price);
+                    $('#setup_cost').val(price_range[i].setup_cost);
+                    $('#imprinting_prices').val(price_range[i].imprinting_prices);
+                    $('#freight_cost').val(price_range[i].freight_cost);
+                    var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost).toFixed(2);
+                    $('#total_price').val(total);
+                    break;
+                }
+            }
+        }
+        function init_price_selection(id) {
+            var parent = $("#" + id);
+            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Quantity Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
+            for (i = 0; i < price_range.length; i++) {
+                parent.find("tbody").append('<tr group="price_group" onclick="switch_group(\'price_group\',this)"><td ><span name="price_base">' + price_range[i].quantity_from + '</span> - ' + price_range[i].quantity_to + '</td>	<td>' + price_range[i].unit_price + '</td><td>' + price_range[i].setup_cost + '</td><td>' + price_range[i].imprinting_prices + '</td><td>' + price_range[i].freight_cost + '</td></tr>');
+            }
+            parent.append('</tbody></table>');
+        }
+        function switch_group(group, active) {
+            $("[group='" + group + "']").removeClass('success');
+            $(active).addClass('success');
+            input_qty.val(parseInt($(active).find("[name=price_base]").text()));
+            refreshPrice();
+        }
+
+        {#        var el = $("#switch-offColor").bootstrapSwitch();#}
+        {#        el.bootstrapSwitch('state', false);#}
+        {#        el.on('switchChange.bootstrapSwitch', function (event, state) {#}
+        {#            change_logo_choice(state);#}
+        {#        });#}
+
+        var price_range = {{ this_prod.v_price_ranges[0].to_json() }};
+        var max = price_range[price_range.length - 1].quantity_to * 2;
+        if (max <= 0) {
+            max = 9999999
+        }
+        var min = price_range[0].quantity_from;
+
+        //init quantity min and max attr
+        var input_qty = $("#prod_quantity");
+        input_qty.attr('min', min);
+        input_qty.attr('max', max);
+        input_qty.val(price_range[0].quantity_to);
+        //init slider block
+
+        slider_block = $("#ex8").slider({
+            tooltip: 'always',
+            max: max,
+            min: min,
+            value: parseInt(price_range[0].quantity_to)
+        });
+        $("#ex8").on("slide", function (slideEvt) {
+            input_qty.val(slideEvt.value);
+            refreshPrice();
+
+        });
+        $("#ex8").on("slideStop", function (slideEvt) {
+            input_qty.val(slideEvt.value);
+            refreshPrice();
+        });
+
+        var lightslider = $('#image-gallery').lightSlider({
+            gallery: true,
+            item: 1,
+            thumbItem: 9,
+            slideMargin: 0,
+            speed: 500,
+            auto: true,
+            loop: true,
+            onSliderLoad: function () {
+                $('#image-gallery').removeClass('cS-hidden');
+            }
+        });
+
+        refreshPrice();
+        init_price_selection('price_selection')
+
+
+    </script>
+{% endblock %}
