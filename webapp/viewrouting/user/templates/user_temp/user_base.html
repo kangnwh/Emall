@@ -29,6 +29,8 @@
                 <li class="btn btn-warning">
                     <a  href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a>
                 </li>
+                <li {% if 2 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_management') }}">Account Management</a></li>
                 <li {% if active_page == 'change_password'  %} class="active"{% endif %}>
                     <a href="{{ url_for('userRoute.change_password') }}">Change Password</a>
                 </li>
