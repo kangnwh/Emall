@@ -8,9 +8,7 @@ from webapp.Models.user import User
 from webapp.Models.db_basic import Session
 from webapp.Models.order_system import Order_system
 from webapp.common import generate_md5
-from flask_login import current_user,login_required
-#import hashlib
-from flask_login import login_user,logout_user,login_required
+from flask_login import current_user,login_user,logout_user,login_required
 #CONFIG
 import webapp.config.customer_config as customer_config
 

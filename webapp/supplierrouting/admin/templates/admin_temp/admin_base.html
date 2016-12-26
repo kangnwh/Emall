@@ -56,12 +56,16 @@
             <ul class="nav nav-pills nav-stacked" role="tablist">
                 <li class="btn btn-warning">
                     <a href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
-                <li {% if 1 == active_page %} class="active"{% endif %}>
+                <li {% if active_page=='dashboard' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
-                <li {% if 2 == active_page %} class="active"{% endif %}>
+                <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.update_supplier') }}">Account Management</a></li>
-                <li {% if 3 == active_page %} class="active"{% endif %}>
+                <li {% if active_page=='publish' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.publish_prod') }}">Publish Prod</a></li>
+                <li {% if active_page=='orders' %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_orders',type='finished') }}">Orders</a></li>
+                 <li {% if active_page=='quotes' %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_quotes',type='finished') }}">Quotes</a></li>
                 <li>
                     <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
             </ul>

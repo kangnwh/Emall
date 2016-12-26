@@ -1,14 +1,19 @@
  # -*- coding: utf-8 -*-
-from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string
+from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string,abort
 from webapp.supplierrouting.user.forms.login_form import LoginForm,ChangePasswordForm,RegistrationForm
 
 # from webapp.Models.user import User
+from flask_paginate import Pagination
+from flask_sqlalchemy import BaseQuery
 from webapp.Models.supplier import Supplier
 from webapp.Models.db_basic import Session
 from webapp.common import generate_md5
-from flask_login import current_user,login_required
-#import hashlib
-from flask_login import login_user,logout_user,login_required
+from flask_login import current_user,login_user,logout_user,login_required
+#models
+from webapp.Models.order_system import Order_system
+#CONFIG
+import webapp.config.customer_config as customer_config
+
 
 userRoute = Blueprint('userRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -120,3 +125,65 @@ def change_password():
         flash(change_password_form.errors,category='danger')
 
     return render_template('user_temp/change_password.html', form=change_password_form)
+
+@userRoute.route("/user_orders/<type>",methods=["GET"])
+@login_required
+def user_orders(type):
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+    order_list_base = BaseQuery(Order_system,s).filter_by(supplier_id=current_user.supplier_id)
+    if type == 'finished':
+        order_list = order_list_base.filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+        #s.query(Order_system).filter_by(order_stat=5)
+    elif type=='ongoing':
+        order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
+    elif type=='canceled':
+        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+    else:
+        abort(404)
+
+    pagination = Pagination(page=page, total=order_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Order List',
+                            per_page=customer_config.USER_ORDER_PER_PAGE)
+
+    return render_template('user_temp/my_orders.html',order_active=type,
+                           order_list=order_list,
+                           pagination=pagination)
+
+@userRoute.route("/user_quotes/<type>",methods=["GET"])
+@login_required
+def user_quotes(type):
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+
+    if type == 'finished':
+        order_list = BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+        #s.query(Order_system).filter_by(order_stat=5)
+    elif type=='ongoing':
+        order_list = BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
+    elif type=='canceled':
+        order_list = BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+    else:
+        abort(404)
+
+    pagination = Pagination(page=page, total=order_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Order List',
+                            per_page=customer_config.USER_ORDER_PER_PAGE)
+
+    return render_template('user_temp/my_orders.html',order_active=type,
+                           order_list=order_list,
+                           pagination=pagination)
