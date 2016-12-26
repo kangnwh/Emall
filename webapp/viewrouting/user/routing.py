@@ -1,5 +1,5 @@
  # -*- coding: utf-8 -*-
-from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string,abort
+from flask import Blueprint,request,render_template,redirect,url_for,flash,render_template_string,jsonify,abort
 from webapp.viewrouting.user.forms.login_form import LoginForm,ChangePasswordForm,RegistrationForm
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm
 from flask_paginate import Pagination
@@ -19,6 +19,7 @@ userRoute = Blueprint('userRoute', __name__,
 
 ##TODO customer views for login and registration https://github.com/flask-admin/flask-admin/blob/master/examples/auth-flask-login/app.py
 @userRoute.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     return render_template('user_temp/index.html')
 
@@ -128,6 +129,34 @@ def change_password():
 
     return render_template('user_temp/change_password.html', form=change_password_form)
 
+@userRoute.route('/user_management', methods=['GET', 'POST'])
+@login_required
+def user_management():
+    user_id=current_user.user_id
+    s = Session()
+    user_list = s.query(User).filter_by(user_id=user_id).first()
+    s.close
+    return render_template('user_temp/user_management.html',
+                           user_list=user_list)
+
+@userRoute.route('/update_user', methods=['GET', 'POST'])
+@login_required
+def update_user():
+    user_id = current_user.user_id
+    is_subscribe=request.form.get('is_subscribe')
+    if is_subscribe:
+        s = Session()
+        s.query(User).filter_by(user_id=user_id).update(
+                {
+                    "is_subscribe": is_subscribe
+                }
+        )
+        s.commit()
+        s.close()
+        return jsonify(result='succ')
+    else:
+        flash('No Valid information for update user',category='danger')
+        return jsonify(result='failed')
 @userRoute.route("/user_orders/<type>",methods=["GET"])
 @login_required
 def user_orders(type):
