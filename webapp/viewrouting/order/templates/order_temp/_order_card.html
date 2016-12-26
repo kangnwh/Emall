@@ -1,0 +1,19 @@
+{% macro material_card(order) -%}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ order.order_create_dt.date() }}  Order ID:{{ order.client_order_id }}  (Supplier:{{ order.supplier.supplier_name }})</h3>
+    </div>
+    <div class="panel-body">
+{#        <div class="row">#}
+        <div class="col-md-3">
+            <img class="img-responsive img-50"
+                                 src="{{ url_for("static",filename=("img/products/"+ order.prod_info.cover_img)) }}"
+                                 ></div>
+            <div class="col-md-2"><h4>{{ order.prod_name }}</h4></div>
+            <div class="col-md-2"><h4>{{ order.prod_quantity }}</h4></div>
+            <div class="col-md-2"><h4>${{ order.total_price }}</h4></div>
+            <div class="col-md-3"><h4>{{ config.get('ORDER_STATUS_MAP')[order.order_stat] }}</h4></div>
+{#        </div>#}
+    </div>
+</div>
+{% endmacro %}

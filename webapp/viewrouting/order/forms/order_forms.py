@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField,IntegerField,DecimalField,DateField
+from wtforms import StringField,IntegerField,DecimalField,DateField,BooleanField
 from wtforms.validators import DataRequired
 from wtforms import validators
 
@@ -23,7 +23,7 @@ class UserOrderForm(Form):
     freight_cost = DecimalField("Freight Cost",validators=[DataRequired()]) #user
     total_price = DecimalField("Total Price",validators=[DataRequired()]) #user
     #need_pay_supplier should be calculated
-    is_used_points = IntegerField("Do you want to use your points?")
+    is_used_points = BooleanField("Do you want to use your points?")
     used_points = IntegerField("How many to use?")
 
     #order flag

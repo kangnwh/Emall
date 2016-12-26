@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import webapp
 import os
 
@@ -8,6 +9,7 @@ USER_LOGO_UPLOAD_PATH = "{base_dir}{sep}static{sep}img{sep}user_logos{sep}".form
 PROD_NUM_PER_PAGE = 9
 USER_NUM_PER_PAGE = 10
 FEEDBACK_NUM_PER_PAGE = 10
+USER_ORDER_PER_PAGE = 5
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
 
@@ -19,3 +21,19 @@ MAIL_USE_TLS = False
 MAIL_USERNAME = 'emalltest'
 MAIL_DEFAULT_SENDER = 'emalltest@tom.com'
 MAIL_PASSWORD = 'passw0rd'
+
+# user discount rate
+USER_POINT_DISCOUNT_RATE = 0.01
+#Reminders should be sent %d days before end date
+REMINDER_PRE_DAYS = 3
+
+ORDER_STATUS_MAP={
+    0:'default',
+    1:'User Submitted',
+    2:'Supplier Checked',
+    3:'Product On The Way',
+    4:'User Feedback Submitted',
+    5:'Finished',
+    6:'User Canceled',
+    7:'Supplier Canceled'
+}

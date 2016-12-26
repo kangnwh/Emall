@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, flash, request,redirect,render_template,url_for
+from flask import Blueprint, flash, request,redirect,render_template,url_for,abort
 from flask_login import login_required,current_user
 
 from webapp.Models.db_basic import Session
@@ -36,8 +36,8 @@ def create_order():
         order.total_price = user_order_form.total_price.data
 
         order.need_pay_supplier = 0 #TODO need complex logic to get this value
-        order.is_used_points = False
-        order.used_points = False
+        order.is_used_points = 1 if order.is_used_points else 0
+        order.used_points = order.used_points
         order.user_comments = user_order_form.user_comments.data
         order.order_stat = 1 # stands for user submitting
         order.valid_flg = 1
@@ -48,7 +48,7 @@ def create_order():
         s.close()
 
         flash("Order Submitted","success")
-        return render_template("reload_parent.html")#reload_parent.html
+        return redirect(url_for("userRoute.user_orders",type='ongoing'))#render_template("reload_parent.html")#reload_parent.html
     elif request.method == 'POST':
         flash(user_order_form.errors, category='danger')
         return redirect(url_for("orderRoute.create_order",prod_id=request.args.get('prod_id', 1)))
@@ -60,13 +60,17 @@ def create_order():
                                this_prod=this_prod,
                                user_order_form = user_order_form) , s.close()
 
-@orderRoute.route("/user_orders/<type>",methods=["GET"])
-@login_required
-def user_orders(type):
-    s = Session()
-    if type == 'finished':
-        order_list = s.query(Order_system).filter(order_stat)
-    elif type=='ongoing':
-        pass
-    else:
-        pass
+# @orderRoute.route("/user_orders/<type>",methods=["GET"])
+# @login_required
+# def user_orders(type):
+#     s = Session()
+#     if type == 'finished':
+#         order_list = s.query(Order_system).filter_by(order_stat=5)
+#     elif type=='ongoing':
+#         order_list = s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
+#     elif type=='canceled':
+#         order_list = s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+#     else:
+#         abort(404)
+
+

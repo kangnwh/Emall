@@ -311,7 +311,7 @@ used_points    int not null default 0,
 supplier_target_dt datetime,
 user_comments varchar(500),
 supplier_comments varchar(500),
-order_stat int not null default 0, #0为默认，1为客户已经提交给供应商，2为供应商已经发货给客户，3为客户已提供反馈，4为关闭订单
+order_stat int not null default 0, #0为默认，1为客户已经提交给供应商，2为供应商接单，3为供应商已经发货给客户，4为客户已提供反馈，5为关闭订单,6为用户取消订单，7为供应商取消订单
 valid_flg      int not null DEFAULT 0,
 order_create_dt datetime,
 primary key(order_id),

@@ -125,6 +125,10 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
     height: 100px;
     width: 100px;
 }
+.img-50 {
+    height: 50px;
+    width: 50px;
+}
 
 .pagination-page-info {
     padding: .6em;
