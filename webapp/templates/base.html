@@ -107,9 +107,8 @@
                                    data-toggle="dropdown">Hello {{ current_user.user_name }} ! <span
                                         class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url_for("userRoute.user_orders",type='finished') }}">My Orders</a></li>
-                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>
-
+{#                                    <li><a href="{{ url_for("userRoute.user_orders",type='finished') }}">My Orders</a></li>#}
+{#                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>#}
                                     {% if current_user.is_administrator %}
                                         <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>
                                     {% else %}
