@@ -1,0 +1,62 @@
+{% extends "user_temp/user_base.html" %}
+{% set active_page = 2 %}
+{% block title %}Account Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Credit points</th>
+            <th>Is Subscribe</th>
+            <th>Is Valid</th>
+            <th>Is Admin</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                    <td>{{ user_list.user_id }}</td>
+                    <td>{{ user_list.user_name }}</td>
+                    <td>{{ user_list.email }}</td>
+                    <td>{{ user_list.credit_points }}</td>
+                    <td><input type="checkbox" id="is_subs_{{ user_list.user_id }}"    {{ 'checked' if user_list.is_subscribe==1 }} ></td>
+                    <td><input type="checkbox" disabled   {{ 'checked' if user_list.valid_flg==1 }} ></td>
+                    <td><input type="checkbox"  disabled {{ 'checked' if user_list.is_admin==1 }} ></td>
+                    <td>
+                        <button class="btn btn-primary"
+                               onclick='ajax_update_user_form("{{ user_list.user_name }}",{{ user_list.user_id }})'>Update</button>
+                    </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        function ajax_update_user_form(name, user_id ) {
+                is_subscribe=0;
+                if($('#is_subs_'+user_id).is(':checked')){is_subscribe =1;}
+                $.post("{{ url_for('userRoute.update_user') }}", {
+                    user_id: user_id,
+                    is_subscribe: is_subscribe
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+        }
+    </script>
+{% endblock scripts %}

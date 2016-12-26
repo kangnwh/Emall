@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "user_temp/user_base.html" %}
+{% set active_page = 1 %}
+{% block title %}User Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+{#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+{#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
 
-</body>
-</html>
+{% block page %}
+
+    <div class="list-group-item">
+
+      <h4><strong>This is Dashboard for admin console</strong></h4>
+      <ul>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              System isntallation demo, you can customize your installation steps.</li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Tag based permission control.
+          </li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Home Page/User Page
+          </li>
+          <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+              Admin Console</li>
+          <br>
+          <li class="list-group-item active">
+              <strong>More detail documents is coming...</strong>
+          </li>
+      </ul>
+
+</div>
+<br>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+		$(function() {
+			  $("#slider").easySlider({});
+		  });
+	</script>
+{% endblock scripts %}

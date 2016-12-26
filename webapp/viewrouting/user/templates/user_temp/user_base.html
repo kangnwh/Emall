@@ -1,0 +1,66 @@
+{% extends "headers.html" %}
+
+{% block mainpage %}
+    <div class="bs-docs-header" tabindex="-1">
+        <div class="jumbotron no-padding-top no-padding-bottom">
+            <div class="container">
+                <h1>{{ config.get('APP_NAME','Reprot.py') }} User Console</h1>
+                <p>User Console for Emall !</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        <ul class='list-unstyled'>
+                            <li>{{ message }}</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {#        {% include('sidebar.html') %}#}
+        <div class="col-md-3">
+
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+
+                <li class="btn btn-warning">
+                    <a  href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
+                <li {% if 1 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.index') }}">Dashboard</a></li>
+                <li {% if 2 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_management') }}">User Account Management</a></li>
+                <li {% if 3 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_management') }}">My Quote Management</a></li>
+                <li {% if 4 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('userRoute.user_management') }}">My Order Management</a></li>
+            </ul>
+
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+
+            </div>
+            {% block page %}{% endblock %}
+        </div>
+
+    </div>
+    {% block footer %}
+        {% include("footer.html") %}
+    {% endblock footer %}
+    </div>
+{% endblock mainpage %}
+
+{% block scripts %}
+    <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
+    <script>
+        {% block script_code %}{% endblock %}
+    </script>
+{% endblock scripts %}
+
+

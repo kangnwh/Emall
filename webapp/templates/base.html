@@ -112,6 +112,8 @@
 
                                     {% if current_user.is_administrator %}
                                         <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>
+                                    {% else %}
+                                        <li><a href="{{ url_for('userRoute.index') }}">User Console</a></li>
                                     {% endif %}
 
                                     <li class="divider"></li>
