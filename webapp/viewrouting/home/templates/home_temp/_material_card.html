@@ -17,27 +17,28 @@
                     </div>
                 </div>
                 <p class="one-line"><strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}</p>
-                {% if current_user.is_administrator %}
+{#                {% if current_user.is_administrator %}#}
                     <div class="btn-group btn-group-sm">
-                        <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">
+                        <a class="btn btn-success" role="button" href ="{{ url_for('homeRoute.indiv_prod',prod_id=indiv_prod_info.prod_id) }}" target="_blank">
+{#                            onclick="onShowProd({{ indiv_prod_info.prod_id }})"#}
                             Detail
                         </a>
 {#                        <a class="btn btn-primary " role="button"#}
-{#                                href="{{ url_for('adminRoute.update_prod') }}"#}
+{#                                onclick="onUpdateProd({{ indiv_prod_info.prod_id }})"#}
 {#                        >Update Info#}
 {#                        </a>#}
 {#                        <a href="#" class="btn btn-danger " role="button" onclick='ajax_delete_prod_form("{{ indiv_prod_info.prod_name }}",{{ indiv_prod_info.prod_id }})'>#}
 {#                            Delete#}
 {#                        </a>#}
                     </div>
-                {% else %}
-                    <p>
-                        <a class="btn btn-success" role="button" href="{{ url_for('homeRoute.indiv_prod') }}">
-                            Detail
-                        </a>
-
-                    </p>
-                {% endif %}
+{#                {% else %}#}
+{#                    <p>#}
+{#                        <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">#}
+{#                            Detail#}
+{#                        </a>#}
+{##}
+{#                    </p>#}
+{#                {% endif %}#}
             </div>
         </div>
     </div>

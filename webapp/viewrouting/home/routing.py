@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Blueprint, flash, request
-from flask import render_template
+from flask import Blueprint, flash, request, render_template
 from flask_login import current_user, login_required
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
@@ -12,7 +11,6 @@ from werkzeug import secure_filename
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
-from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
@@ -114,9 +112,9 @@ def indiv_prod():
     s = Session()
     prod_id = request.args.get('prod_id', 1)
     this_prod = s.query(Prod_info).filter_by(prod_id=prod_id).first()
-    s.close
+    # s.close()
     return render_template('home_temp/indiv_prod.html',
-                           this_prod=this_prod)
+                           this_prod=this_prod) , s.close()
 
 @homeRoute.route('/upload_user_logo', methods=['GET','POST'])
 @login_required
@@ -144,3 +142,20 @@ def sendtest(to):
     from webapp.common.mails import send_email_indiv
     send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
     render_template("home_temp/index.html")
+
+# @homeRoute.route("/order",methods=["GET"])
+# @login_required
+# def order():
+#     user_order_form = UserOrderForm()
+#     if user_order_form.validate_on_submit():
+#         pass
+#     elif request.method == 'POST':
+#         flash(user_order_form.errors, category='danger')
+#         return redirect(url_for("homeRoute.index"))
+#     else:
+#         s = Session()
+#         prod_id = request.args.get('prod_id', 1)
+#         this_prod = s.query(Prod_info).filter_by(prod_id=prod_id).first()
+#         return render_template("home_temp/buy.html",
+#                                this_prod=this_prod,
+#                                user_order_form = user_order_form) , s.close()
