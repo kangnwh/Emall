@@ -1,0 +1,22 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_order_card.html" import material_card %}
+{% set active_page = 'all_orders' %}
+
+{% block page %}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if order_active == 'ongoing' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.all_orders",type='ongoing') }}">Ongoing Orders</a></li>
+        <li role="presentation" {% if order_active == 'finished' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.all_orders",type='finished') }}">Finished Orders</a></li>
+        <li role="presentation" {% if order_active == 'canceled' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.all_orders",type='canceled') }}">Canceled Orders</a></li>
+    </ul>
+    {% block orderlist %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock scripts %}

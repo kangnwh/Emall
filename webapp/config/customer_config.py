@@ -9,7 +9,7 @@ USER_LOGO_UPLOAD_PATH = "{base_dir}{sep}static{sep}img{sep}user_logos{sep}".form
 PROD_NUM_PER_PAGE = 9
 USER_NUM_PER_PAGE = 20
 FEEDBACK_NUM_PER_PAGE = 10
-USER_ORDER_PER_PAGE = 5
+USER_ORDER_PER_PAGE = 20
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
 

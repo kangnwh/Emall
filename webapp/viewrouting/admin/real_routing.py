@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, url_for, flash, request
-from flask import render_template, redirect,jsonify
+from flask import render_template, redirect,jsonify,abort
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
 
@@ -12,6 +12,7 @@ from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
+from webapp.Models.order_system import Order_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
@@ -828,3 +829,33 @@ def _delete_rebate():
         s.close()
 
     return redirect(url_for('adminRoute.manage_supplier_rebate_rate'))
+
+@admin_check
+def _all_orders(type):
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+    order_list_base = BaseQuery(Order_system,s)
+    if type == 'finished':
+        order_list = order_list_base.filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+        #s.query(Order_system).filter_by(order_stat=5)
+    elif type=='ongoing':
+        order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
+    elif type=='canceled':
+        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+    else:
+        abort(404)
+
+    pagination = Pagination(page=page, total=order_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Order List',
+                            per_page=customer_config.USER_ORDER_PER_PAGE)
+
+    return render_template('admin_temp/all_orders.html',order_active=type,
+                           order_list=order_list,
+                           pagination=pagination)

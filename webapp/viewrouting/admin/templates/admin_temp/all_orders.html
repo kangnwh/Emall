@@ -1,0 +1,19 @@
+{% extends "admin_temp/all_order_base.html" %}
+{% set active_page = 5 %}
+
+{% block orderlist %}
+
+    <div class="list-group">
+
+        {% if order_list.total >0 %}
+            {{ pagination.info }}
+            {% for order in order_list.items %}
+                {{ material_card(order) }}
+            {% endfor %}
+            {{ pagination.links }}
+        {% else %}
+            <h3>You do not have any orders</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

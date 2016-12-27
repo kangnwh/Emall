@@ -39,6 +39,8 @@
                 <li {% if active_page == 'quotes' %} class="active"{% endif %}>
                     <a href="{{ url_for('userRoute.user_orders',type='finished') }}">My Quotes</a>
                 </li>
+                            <li>
+                    <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
             </ul>
 
         </div>

@@ -65,8 +65,8 @@
                 <li {% if 3 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Category Management</a></li>
                 </li>
-                <li {% if 5 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.spec_links') }}">Specialist Links</a>
+                <li {% if "all_orders" == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.all_orders',type='ongoing') }}">All Orders</a>
                 </li>
                 <li {% if 6 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.manage_profit_rate') }}">Manage Profit Rate</a>
@@ -74,6 +74,8 @@
                 <li {% if 7 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.manage_supplier_rebate_rate') }}">Manage Supplier Rebate Rate</a>
                 </li>
+                <li>
+                    <a href="{{ url_for('adminRoute.logout') }}">Logout</a></li>
             </ul>
 
         </div>
