@@ -1,19 +1,32 @@
 {% extends "user_temp/order_base.html" %}
-{% set active_page = 3 %}
+{% from "order_temp/_order_card.html" import order_card %}
 
 {% block orderlist %}
 
     <div class="list-group">
 
         {% if order_list.total >0 %}
-            {{ pagination.info }}
+{#            {{ pagination.info }}#}
             {% for order in order_list.items %}
-                {{ material_card(order) }}
+                {{ order_card(order) }}
             {% endfor %}
             {{ pagination.links }}
         {% else %}
             <h3>You do not have any orders</h3>
         {% endif %}
     </div>
-
+<script>
+function onShowOrder(client_order_id) {
+            new $.Zebra_Dialog('', {
+                source: {
+                    'iframe': {
+                        'src': '{{ url_for('orderRoute.show_one_order') }}' + '?client_order_id=' + client_order_id,
+                        'height':600
+                    }
+                },
+                position: ['center', 'top + 5'],
+                width: 1200
+            });
+        }
+</script>
 {% endblock %}

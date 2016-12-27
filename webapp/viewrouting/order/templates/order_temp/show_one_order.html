@@ -1,0 +1,213 @@
+{% extends "non_nav_base.html" %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
+    <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+
+{% endblock %}
+{% block page %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+{#            <div class="col-md-12 middle-line">#}
+                <h1 class="middle-line">{{ this_order.prod_name }}</h1>
+{#            </div>#}
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="{{ (url_for("static",filename=("img/products/"+ this_order.prod_info.cover_img))) }}"
+                         class="img-responsive ">
+
+                </div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Basic Information</div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                {#                        <thead>#}
+                                {#                        <tr>#}
+                                {#                            <th class="indiv-price-big col-md-7 ">Basic</th>#}
+                                {#                            <th class="indiv-price-big col-md-5">#}
+                                {#                                Information#}
+                                {#                            </th>#}
+                                {#                        </tr>#}
+                                {#                        </thead>#}
+                                <tbody>
+                                <tr>
+                                    <td>Supplier Name</td>
+                                    <td>{{ this_order.supplier.supplier_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Imprint Information</td>
+                                    <td>{{ this_order.imprint_info }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="">Colors</td>
+                                    <td>{{ this_order.colors }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lead Time</td>
+                                    <td>{{ this_order.lead_time }}</td>
+                                </tr>
+                                {% if this_order.is_used_points==1 %}
+                                    <tr>
+                                        <td>Use Points</td>
+                                        <td><span id="freight_cost">{{ this_order.used_points }}</span></td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>Target Date</td>
+                                    <td><span id="freight_cost">{{ this_order.supplier_target_dt }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Order Create Date</td>
+                                    <td><span id="freight_cost">{{ this_order.order_create_dt }}</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Price Information</div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                <tbody>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span
+                                            id="imprinting_prices">{{ this_order.imprinting_prices }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost">{{ this_order.freight_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Quantity</td>
+                                    <td><span id="freight_cost">{{ this_order.prod_quantity }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price">{{ this_order.total_price }}</span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="middle">
+                <h4>Order Status:</h4>
+                <nav>
+                    <ul class="pager">
+                        {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
+                        {% for (k,v) in config.get('ORDER_STATUS_MAP').items() %}
+                            {% if k<5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }} &rarr;</a></li>
+                            {% elif k==5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% elif k>5 and this_order.order_stat >5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        <script>
+                            $("#status_{{ this_order.order_stat }}").addClass("active btn-primary");
+                        </script>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">User Comments</div>
+                    <div class="panel-body">
+                        {{ this_order.user_comments }}
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Supplier Comments</div>
+                <div class="panel-body">
+                    {{ this_order.supplier_comments }}
+                </div>
+            </div>
+                        </div>
+
+            {#            <div id="price_detail" class="row well"><!-- price range -->#}
+            {#                <div class="row">#}
+            {#                    <div class="col-md-7">#}
+            {##}
+            {#                        <div class="row" style="padding-top: 30px;">#}
+            {##}
+            {#                            <div class="col-md-12">#}
+            {#                                <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"#}
+            {#                                       data-slider-max="20000"#}
+            {#                                       data-slider-step="1" data-slider-value="{{ this_order.prod_quantity }}"#}
+            {#                                       data-slider-enabled="false"/>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                    <div class="col-md-offset-1 col-md-4 ">#}
+            {#                        <table class="table table-hover text-right">#}
+            {#                            <thead>#}
+            {#                            <tr>#}
+            {#                                <th class="indiv-price-big col-md-7 ">Unit Price</th>#}
+            {#                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span#}
+            {#                                        id="unit_price">{{ this_order.unit_price }}</span>#}
+            {#                                </th>#}
+            {#                            </tr>#}
+            {#                            </thead>#}
+            {#                            <tbody>#}
+            {#                            <tr>#}
+            {#                                <td class="">Setup</td>#}
+            {#                                <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="">Imprinting Prices</td>#}
+            {#                                <td><span>$</span><span id="imprinting_prices">{{ this_order.imprinting_prices }}</span>#}
+            {#                                </td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="">Freight Cost</td>#}
+            {#                                <td><span>$</span><span id="freight_cost">{{ this_order.freight_cost }}</span></td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="indiv-price-big"><strong>Total</strong></td>#}
+            {#                                <td class="indiv-price-big"><strong><span>$</span><span#}
+            {#                                        id="total_price">{{ this_order.total_price }}</span></strong></td>#}
+            {#                            </tr>#}
+            {#                            </tbody>#}
+            {#                        </table>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+    </div>
+
+    <script>
+        slider_block = $("#ex8").slider({
+            tooltip: 'always',
+            max: {{ this_order.prod_quantity *2 }},
+            min: 0,
+            value: {{ this_order.prod_quantity }}
+        });
+    </script>
+{% endblock page %}

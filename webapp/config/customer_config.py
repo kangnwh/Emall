@@ -28,7 +28,7 @@ USER_POINT_DISCOUNT_RATE = 0.01
 REMINDER_PRE_DAYS = 3
 
 ORDER_STATUS_MAP={
-    0:'default',
+    #0:'default',
     1:'User Submitted',
     2:'Supplier Checked',
     3:'Product On The Way',

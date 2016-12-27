@@ -1,13 +1,13 @@
 {% extends "user_temp/order_base.html" %}
-
+{% from "order_temp/_order_card.html" import order_card %}
 {% block orderlist %}
 
     <div class="list-group">
 
         {% if order_list.total >0 %}
-            {{ pagination.info }}
+{#            {{ pagination.info }}#}
             {% for order in order_list.items %}
-                {{ material_card(order) }}
+                {{ order_card(order) }}
             {% endfor %}
             {{ pagination.links }}
         {% else %}

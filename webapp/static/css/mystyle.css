@@ -33,6 +33,12 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 .no-padding-bottom {
     padding-bottom: 0px;
 }
+.padding-5{
+    padding:5px;
+}
+.font-size-14{
+    font-size:14px;
+}
 
 .material-card {
     border-radius: 10px;
@@ -181,6 +187,10 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 .indiv-price-big{
     color:#CC3366 ;
     font-size: 20px;
+}
+
+.table{
+    margin-bottom: 0px;
 }
 
 .list-user-logo {

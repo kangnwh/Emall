@@ -12,6 +12,7 @@ from flask_bootstrap import Bootstrap
 from webapp.supplierrouting.home.routing import homeRoute
 from webapp.supplierrouting.admin.routing import supplierRoute
 from webapp.supplierrouting.user.routing import userRoute
+from webapp.supplierrouting.order.routing import orderRoute
 from webapp.common import get_host_info
 #Models
 from webapp.Models.db_basic import Session
@@ -29,7 +30,8 @@ login_manager.login_view="userRoute.register_login"
 Report_Modules={
     (supplierRoute, ''),
     (homeRoute,'/prod'),
-    (userRoute,'/supplier')
+    (userRoute,'/supplier'),
+    (orderRoute,'/order')
 }
 
 

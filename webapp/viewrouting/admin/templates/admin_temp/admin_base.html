@@ -1,28 +1,4 @@
 {% extends "headers.html" %}
-{##}
-{#{% block head %}#}
-{#    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>#}
-{#    <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">#}
-{#    {% block favicon %}#}
-{#        <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">#}
-{#    {% endblock %}#}
-{#    {% block link_ref %}#}
-{##}
-{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/font-awesome.min.css") }}">#}
-{#        <link rel="stylesheet" href="{{ url_for("static",filename="css/iziModal.min.css") }}">#}
-{#         <link rel="stylesheet" href="{{ url_for("static",filename="css/datepicker.min.css") }}">#}
-{##}
-{#    {% endblock %}#}
-{#    <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">#}
-{##}
-{#    <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>#}
-{#    <script src="{{ url_for("static",filename="js/bootstrap.min.js") }}"></script>#}
-{#    <script src="{{ url_for("static",filename="js/iziModal.min.js") }}"></script>#}
-{#    <script src="{{ url_for("static",filename="js/datepicker.min.js") }}"></script>#}
-{#    <script src="{{ url_for("static",filename="js/i18n/datepicker.en.js") }}"></script>#}
-{##}
-{##}
-{#{% endblock head %}#}
 
 {% block mainpage %}
     <div class="bs-docs-header" tabindex="-1">
@@ -81,9 +57,9 @@
         </div>
         <div class="col-md-9">
             <div class="row">
-
+                {% block page %}{% endblock %}
             </div>
-            {% block page %}{% endblock %}
+
         </div>
 
     </div>
