@@ -62,3 +62,53 @@ def create_order():
 
 
 
+@orderRoute.route("/show_one_order", methods=["GET", "POST"])
+@login_required
+def show_one_order():
+    s = Session()
+    client_order_id = request.args.get('client_order_id', -1)
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id).first()
+    if this_order:
+        return render_template('order_temp/show_one_order.html',
+                           this_order=this_order), s.close()
+    else:
+        flash("No order found with client_order_id:{id}".format(client_order_id),"warning")
+        return render_template("reload_parent.html")
+    # s.close()
+
+
+@orderRoute.route("/receive",methods=["GET"])
+@login_required
+def receive_order():
+    s = Session()
+    client_order_id = request.args.get('client_order_id', -1)
+    request_from = request.args.get('order_list', None)
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    if this_order.first().order_stat == 1:
+        this_order.update({
+            "order_stat":2
+        })
+        s.commit()
+        flash("You received order {id}, please deliver as soon as possible.".format(id=client_order_id),"success")
+        return redirect(url_for("userRoute.user_orders",type='ongoing')) if request_from else render_template("reload_parent.html") , s.close()
+    else:
+        flash("Cannot receive this order in this phase.","warning")
+        return redirect(url_for("orderRoute.show_one_order",client_order_id=request.args.get('client_order_id', -1))), s.close()
+
+@orderRoute.route("/deliver",methods=["GET"])
+@login_required
+def deliver():
+    s = Session()
+    client_order_id = request.args.get('client_order_id', -1)
+    request_from = request.args.get('order_list', None)
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    if this_order.first().order_stat == 2:
+        this_order.update({
+            "order_stat":3
+        })
+        s.commit()
+        flash("Order is now in delivering phase.".format(id=client_order_id),"success")
+        return redirect(url_for("userRoute.user_orders",type='ongoing')) if request_from else render_template("reload_parent.html") , s.close()
+    else:
+        flash("Cannot deliver this order in this phase.","warning")
+        return redirect(url_for("orderRoute.show_one_order",client_order_id=request.args.get('client_order_id', -1))), s.close()

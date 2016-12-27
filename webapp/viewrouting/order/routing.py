@@ -61,18 +61,23 @@ def create_order():
                                this_prod=this_prod,
                                user_order_form = user_order_form) , s.close()
 
-# @orderRoute.route("/user_orders/<type>",methods=["GET"])
-# @login_required
-# def user_orders(type):
-#     s = Session()
-#     if type == 'finished':
-#         order_list = s.query(Order_system).filter_by(order_stat=5)
-#     elif type=='ongoing':
-#         order_list = s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
-#     elif type=='canceled':
-#         order_list = s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
-#     else:
-#         abort(404)
+@orderRoute.route("/user_cancel",methods=["GET"])
+@login_required
+def user_cancel():
+    s = Session()
+    client_order_id = request.args.get('client_order_id', -1)
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    if this_order.first().order_stat == 1:
+        this_order.update({
+            "order_stat":6
+        })
+        s.commit()
+        return redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
+    else:
+        flash("Cannot cancel this order in this phase.","warning")
+        return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()
+
+
 
 @orderRoute.route("/show_one_order", methods=["GET", "POST"])
 @login_required
