@@ -67,12 +67,12 @@ def user_cancel():
     s = Session()
     client_order_id = request.args.get('client_order_id', -1)
     this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-    if this_order.first().order_stat == 1:
+    if this_order.first().order_stat == 1 or current_user.is_administrator:
         this_order.update({
             "order_stat":6
         })
         s.commit()
-        return redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
+        return redirect(url_for("adminRoute.user_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
     else:
         flash("Cannot cancel this order in this phase.","warning")
         return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()

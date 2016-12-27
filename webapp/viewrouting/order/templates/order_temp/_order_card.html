@@ -22,9 +22,9 @@
             <div class="col-md-3"><strong>Order Status:<br><span class="label label-info">{{ config.get('ORDER_STATUS_MAP')[order.order_stat] }}</span></strong></div>
 
             <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-xs" onclick="onShowOrder('{{ order.client_order_id }}')">Detail</button>
-                    {% if order.order_stat==1 %}
-                        <a href="{{ url_for("orderRoute.user_cancel",client_order_id=order.client_order_id) }}" class="btn btn-warning btn-xs">Cancel</a>
+                <button type="button" class="btn btn-default" onclick="onShowOrder('{{ order.client_order_id }}')">Detail</button>
+                    {% if (order.order_stat==1 or current_user.is_administrator) and order.order_stat<5 %}
+                        <a href="{{ url_for("orderRoute.user_cancel",client_order_id=order.client_order_id) }}" class="btn btn-default ">Cancel</a>
                     {% endif %}
             </div>
 
