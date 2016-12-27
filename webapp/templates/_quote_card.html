@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
 {#        <div class="row">#}
-        <div class="col-md-3">
+        <div class="col-md-2">
             <img class="img-responsive img-50"
                                  src="{{ url_for("static",filename=("img/products/"+ quote.prod_info.cover_img)) }}"
                                  ></div>
@@ -13,6 +13,7 @@
             <div class="col-md-2"><h4>{{ quote.prod_quantity }}</h4></div>
             <div class="col-md-2"><h4>User Perfer Total:${{ quote.user_perfer_total }}</h4></div>
             <div class="col-md-2"><h4>Supplier Perfer Total:${{ quote.supplier_perfer_total }}</h4></div>
+            <div class="col-md-2"><h4>{{ config.get('QUOTE_STATUS_MAP')[quote.is_return_flg] }}</h4></div>
 {#        </div>#}
     </div>
 </div>
