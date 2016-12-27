@@ -13,6 +13,7 @@ from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.order_system import Order_system
+from webapp.Models.quote_system import Quote_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
@@ -859,4 +860,32 @@ def _all_orders(type):
 
     return render_template('admin_temp/all_orders.html',order_active=type,
                            order_list=order_list,
+                           pagination=pagination)
+
+@admin_check
+def _all_quotes(type):
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+    quote_list_base = BaseQuery(Quote_system,s).order_by(Quote_system.quote_create_time.desc())
+    s.close()
+    if type == 'finished':
+        quote_list = quote_list_base.filter(Quote_system.is_return_flg == 1).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+    elif type=='ongoing':
+        quote_list = quote_list_base.filter(Quote_system.is_return_flg == 0).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+    else:
+        abort(404)
+
+    pagination = Pagination(page=page, total=quote_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Quote List',
+                            per_page=customer_config.USER_ORDER_PER_PAGE)
+
+    return render_template('admin_temp/all_quotes.html',quote_active=type,
+                           quote_list=quote_list,
                            pagination=pagination)

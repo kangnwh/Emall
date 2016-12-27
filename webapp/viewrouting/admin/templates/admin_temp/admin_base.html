@@ -68,6 +68,9 @@
                 <li {% if "all_orders" == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.all_orders',type='ongoing') }}">All Orders</a>
                 </li>
+                <li {% if "all_quotes" == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.all_quotes',type='ongoing') }}">All Quotes</a>
+                </li>
                 <li {% if 6 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.manage_profit_rate') }}">Manage Profit Rate</a>
                 </li>

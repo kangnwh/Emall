@@ -2,7 +2,7 @@
 from flask import Blueprint,request,redirect,url_for
 from flask_login import login_required,current_user,logout_user
 from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
-                                                    _add_level_one,_delete_level_one,_update_level_one,_all_orders,\
+                                                    _add_level_one,_delete_level_one,_update_level_one,_all_orders,_all_quotes,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd
@@ -179,6 +179,11 @@ def update_rebate():
 @login_required
 def all_orders(type):
     return _all_orders(type)
+
+@adminRoute.route("/all_quotes/<type>",methods=["GET"])
+@login_required
+def all_quotes(type):
+    return _all_quotes(type)
 
 @adminRoute.route('/logout', methods=['GET', 'POST'])
 def logout():
