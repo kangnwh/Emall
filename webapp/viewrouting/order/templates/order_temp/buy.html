@@ -16,10 +16,13 @@
 
 {% block page %}
     <form action="{{ url_for("orderRoute.create_order") }}" method="post">
-    {{ user_order_form.hidden_tag() }}
+        {{ user_order_form.hidden_tag() }}
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="col-md-12 middle-line"><h1>{{ this_prod.prod_name }}<small>({{ this_prod.prod_sub_cat.prod_cat_sub_name }})</small></h1>
+                <div class="col-md-12 middle-line">
+                    <h1>{{ this_prod.prod_name }}
+                        <small>({{ this_prod.prod_sub_cat.prod_cat_sub_name }})</small>
+                    </h1>
                     {#                    <div class=" right-line"><kbd>Prod ID:{{ this_prod.prod_id }}</kbd></div>#}
                 </div>
                 <div class="row">
@@ -51,9 +54,9 @@
                 <div id="price_detail" class="row well"><!-- price range -->
                     <div class="row">
                         <div class="col-md-7">
-{#                            <div class="row">#}
-{#                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>#}
-{#                            </div>#}
+                            {#                            <div class="row">#}
+                            {#                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>#}
+                            {#                            </div>#}
                             <div class="row" style="padding-top: 30px;">
 
                                 <div class="col-md-12">
@@ -70,56 +73,47 @@
                                 {#                           {{ input_helper("col-md-3",user_order_form.prod_quantity,input_class="form-control ") }}#}
 
                                 <div class="col-md-12"><!-- select quantity -->
-{#                                    <div class="panel panel-success">#}
-{#                                        <div class="panel-heading ">#}
-{#                                            Price Ranges#}
-{#                                        </div>#}
-                                        <div class="panel-body">
-                                            <div id="price_selection"></div>
-                                        </div>
-{#                                    </div>#}
+                                    {#                                    <div class="panel panel-success">#}
+                                    {#                                        <div class="panel-heading ">#}
+                                    {#                                            Price Ranges#}
+                                    {#                                        </div>#}
+                                    <div class="panel-body">
+                                        <div id="price_selection"></div>
+                                    </div>
+                                    {#                                    </div>#}
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-offset-1 col-md-4 ">
                             <table class="table table-hover text-right">
-                                <thead>
-                                <tr>
-                                    <th class="indiv-price-big col-md-5 ">Unit Price</th>
-
-                                    <th class="one-line col-md-4">
-                                        <span>$</span>{{ user_order_form.unit_price(readonly=1,class="form-control",style="display:inline;") }}
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="">Setup</td>
-
-                                    <td class="one-line">
-                                        <span>$</span>{{ user_order_form.setup_cost(readonly=1,class="form-control",style="display:inline;") }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="">Imprinting Prices</td>
-                                    <td class="one-line">
-                                        <span>$</span>{{ user_order_form.imprinting_prices(readonly=1,class="form-control",style="display:inline;") }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="">Freight Cost</td>
-                                    <td class="one-line">
-                                        <span>$</span>{{ user_order_form.freight_cost(readonly=1,class="form-control",style="display:inline;") }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="indiv-price-big"><strong>Total</strong></td>
-                                    <td class="one-line">
-                                        <span>$</span>{{ user_order_form.total_price(readonly=1,class="form-control",style="display:inline;") }}
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <thead>
+                            <tr>
+                                <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                        id="unit_price"></span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="">Setup</td>
+                                <td><span>$</span><span id="setup_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Imprinting Prices</td>
+                                <td><span>$</span><span id="imprinting_prices"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Freight Cost</td>
+                                <td><span>$</span><span id="freight_cost"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="indiv-price-big"><strong>Total</strong></td>
+                                <td class="indiv-price-big"><strong><span>$</span><span
+                                        id="total_price"></span></strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
@@ -131,7 +125,7 @@
                             $("#used_points").attr("readonly",true);
                         }
                     }'|safe) }}
-                {{ readonly_input_helper('col-md-4',user_order_form.used_points,input_class="form-control col-md-3",default_value=0,input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
+                    {{ readonly_input_helper('col-md-4',user_order_form.used_points,input_class="form-control col-md-3",default_value=0,input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
                 </div>
 
 
@@ -140,37 +134,36 @@
         </div>
     </form>
     <script type="text/javascript">
+        function change_logo_choice(state) {
+            var processed = $("#control-logo-processed");
+            var original = $("#control-logo-original");
+            if (state) {
+                processed.removeClass('invisible');
+                original.removeClass('invisible');
+                if (processed.hasClass('panel-primary')) {
+                    $("[name='img-logo-processed']").removeClass('invisible');
+                    $("[name='img-logo-original']").addClass('invisible');
+                } else {
+                    console.log('original');
+                    $("[name='img-logo-original']").removeClass('invisible');
+                    $("[name='img-logo-processed']").addClass('invisible');
+                }
+            } else {
+                $("[name='img-logo-processed']").addClass('invisible');
+                $("[name='img-logo-original']").addClass('invisible');
+                processed.addClass('invisible');
+                original.addClass('invisible');
+            }
+        }
+        function switch_logo(active, inactive) {
+            $("#" + active).removeClass('panel-default');
+            $("#" + active).addClass('panel-primary');
 
-        {#        function change_logo_choice(state) {#}
-        {#            var processed = $("#control-logo-processed");#}
-        {#            var original = $("#control-logo-original");#}
-        {#            if (state) {#}
-        {#                processed.removeClass('invisible');#}
-        {#                original.removeClass('invisible');#}
-        {#                if (processed.hasClass('panel-primary')) {#}
-        {#                    $("[name='img-logo-processed']").removeClass('invisible');#}
-        {#                    $("[name='img-logo-original']").addClass('invisible');#}
-        {#                } else {#}
-        {#                    console.log('original');#}
-        {#                    $("[name='img-logo-original']").removeClass('invisible');#}
-        {#                    $("[name='img-logo-processed']").addClass('invisible');#}
-        {#                }#}
-        {#            } else {#}
-        {#                $("[name='img-logo-processed']").addClass('invisible');#}
-        {#                $("[name='img-logo-original']").addClass('invisible');#}
-        {#                processed.addClass('invisible');#}
-        {#                original.addClass('invisible');#}
-        {#            }#}
-        {#        }#}
-        {#        function switch_logo(active, inactive) {#}
-        {#            $("#" + active).removeClass('panel-default');#}
-        {#            $("#" + active).addClass('panel-primary');#}
-        {##}
-        {#            $("#" + inactive).removeClass('panel-primary');#}
-        {#            $("#" + inactive).addClass('panel-default');#}
-        {##}
-        {#            change_logo_choice(true);#}
-        {#        }#}
+            $("#" + inactive).removeClass('panel-primary');
+            $("#" + inactive).addClass('panel-default');
+
+            change_logo_choice(true);
+        }
 
         function qtyChange(input) {
             var val = $(input).val();
@@ -182,29 +175,29 @@
             var val = parseInt(input_qty.val());
             slider_block.slider('setValue', val);
             if (val > price_range[price_range.length - 1].quantity_to) {
-                $('#unit_price').val(price_range[price_range.length - 1].unit_price);
-                $('#setup_price').val(price_range[price_range.length - 1].setup_cost);
-                $('#imprinting_prices').val(price_range[price_range.length - 1].imprinting_prices);
-                $('#freight_cost').val(price_range[price_range.length - 1].freight_cost);
+                $('#unit_price').text(price_range[price_range.length - 1].unit_price);
+                $('#setup_price').text(price_range[price_range.length - 1].setup_cost);
+                $('#imprinting_prices').text(price_range[price_range.length - 1].imprinting_prices);
+                $('#freight_cost').text(price_range[price_range.length - 1].freight_cost);
                 var total = price_range[price_range.length - 1].unit_price * val + price_range[price_range.length - 1].setup_cost + price_range[price_range.length - 1].imprinting_prices + price_range[price_range.length - 1].freight_cost;
-                $('#total_price').val(total);
+                $('#total_price').text(total);
                 return;
             }
             for (i = 0; i < price_range.length; i++) {
                 if (val >= price_range[i].quantity_from && val <= price_range[i].quantity_to) {
-                    $('#unit_price').val(price_range[i].unit_price);
-                    $('#setup_cost').val(price_range[i].setup_cost);
-                    $('#imprinting_prices').val(price_range[i].imprinting_prices);
-                    $('#freight_cost').val(price_range[i].freight_cost);
+                    $('#unit_price').text(price_range[i].unit_price);
+                    $('#setup_price').text(price_range[i].setup_cost);
+                    $('#imprinting_prices').text(price_range[i].imprinting_prices);
+                    $('#freight_cost').text(price_range[i].freight_cost);
                     var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost).toFixed(2);
-                    $('#total_price').val(total);
+                    $('#total_price').text(total);
                     break;
                 }
             }
         }
         function init_price_selection(id) {
             var parent = $("#" + id);
-            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Quantity Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
+            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
             for (i = 0; i < price_range.length; i++) {
                 parent.find("tbody").append('<tr group="price_group" onclick="switch_group(\'price_group\',this)"><td ><span name="price_base">' + price_range[i].quantity_from + '</span> - ' + price_range[i].quantity_to + '</td>	<td>' + price_range[i].unit_price + '</td><td>' + price_range[i].setup_cost + '</td><td>' + price_range[i].imprinting_prices + '</td><td>' + price_range[i].freight_cost + '</td></tr>');
             }
@@ -217,11 +210,11 @@
             refreshPrice();
         }
 
-        {#        var el = $("#switch-offColor").bootstrapSwitch();#}
-        {#        el.bootstrapSwitch('state', false);#}
-        {#        el.on('switchChange.bootstrapSwitch', function (event, state) {#}
-        {#            change_logo_choice(state);#}
-        {#        });#}
+        var el = $("#switch-offColor").bootstrapSwitch();
+        el.bootstrapSwitch('state', false);
+        el.on('switchChange.bootstrapSwitch', function (event, state) {
+            change_logo_choice(state);
+        });
 
         var price_range = {{ this_prod.v_price_ranges[0].to_json() }};
         var max = price_range[price_range.length - 1].quantity_to * 2;
@@ -268,7 +261,5 @@
 
         refreshPrice();
         init_price_selection('price_selection')
-
-
     </script>
 {% endblock %}

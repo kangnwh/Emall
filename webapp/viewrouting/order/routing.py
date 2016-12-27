@@ -29,11 +29,11 @@ def create_order():
         order.imprint_info = user_order_form.imprint_info.data
         order.colors = user_order_form.colors.data
         order.lead_time = user_order_form.lead_time.data
-        order.unit_price = user_order_form.unit_price.data
-        order.imprinting_prices = user_order_form.imprinting_prices.data
-        order.setup_cost = user_order_form.setup_cost.data
-        order.freight_cost = user_order_form.freight_cost.data
-        order.total_price = user_order_form.total_price.data
+
+
+        s = Session()
+        prices = s.query(V_Prod_price_range).filter_by(prod_id=order.prod_id).first()
+        order.total_price,order.unit_price,order.imprinting_prices,order.setup_cost,order.freight_cost = prices.get_prices(order.prod_quantity)
 
         order.need_pay_supplier = 0 #TODO need complex logic to get this value
         order.is_used_points = 1 if order.is_used_points else 0
@@ -42,7 +42,7 @@ def create_order():
         order.order_stat = 1 # stands for user submitting
         order.valid_flg = 1
 
-        s = Session()
+
         s.add(order)
         s.commit()
         s.close()
@@ -51,7 +51,7 @@ def create_order():
         return redirect(url_for("userRoute.user_orders",type='ongoing'))#render_template("reload_parent.html")#reload_parent.html
     elif request.method == 'POST':
         flash(user_order_form.errors, category='danger')
-        return redirect(url_for("orderRoute.create_order",prod_id=request.args.get('prod_id', 1)))
+        return redirect(url_for("orderRoute.create_order",prod_id=user_order_form.prod_id.data))
     else:
         s = Session()
         prod_id = request.args.get('prod_id', 1)

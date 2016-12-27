@@ -4,6 +4,7 @@ from webapp.viewrouting.user.forms.login_form import LoginForm,ChangePasswordFor
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
+from sqlalchemy import desc
 from webapp.Models.user import User
 from webapp.Models.db_basic import Session
 from webapp.Models.order_system import Order_system
@@ -168,12 +169,12 @@ def user_orders(type):
     s = Session()
     order_list_base = BaseQuery(Order_system,s).filter_by(user_id=current_user.user_id)
     if type == 'finished':
-        order_list = order_list_base.filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+        order_list = order_list_base.filter_by(order_stat=5).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
         #s.query(Order_system).filter_by(order_stat=5)
     elif type=='ongoing':
-        order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
+        order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
     elif type=='canceled':
-        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
     else:
         abort(404)
 
@@ -207,6 +208,7 @@ def user_quotes(type):
         order_list = BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
     else:
         abort(404)
+
 
     pagination = Pagination(page=page, total=order_list.total,
                             search=search, css_framework='bootstrap3',
