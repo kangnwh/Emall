@@ -1,0 +1,19 @@
+{% extends "admin_temp/all_quote_base.html" %}
+{% set active_page = 6 %}
+
+{% block quotelist %}
+
+    <div class="list-group">
+
+        {% if quote_list.total >0 %}
+            {{ pagination.info }}
+            {% for quote in quote_list.items %}
+                {{ material_card(quote) }}
+            {% endfor %}
+            {{ pagination.links }}
+        {% else %}
+            <h3>No quotes</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

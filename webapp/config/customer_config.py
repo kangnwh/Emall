@@ -38,3 +38,8 @@ ORDER_STATUS_MAP={
     6:'User Canceled',
     7:'Supplier Canceled'
 }
+
+QUOTE_STATUS_MAP={
+    0:'User Submitted',
+    1:'Supplier Replied'
+}

@@ -32,8 +32,6 @@
 
                 <li class="btn btn-warning">
                     <a  href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
-                <li {% if 1 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.index') }}">Dashboard</a></li>
                 <li {% if 2 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.account_management') }}">User Account Management</a></li>
                 <li {% if 4 == active_page %} class="active"{% endif %}>
@@ -43,6 +41,9 @@
                 </li>
                 <li {% if "all_orders" == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.all_orders',type='ongoing') }}">All Orders</a>
+                </li>
+                <li {% if "all_quotes" == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.all_quotes',type='ongoing') }}">All Quotes</a>
                 </li>
                 <li {% if 6 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.manage_profit_rate') }}">Manage Profit Rate</a>

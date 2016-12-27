@@ -113,6 +113,7 @@ def create_quote():
         quote.user_perfer_total = user_quote_form.user_perfer_total.data
 
         quote.user_perfer_comment = user_quote_form.user_perfer_comment.data
+        quote.is_return_flg = 0
         quote.valid_flg = 1
 
         s = Session()

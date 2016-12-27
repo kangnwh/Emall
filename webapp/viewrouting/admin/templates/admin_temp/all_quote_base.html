@@ -1,0 +1,20 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_quote_card.html" import material_card %}
+{% set active_page = 'all_quotes' %}
+
+{% block page %}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if quote_active == 'ongoing' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.all_quotes",type='ongoing') }}">Ongoing Quotes</a></li>
+        <li role="presentation" {% if quote_active == 'finished' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.all_quotes",type='finished') }}">Finished Quotes</a></li>
+    </ul>
+    {% block quotelist %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock scripts %}

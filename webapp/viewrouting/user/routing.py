@@ -202,9 +202,9 @@ def user_quotes(type):
     quote_list_base = BaseQuery(Quote_system,s).filter_by(user_id=current_user.user_id)
 
     if type == 'finished':
-        quote_list = quote_list_base.filter(Quote_system.supplier_last_quote_time is not null).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+        quote_list = quote_list_base.filter(Quote_system.is_return_flg == 1).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
     elif type=='ongoing':
-        quote_list = quote_list_base.filter(Quote_system.supplier_last_quote_time is null).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+        quote_list = quote_list_base.filter(Quote_system.is_return_flg == 0).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
     else:
         abort(404)
 
