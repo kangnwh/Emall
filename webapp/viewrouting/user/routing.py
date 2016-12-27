@@ -4,10 +4,11 @@ from webapp.viewrouting.user.forms.login_form import LoginForm,ChangePasswordFor
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy import desc
+from sqlalchemy import desc,null
 from webapp.Models.user import User
 from webapp.Models.db_basic import Session
 from webapp.Models.order_system import Order_system
+from webapp.Models.quote_system import Quote_system
 from webapp.common import generate_md5
 from flask_login import current_user,login_user,logout_user,login_required
 #CONFIG
@@ -187,7 +188,7 @@ def user_orders(type):
                            order_list=order_list,
                            pagination=pagination)
 
-@userRoute.route("/user_quotes",methods=["GET"])
+@userRoute.route("/user_quotes/<type>",methods=["GET"])
 @login_required
 def user_quotes(type):
     search = False
@@ -198,23 +199,20 @@ def user_quotes(type):
     page = request.args.get('page', type=int, default=1)
 
     s = Session()
+    quote_list_base = BaseQuery(Quote_system,s).filter_by(user_id=current_user.user_id)
 
     if type == 'finished':
-        order_list = BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
-        #s.query(Order_system).filter_by(order_stat=5)
+        quote_list = quote_list_base.filter(Quote_system.supplier_last_quote_time is not null).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
     elif type=='ongoing':
-        order_list = BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
-    elif type=='canceled':
-        order_list = BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+        quote_list = quote_list_base.filter(Quote_system.supplier_last_quote_time is null).order_by(Quote_system.quote_create_time.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
     else:
         abort(404)
 
-
-    pagination = Pagination(page=page, total=order_list.total,
+    pagination = Pagination(page=page, total=quote_list.total,
                             search=search, css_framework='bootstrap3',
-                            record_name='Order List',
-                            per_page=customer_config.USER_ORDER_PER_PAGE)
+                            record_name='Quote List',
+                            per_page=customer_config.USER_QUOTE_PER_PAGE)
 
-    return render_template('user_temp/my_orders.html',
-                           order_list=order_list,
+    return render_template('user_temp/my_quotes.html',quote_active=type,
+                           quote_list=quote_list,
                            pagination=pagination)

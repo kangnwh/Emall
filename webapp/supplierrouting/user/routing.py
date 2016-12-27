@@ -138,6 +138,7 @@ def user_orders(type):
 
     s = Session()
     order_list_base = BaseQuery(Order_system,s).filter_by(supplier_id=current_user.supplier_id)
+    s.close()
     if type == 'finished':
         order_list = order_list_base.filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
         #s.query(Order_system).filter_by(order_stat=5)
@@ -147,12 +148,10 @@ def user_orders(type):
         order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
     else:
         abort(404)
-
     pagination = Pagination(page=page, total=order_list.total,
                             search=search, css_framework='bootstrap3',
                             record_name='Order List',
                             per_page=customer_config.USER_ORDER_PER_PAGE)
-
     return render_template('user_temp/my_orders.html',order_active=type,
                            order_list=order_list,
                            pagination=pagination)

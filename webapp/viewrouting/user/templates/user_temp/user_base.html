@@ -35,9 +35,9 @@
                     <a href="{{ url_for('userRoute.change_password') }}">Change Password</a>
                 </li>
                 <li {% if active_page == 'orders' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_orders',type='finished') }}">My Orders</a>
+                    <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">My Orders</a>
                 <li {% if active_page == 'quotes' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_orders',type='finished') }}">My Quotes</a>
+                    <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">My Quotes</a>
                 </li>
                             <li>
                     <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>

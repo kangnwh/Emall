@@ -10,6 +10,7 @@ PROD_NUM_PER_PAGE = 9
 USER_NUM_PER_PAGE = 20
 FEEDBACK_NUM_PER_PAGE = 10
 USER_ORDER_PER_PAGE = 20
+USER_QUOTE_PER_PAGE = 20
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
 
