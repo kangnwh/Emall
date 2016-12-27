@@ -39,11 +39,13 @@ class UserOrderForm(Form):
 class UserQuoteForm(Form):
     #basic info
     quote_name = StringField("Quote Name")
-    # supplier_id = IntegerField("Supplier ID")
+    supplier_id = IntegerField("Supplier ID",validators=[DataRequired()])
     # user_id = IntegerField("User ID")
     prod_id = IntegerField("Product ID")
+    prod_name = StringField("Product Name")
     prod_quantity = IntegerField("Product Quantity")
     imprint_info = StringField("Imprint Information")
+    special_instruction = StringField("Special Instruction")
     lead_time = StringField("Lead Time")
     colors = StringField("Colors")
     user_perfer_unit_price = DecimalField("User Perferred Unit Price")
@@ -52,6 +54,3 @@ class UserQuoteForm(Form):
     user_perfer_freight_cost = DecimalField("User Perferred Freight Cost")
     user_perfer_total = DecimalField("User Perferred Total Cost")
     user_perfer_comment = StringField("User Comments")
-
-
-    special_instruction = StringField("Special Instruction")

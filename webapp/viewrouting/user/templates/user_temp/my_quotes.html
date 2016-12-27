@@ -1,27 +1,19 @@
-{% extends "user_temp/user_base.html" %}
-{% from "order_temp/_order_card.html" import material_card with context %}
-{% block title %}Settings - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
-{% block link_ref %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
-{% endblock %}
-{% set active_page = "index" %}
+{% extends "user_temp/quote_base.html" %}
+{% set active_page = 4 %}
 
-{% block page %}
+{% block quotelist %}
+
     <div class="list-group">
-        {% for order in order_list.items %}
-            {{ material_card(order) }}
-        {% endfor %}
-    {{ pagination.links }}
-    </div>
-{% endblock %}
 
-{% block scripts %}
-    {{ super() }}
-    {#    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>#}
-    {#    <script type="text/javascript">#}
-    {#		$(function() {#}
-    {#			  $("#slider").easySlider({});#}
-    {#		  });#}
-    {#	</script>#}
-{% endblock scripts %}
+        {% if quote_list.total >0 %}
+            {{ pagination.info }}
+            {% for quote in quote_list.items %}
+                {{ material_card(quote) }}
+            {% endfor %}
+            {{ pagination.links }}
+        {% else %}
+            <h3>You do not have any quotes</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -6,7 +6,8 @@ from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.order_system import Order_system
-from webapp.viewrouting.order.forms.order_forms import UserOrderForm
+from webapp.Models.quote_system import Quote_system
+from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm
 
 import datetime
 
@@ -72,5 +73,51 @@ def create_order():
 #         order_list = s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
 #     else:
 #         abort(404)
+
+
+@orderRoute.route("/create_quote",methods=["GET","POST"])
+@login_required
+def create_quote():
+    user_quote_form = UserQuoteForm()
+    if user_quote_form.validate_on_submit():
+        quote = Quote_system()
+        quote.user_id = current_user.user_id
+        quote.quote_name=user_quote_form.quote_name.data
+        quote.supplier_id = user_quote_form.supplier_id.data
+        quote.prod_id = user_quote_form.prod_id.data
+        quote.prod_name = user_quote_form.prod_name.data
+        quote.prod_quantity = user_quote_form.prod_quantity.data
+        quote.imprint_info = user_quote_form.imprint_info.data
+        quote.special_instruction = user_quote_form.special_instruction.data
+        quote.colors = user_quote_form.colors.data
+        quote.lead_time = user_quote_form.lead_time.data
+
+        quote.user_perfer_unit_price = user_quote_form.user_perfer_unit_price.data
+        quote.user_perfer_imprinting_prices = user_quote_form.user_perfer_imprinting_prices.data
+        quote.user_perfer_setup_cost = user_quote_form.user_perfer_setup_cost.data
+        quote.user_perfer_freight_cost = user_quote_form.user_perfer_freight_cost.data
+        quote.user_perfer_total = user_quote_form.user_perfer_total.data
+
+        quote.user_perfer_comment = user_quote_form.user_perfer_comment.data
+        quote.valid_flg = 1
+
+        s = Session()
+        s.add(quote)
+        s.commit()
+        s.close()
+
+        flash("Quote Submitted","success")
+        return redirect(url_for("userRoute.user_quotes",type='ongoing'))#render_template("reload_parent.html")#reload_parent.html
+    elif request.method == 'POST':
+        flash(user_quote_form.errors, category='danger')
+        return redirect(url_for("orderRoute.create_quote",prod_id=user_quote_form.prod_id.data))
+    else:
+        s = Session()
+        prod_id = request.args.get('prod_id', 1)
+        this_prod = s.query(Prod_info).filter_by(prod_id=prod_id).first()
+        return render_template("order_temp/quote.html",
+                               this_prod=this_prod,
+                               user_quote_form = user_quote_form) , s.close()
+
 
 

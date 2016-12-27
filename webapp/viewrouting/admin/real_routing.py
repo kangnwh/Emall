@@ -840,7 +840,8 @@ def _all_orders(type):
     page = request.args.get('page', type=int, default=1)
 
     s = Session()
-    order_list_base = BaseQuery(Order_system,s)
+    order_list_base = BaseQuery(Order_system,s).order_by(Order_system.order_create_dt.desc())
+    s.close()
     if type == 'finished':
         order_list = order_list_base.filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #BaseQuery(Order_system,s).filter_by(order_stat=5).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
         #s.query(Order_system).filter_by(order_stat=5)
