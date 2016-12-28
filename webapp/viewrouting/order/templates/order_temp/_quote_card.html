@@ -1,0 +1,47 @@
+{% macro material_card(quote) -%}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ quote.quote_create_time.date() }} | Sys QuoteID:{{ quote.quote_id }}  (User:{{ quote.user.email }} | Supplier:{{ quote.supplier.supplier_name }})</h3>
+    </div>
+    <div class="panel-body">
+{#        <div class="row">#}
+
+        <div class="panel-body padding-5">
+
+            <div class="media col-md-3">
+                <a class="media-left">
+                    <img class="img-50"
+                         src="{{ url_for("static",filename=("img/products/"+ quote.prod_info.cover_img)) }}">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ quote.prod_name }}</h4>
+                    <p></p>
+                </div>
+            </div>
+            <div class="col-md-1"><strong>Quantity<p><p><span
+                    class="label label-info">{{ quote.prod_quantity }}</span></strong></div>
+            <div class="col-md-2"><strong>User Perfer<p><p><span class="label label-info">Total: ${{ quote.user_perfer_total }}</span></strong>
+            </div>
+            <div class="col-md-2"><strong>Supplier Perfer<p><p><span class="label label-info">Total: ${{ quote.supplier_perfer_total }}</span></strong>
+            </div>
+            <div class="col-md-2"><strong>Order Status:<p><p><span
+                    class="label label-info">{{ config.get('QUOTE_STATUS_MAP')[quote.is_return_flg] }}</span></strong>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" onclick="onShowQuote('{{ quote.quote_id }}')">
+                    Detail
+                </button>
+
+                {% if quote.is_return_flg==1 %}
+                    {#                    <a href="{{ url_for("orderRoute.user_feedback",client_order_id=order.client_order_id) }}"#}
+                    {#                       class="btn btn-default ">Feedback</a>#}
+                    <button onclick="create_order('{{ quote.quote_id }}')" role="button" class="btn btn-default">BUY</button>
+
+                {% endif %}
+                </div>
+{#        </div>#}
+            </div>
+    </div>
+</div>
+{% endmacro %}

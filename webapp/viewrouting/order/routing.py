@@ -167,4 +167,12 @@ def create_quote():
                                user_quote_form = user_quote_form) , s.close()
 
 
-
+@orderRoute.route("/show_one_quote", methods=["GET", "POST"])
+@login_required
+def show_one_quote():
+    s = Session()
+    quote_id = request.args.get('quote_id', -1)
+    this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
+    # s.close()
+    return render_template('order_temp/show_one_quote.html',
+                           this_quote=this_quote), s.close()

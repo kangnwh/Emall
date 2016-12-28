@@ -6,6 +6,7 @@ from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.order_system import Order_system
+from webapp.Models.quote_system import Quote_system
 from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
 
@@ -113,3 +114,13 @@ def deliver():
     else:
         flash("Cannot deliver this order in this phase.","warning")
         return redirect(url_for("orderRoute.show_one_order",client_order_id=request.args.get('client_order_id', -1))), s.close()
+
+@orderRoute.route("/show_one_quote", methods=["GET", "POST"])
+@login_required
+def show_one_quote():
+    s = Session()
+    quote_id = request.args.get('quote_id', -1)
+    this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
+    # s.close()
+    return render_template('order_temp/show_one_quote.html',
+                           this_quote=this_quote), s.close()

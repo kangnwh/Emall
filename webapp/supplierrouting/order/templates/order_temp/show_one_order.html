@@ -18,7 +18,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             {#            <div class="col-md-12 middle-line">#}
-            <h1 class="middle-line">{{ this_order.prod_name }}</h1>
+            <h5 class="middle-line">Order Form</h5>
             {#            </div>#}
             <div class="row">
                 <div class="col-md-2">
@@ -28,17 +28,29 @@
                 </div>
                 <div class="col-md-5">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Basic Information</div>
+                        <div class="panel-heading"><strong>Basic Information</strong></div>
                         <div class="panel-body padding-5">
                             <table class="table table-hover text-right font-size-14">
+                                {#                        <thead>#}
+                                {#                        <tr>#}
+                                {#                            <th class="indiv-price-big col-md-7 ">Basic</th>#}
+                                {#                            <th class="indiv-price-big col-md-5">#}
+                                {#                                Information#}
+                                {#                            </th>#}
+                                {#                        </tr>#}
+                                {#                        </thead>#}
                                 <tbody>
+                                <tr>
+                                    <td>User Name</td>
+                                    <td>{{ this_order.user.user_name }}</td>
+                                </tr>
                                 <tr>
                                     <td>Supplier Name</td>
                                     <td>{{ this_order.supplier.supplier_name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Imprint Information</td>
-                                    <td>{{ this_order.imprint_info }}</td>
+                                    <td>Prod Name</td>
+                                    <td>{{ this_order.prod_name }}</td>
                                 </tr>
                                 <tr>
                                     <td class="">Colors</td>
@@ -48,14 +60,12 @@
                                     <td>Lead Time</td>
                                     <td>{{ this_order.lead_time }}</td>
                                 </tr>
-                                {% if this_order.is_used_points==1 %}
-                                    <tr>
-                                        <td>Use Points</td>
-                                        <td><span id="freight_cost">{{ this_order.used_points }}</span></td>
-                                    </tr>
-                                {% endif %}
                                 <tr>
-                                    <td>Target Date</td>
+                                    <td>Imprint Information</td>
+                                    <td>{{ this_order.imprint_info }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Target Date</td>
                                     <td><span id="freight_cost">{{ this_order.supplier_target_dt }}</span></td>
                                 </tr>
                                 <tr>
@@ -71,10 +81,14 @@
                 </div>
                 <div class="col-md-5">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Price Information</div>
+                        <div class="panel-heading"><strong>Price Information</strong></div>
                         <div class="panel-body padding-5">
                             <table class="table table-hover text-right font-size-14">
                                 <tbody>
+                                <tr>
+                                    <td class="">Unit Price</td>
+                                    <td><span>$</span><span id="unit_price">{{ this_order.unit_price }}</span></td>
+                                </tr>
                                 <tr>
                                     <td class="">Setup</td>
                                     <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>
@@ -93,8 +107,20 @@
                                     <td class="">Quantity</td>
                                     <td><span id="freight_cost">{{ this_order.prod_quantity }}</span></td>
                                 </tr>
+                                {% if this_order.is_used_points==1 %}
+                                    <tr>
+                                        <td class="">Use Points</td>
+                                        <td><span id="used_pts">{{ this_order.used_points }}</span></td>
+                                    </tr>
+                                {% endif %}
+
                                 <tr>
-                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                    <td class="indiv-price-big"><strong>Supplier Earn Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="need_pay_supplier">{{ this_order.need_pay_supplier }}</span></strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>User Need Pay Total</strong></td>
                                     <td class="indiv-price-big"><strong><span>$</span><span
                                             id="total_price">{{ this_order.total_price }}</span></strong></td>
                                 </tr>
@@ -108,7 +134,7 @@
 
             </div>
             <div class="middle">
-                <h4>Order Status:</h4>
+                <h4><strong>Order Status:</strong></h4>
                 <nav>
                     <ul class="pager">
                         {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
@@ -145,9 +171,10 @@
                 </div>
             </div>
             {% if this_order.order_stat == 5 %}
+
+                <h4><strong>User feedback:</strong></h4>
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">User Feedback</div>
                         <div class="panel-body">
                             <select id="rating" name="rating">
                                 <option value="1">1</option>
@@ -180,6 +207,55 @@
 
             {% endif %}
 
+
+            {#            <div id="price_detail" class="row well"><!-- price range -->#}
+            {#                <div class="row">#}
+            {#                    <div class="col-md-7">#}
+            {##}
+            {#                        <div class="row" style="padding-top: 30px;">#}
+            {##}
+            {#                            <div class="col-md-12">#}
+            {#                                <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"#}
+            {#                                       data-slider-max="20000"#}
+            {#                                       data-slider-step="1" data-slider-value="{{ this_order.prod_quantity }}"#}
+            {#                                       data-slider-enabled="false"/>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                    <div class="col-md-offset-1 col-md-4 ">#}
+            {#                        <table class="table table-hover text-right">#}
+            {#                            <thead>#}
+            {#                            <tr>#}
+            {#                                <th class="indiv-price-big col-md-7 ">Unit Price</th>#}
+            {#                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span#}
+            {#                                        id="unit_price">{{ this_order.unit_price }}</span>#}
+            {#                                </th>#}
+            {#                            </tr>#}
+            {#                            </thead>#}
+            {#                            <tbody>#}
+            {#                            <tr>#}
+            {#                                <td class="">Setup</td>#}
+            {#                                <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="">Imprinting Prices</td>#}
+            {#                                <td><span>$</span><span id="imprinting_prices">{{ this_order.imprinting_prices }}</span>#}
+            {#                                </td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="">Freight Cost</td>#}
+            {#                                <td><span>$</span><span id="freight_cost">{{ this_order.freight_cost }}</span></td>#}
+            {#                            </tr>#}
+            {#                            <tr>#}
+            {#                                <td class="indiv-price-big"><strong>Total</strong></td>#}
+            {#                                <td class="indiv-price-big"><strong><span>$</span><span#}
+            {#                                        id="total_price">{{ this_order.total_price }}</span></strong></td>#}
+            {#                            </tr>#}
+            {#                            </tbody>#}
+            {#                        </table>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
         </div>
     </div>
 

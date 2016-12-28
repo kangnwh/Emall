@@ -36,9 +36,9 @@
                 <li {% if active_page=='publish' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.publish_prod') }}">Publish Prod</a></li>
                 <li {% if active_page=='orders' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_orders',type='finished') }}">Orders</a></li>
+                    <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">Orders</a></li>
                  <li {% if active_page=='quotes' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_quotes',type='finished') }}">Quotes</a></li>
+                    <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">Quotes</a></li>
                 <li>
                     <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
             </ul>
