@@ -3,6 +3,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
 {% endblock %}
 
 {% block jsref %}
@@ -10,14 +11,15 @@
     {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
     <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
 
 {% endblock %}
 {% block page %}
     <div class="panel panel-default">
         <div class="panel-body">
-{#            <div class="col-md-12 middle-line">#}
-                <h1 class="middle-line">{{ this_order.prod_name }}</h1>
-{#            </div>#}
+            {#            <div class="col-md-12 middle-line">#}
+            <h1 class="middle-line">{{ this_order.prod_name }}</h1>
+            {#            </div>#}
             <div class="row">
                 <div class="col-md-2">
                     <img src="{{ (url_for("static",filename=("img/products/"+ this_order.prod_info.cover_img))) }}"
@@ -142,14 +144,45 @@
                     </div>
                 </div>
             </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Supplier Comments</div>
-                <div class="panel-body">
-                    {{ this_order.supplier_comments }}
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Supplier Comments</div>
+                    <div class="panel-body">
+                        {{ this_order.supplier_comments }}
+                    </div>
                 </div>
             </div>
+            {% if this_order.order_stat == 5 %}
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">User Feedback</div>
+                        <div class="panel-body">
+                            {% if this_order.order_compliment_sys %}
+                                <select id="rating" name="rating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <script>
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        initialRating:{{ this_order.order_compliment_sys[0].compliment_rate }}
+                                    });
+                                </script>
+                                {{ this_order.order_compliment_sys[0].user_compliment_comments }}
+                                <script>
+
+                                </script>
+                            {% endif %}
+
                         </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
 
             {#            <div id="price_detail" class="row well"><!-- price range -->#}
             {#                <div class="row">#}

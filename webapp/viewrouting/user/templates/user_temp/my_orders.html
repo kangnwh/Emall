@@ -1,6 +1,16 @@
 {% extends "user_temp/order_base.html" %}
 {% from "order_temp/_order_card.html" import order_card with context %}
 
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
+{% endblock %}
+
 {% block orderlist %}
 
     <div class="list-group">
@@ -29,10 +39,22 @@
                 </div>
                 <div class="modal-body form-group">
                     <textarea id="feedback_content" class="form-control" rows=3></textarea>
+                    <p>Rating This Order:</p>
+                    <select id="rating" name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <script>
+                         $('#rating').barrating({
+                                theme: 'bootstrap-stars'
+                            });
+                    </script>
                 </div>
                 <div class="modal-footer" id="modal_footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-{#                    <button type="button" class="btn btn-primary" onclick=>提交更改</button>#}
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -58,10 +80,14 @@
 
         }
         function ajax_submit_feedback(client_order_id) {
-            $.post("{{ url_for('orderRoute.user_feedback') }}", {client_order_id: client_order_id,content:$("#feedback_content").val()}, function (result) {
+            $.post("{{ url_for('orderRoute.user_feedback') }}", {
+                client_order_id: client_order_id,
+                content: $("#feedback_content").val(),
+                rating:$("#rating").val()
+            }, function (result) {
                 if (result = 'succ') {
                     location.reload();
-                }else{
+                } else {
                     alert("Feedback submitted failed...");
                 }
             });

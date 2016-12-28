@@ -7,6 +7,7 @@ from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
+from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm
 
 import datetime
@@ -93,14 +94,26 @@ def show_one_order():
 @login_required
 def user_feedback():
     s = Session()
+
     client_order_id = request.form.get('client_order_id')
-    content = request.form.get('content')
+    content = request.form.get('content','')
+
     this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+
+    feedback = Compliment_system()
+
+    feedback.user_id = current_user.user_id
+    feedback.prod_id = this_order.first().prod_id
+    feedback.order_id = this_order.first().order_id
+    feedback.compliment_rate = request.form.get('rating',0)
+    feedback.user_compliment_comments = content
+
     if this_order.first().order_stat == 3 :
         this_order.update({
-            "order_stat":5,
-            'user_comments':this_order.first().user_comments +content
+            "order_stat":5
+            # 'user_comments':this_order.first().user_comments +content
         })
+        s.add(feedback)
         s.commit()
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
