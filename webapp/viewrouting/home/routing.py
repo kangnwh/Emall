@@ -165,12 +165,6 @@ def search():
         # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
         query_base = BaseQuery(Prod_info,s).filter_by(approve_stat=1)
 
-        prod_list_all = query_base.order_by(Prod_info.prod_id).all()#supplier.supplier_name
-        supplier_list = set([p.supplier for p in prod_list_all])
-        supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
-        if supplier_id:
-            query_base = query_base.filter_by(supplier_id=supplier_id)
-
         if current_user.is_administrator:
             prod_list_query = query_base.filter(or_(*([Prod_info.prod_name.like(w) for w in like_words]+
                                               [Prod_info.prod_desc.like(w) for w in like_words]+
@@ -188,6 +182,12 @@ def search():
                                               [Prod_info.price_basis.like(w) for w in like_words]
                                               ))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
 
+        prod_list_all = prod_list_query.order_by(Prod_info.prod_id).all()#supplier.supplier_name
+        supplier_list = set([p.supplier for p in prod_list_all])
+        supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
+
+        if supplier_id:
+            prod_list_query = prod_list_query.filter_by(supplier_id=supplier_id)
 
         prod_list = prod_list_query.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
         pagination = Pagination(page=page, total=prod_list.total,
