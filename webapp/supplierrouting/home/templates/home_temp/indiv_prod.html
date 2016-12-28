@@ -3,6 +3,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
 {% endblock %}
 
 {% block jsref %}
@@ -10,6 +11,7 @@
     {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
     <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
 
 {% endblock %}
 
@@ -29,10 +31,10 @@
                                     <li data-thumb="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}">
                                         <div class="indiv_pic_size "
                                              style="background-image: url('{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}')">
-                                            <img class="indiv-user-logo invisible" name='img-logo-original'
-                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                            <img class="indiv-user-logo invisible" name='img-logo-processed'
-                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+{#                                            <img class="indiv-user-logo invisible" name='img-logo-original'#}
+{#                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>#}
+{#                                            <img class="indiv-user-logo invisible" name='img-logo-processed'#}
+{#                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>#}
                                         </div>
 
                                     </li>
@@ -40,10 +42,10 @@
                                         <li data-thumb="{{ url_for("static",filename=("img/products/"+ pic.image_path)) }}">
                                             <div class="indiv_pic_size "
                                                  style="background-image: url('{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}')">
-                                                <img class="indiv-user-logo invisible" name='img-logo-original'
-                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                                <img class="indiv-user-logo invisible" name='img-logo-processed'
-                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+{#                                                <img class="indiv-user-logo invisible" name='img-logo-original'#}
+{#                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>#}
+{#                                                <img class="indiv-user-logo invisible" name='img-logo-processed'#}
+{#                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>#}
                                             </div>
 
                                             <p>{{ pic.img_desc }}</p>
@@ -53,34 +55,34 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-success">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <input id="switch-offColor" type="checkbox" data-off-color="warning"
-                                               data-label-text="Logo">
-                                    </div>
-
-                                    <div class="col-md-offset-1 col-md-3">
-                                        <div class="btn btn-default panel-primary invisible "
-                                             id="control-logo-processed"
-                                             onclick="switch_logo('control-logo-processed','control-logo-original')">
-                                            <img class="list-user-logo"
-                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 ">
-                                        <div class="btn btn-default invisible" id="control-logo-original"
-                                             onclick="switch_logo('control-logo-original','control-logo-processed')">
-                                            <img class="list-user-logo"
-                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="row">#}
+{#                        <div class="col-md-12">#}
+{#                            <div class="alert alert-success">#}
+{#                                <div class="row">#}
+{#                                    <div class="col-md-4">#}
+{#                                        <input id="switch-offColor" type="checkbox" data-off-color="warning"#}
+{#                                               data-label-text="Logo">#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="col-md-offset-1 col-md-3">#}
+{#                                        <div class="btn btn-default panel-primary invisible "#}
+{#                                             id="control-logo-processed"#}
+{#                                             onclick="switch_logo('control-logo-processed','control-logo-original')">#}
+{#                                            <img class="list-user-logo"#}
+{#                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="col-md-3 ">#}
+{#                                        <div class="btn btn-default invisible" id="control-logo-original"#}
+{#                                             onclick="switch_logo('control-logo-original','control-logo-processed')">#}
+{#                                            <img class="list-user-logo"#}
+{#                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
                 <div class="col-md-7">
                     <div class="">
@@ -105,63 +107,89 @@
                 </div>
             </div>
             <div id="price_detail" class="row well"><!-- price range -->
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
+                        </div>
+                        <div class="row" style="padding-top: 30px;">
+                            <div class="col-md-9">
+                                <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                       data-slider-max="20000"
+                                       data-slider-step="1" data-slider-value="14"/></div>
+                            <div class="col-md-3">
+                                <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                       onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                            </div>
+                            <div class="col-md-12"><!-- select quantity -->
 
-                <div class="col-md-7">
-                    <div class="row">
-                        <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
-                    </div>
-                    <div class="row" style="padding-top: 30px;">
-                        <div class="col-md-9">
-                            <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
-                                   data-slider-max="20000"
-                                   data-slider-step="1" data-slider-value="14"/></div>
-                        <div class="col-md-3">
-                            <input id="input_qty" min="1" id="qty-input" class="form-control "
-                                   onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                                <div class="panel-body">
+                                    <div id="price_selection"></div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-offset-1 col-md-4">
+                        <table class="table table-hover text-right">
+                            <thead>
+                            <tr>
+                                <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                        id="unit_price"></span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="">Setup</td>
+                                <td><span>$</span><span id="setup_price"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Imprinting Prices</td>
+                                <td><span>$</span><span id="imprinting_prices"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Freight Cost</td>
+                                <td><span>$</span><span id="freight_cost"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="indiv-price-big"><strong>Total</strong></td>
+                                <td class="indiv-price-big"><strong><span>$</span><span
+                                        id="total_price"></span></strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                </div>
-                <div class="col-md-offset-1 col-md-4">
-                    <table class="table table-hover text-right">
-                        <thead>
-                        <tr>
-                            <th class="indiv-price-big col-md-7 ">Unit Price</th>
-                            <th class="indiv-price-big col-md-5 text-right"><span>$</span><span id="unit_price"></span>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="">Setup</td>
-                            <td><span>$</span><span id="setup_price"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="">Imprinting Prices</td>
-                            <td><span>$</span><span id="imprinting_prices"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="">Freight Cost</td>
-                            <td><span>$</span><span id="freight_cost"></span></td>
-                        </tr>
-                        <tr>
-                            <td class="indiv-price-big"><strong>Total</strong></td>
-                            <td class="indiv-price-big"><strong><span>$</span><span
-                                    id="total_price"></span></strong></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
-            <div class="row"><!-- select quantity -->
-                <div class="panel panel-success">
-                    <div class="panel-heading ">
-                        Price Ranges
-                    </div>
-                    <div class="panel-body">
-                        <div id="price_selection"></div>
+            {#        This is for user feedback#}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% for f in this_prod.prod_compliment_sys %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ f.user.user_name}}</div>
+                            <div class="panel-body">
+                                <select id="rating" name="rating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                                <script>
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        initialRating:{{ f.compliment_rate }},
+                                        readonly: true
+                                    });
+                                </script>
+                               {{ f.user_compliment_comments }}
+                            </div>
+                        </div>
+                    {% endfor %}
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -232,7 +260,7 @@
         }
         function init_price_selection(id) {
             var parent = $("#" + id);
-            parent.append('<table class="table table-hover table-responsive"><thead><tr><th>Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
+            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
             for (i = 0; i < price_range.length; i++) {
                 parent.find("tbody").append('<tr group="price_group" onclick="switch_group(\'price_group\',this)"><td ><span name="price_base">' + price_range[i].quantity_from + '</span> - ' + price_range[i].quantity_to + '</td>	<td>' + price_range[i].unit_price + '</td><td>' + price_range[i].setup_cost + '</td><td>' + price_range[i].imprinting_prices + '</td><td>' + price_range[i].freight_cost + '</td></tr>');
             }

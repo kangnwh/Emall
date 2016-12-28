@@ -3,6 +3,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
 {% endblock %}
 
 {% block jsref %}
@@ -10,6 +11,7 @@
     {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
     <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
 
 {% endblock %}
 
@@ -176,9 +178,23 @@
                 <div class="panel-body">
                     {% for f in this_prod.prod_compliment_sys %}
                         <div class="panel panel-default">
-                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-heading">{{ f.user.user_name}}</div>
                             <div class="panel-body">
-                                Panel content
+                                <select id="rating" name="rating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                                <script>
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        initialRating:{{ f.compliment_rate }},
+                                        readonly: true
+                                    });
+                                </script>
+                               {{ f.user_compliment_comments }}
                             </div>
                         </div>
                     {% endfor %}
