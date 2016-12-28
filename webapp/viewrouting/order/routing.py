@@ -72,7 +72,7 @@ def user_cancel():
             "order_stat":6
         })
         s.commit()
-        return redirect(url_for("adminRoute.user_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
+        return redirect(url_for("adminRoute.all_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
     else:
         flash("Cannot cancel this order in this phase.","warning")
         return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()
