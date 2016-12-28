@@ -1,12 +1,12 @@
 {% extends "user_temp/order_base.html" %}
-{% from "order_temp/_order_card.html" import order_card with context%}
+{% from "order_temp/_order_card.html" import order_card with context %}
 
 {% block orderlist %}
 
     <div class="list-group">
 
         {% if order_list.total >0 %}
-{#            {{ pagination.info }}#}
+            {#            {{ pagination.info }}#}
             {% for order in order_list.items %}
                 {{ order_card(order) }}
             {% endfor %}
@@ -15,18 +15,56 @@
             <h3>You do not have any orders</h3>
         {% endif %}
     </div>
-<script>
-function onShowOrder(client_order_id) {
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Please Provide Feedback
+                    </h4>
+                </div>
+                <div class="modal-body form-group">
+                    <textarea id="feedback_content" class="form-control" rows=3></textarea>
+                </div>
+                <div class="modal-footer" id="modal_footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+{#                    <button type="button" class="btn btn-primary" onclick=>提交更改</button>#}
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script>
+        function onShowOrder(client_order_id) {
             new $.Zebra_Dialog('', {
                 source: {
                     'iframe': {
                         'src': '{{ url_for('orderRoute.show_one_order') }}' + '?client_order_id=' + client_order_id,
-                        'height':600
+                        'height': 600
                     }
                 },
                 position: ['center', 'top + 5'],
                 width: 1200
             });
         }
-</script>
+        function feedback(client_order_id) {
+            var div = $("#modal_footer");
+            $("#feedback_sub").remove();
+            div.append(String.format('<button id="feedback_sub" type="button" class="btn btn-primary" onclick="ajax_submit_feedback(\'{0}\')">Submit</button>', client_order_id));
+            $("#myModal").modal();
+
+        }
+        function ajax_submit_feedback(client_order_id) {
+            $.post("{{ url_for('orderRoute.user_feedback') }}", {client_order_id: client_order_id,content:$("#feedback_content").val()}, function (result) {
+                if (result = 'succ') {
+                    location.reload();
+                }else{
+                    alert("Feedback submitted failed...");
+                }
+            });
+        }
+    </script>
 {% endblock %}
