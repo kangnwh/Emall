@@ -6,6 +6,7 @@ from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.order_system import Order_system
+from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
 
 import datetime

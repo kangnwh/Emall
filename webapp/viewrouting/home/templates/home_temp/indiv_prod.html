@@ -119,15 +119,12 @@
                                 <input id="input_qty" min="1" id="qty-input" class="form-control "
                                        onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
                             </div>
-                            <div class="col-md-12" ><!-- select quantity -->
-{#                                <div class="panel panel-success">#}
-{#                                    <div class="panel-heading ">#}
-{#                                        Price Ranges#}
-{#                                    </div>#}
-                                    <div class="panel-body">
-                                        <div id="price_selection"></div>
-                                    </div>
-{#                                </div>#}
+                            <div class="col-md-12"><!-- select quantity -->
+
+                                <div class="panel-body">
+                                    <div id="price_selection"></div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -174,16 +171,20 @@
                     </a>
                 </div>
             </div>
-            {#            <div class="row"><!-- select quantity -->#}
-            {#                <div class="panel panel-success">#}
-            {#                    <div class="panel-heading ">#}
-            {#                        Price Ranges#}
-            {#                    </div>#}
-            {#                    <div class="panel-body">#}
-            {#                        <div id="price_selection"></div>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </div>#}
+            {#        This is for user feedback#}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% for f in this_prod.prod_compliment_sys %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Panel heading without title</div>
+                            <div class="panel-body">
+                                Panel content
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
         </div>
     </div>
 

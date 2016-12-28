@@ -157,26 +157,31 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">User Feedback</div>
                         <div class="panel-body">
+                            <select id="rating" name="rating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
                             {% if this_order.order_compliment_sys %}
-                                <select id="rating" name="rating">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
                                 <script>
                                     $('#rating').barrating({
                                         theme: 'bootstrap-stars',
-                                        initialRating:{{ this_order.order_compliment_sys[0].compliment_rate }}
+                                        initialRating:{{ this_order.order_compliment_sys[0].compliment_rate }},
+                                        readonly: true
                                     });
                                 </script>
                                 {{ this_order.order_compliment_sys[0].user_compliment_comments }}
+                            {% else %}
                                 <script>
-
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        readonly: true
+                                    });
                                 </script>
+                                No user feedback.
                             {% endif %}
-
                         </div>
                     </div>
                 </div>
