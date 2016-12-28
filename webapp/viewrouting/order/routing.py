@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, flash, request,redirect,render_template,url_for,abort
+from flask import Blueprint, flash, request,redirect,render_template,url_for,abort,jsonify
 from flask_login import login_required,current_user
 
 from webapp.Models.db_basic import Session
@@ -88,6 +88,25 @@ def show_one_order():
     # s.close()
     return render_template('order_temp/show_one_order.html',
                            this_order=this_order), s.close()
+
+@orderRoute.route("/user_feedback",methods=["POST"])
+@login_required
+def user_feedback():
+    s = Session()
+    client_order_id = request.form.get('client_order_id')
+    content = request.form.get('content')
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    if this_order.first().order_stat == 3 :
+        this_order.update({
+            "order_stat":5,
+            'user_comments':this_order.first().user_comments +content
+        })
+        s.commit()
+        return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
+    else:
+        flash("Cannot provide feedback to this order in this phase.","warning")
+        return jsonify(result='failed')#return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()
+
 
 @orderRoute.route("/create_quote",methods=["GET","POST"])
 @login_required
