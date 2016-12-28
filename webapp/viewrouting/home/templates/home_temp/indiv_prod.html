@@ -1,4 +1,4 @@
-{% extends "non_nav_base.html" %}
+{% extends "base.html" %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
@@ -15,7 +15,7 @@
 
 {% endblock %}
 
-{% block page %}
+{% block full_page_under_nav %}
 
     <div class="panel panel-default">
         <div class="panel-body">
@@ -25,8 +25,8 @@
             <div class="row"><!-- slider,logo change, description -->
                 <div class="col-md-5 ">
                     <div class="row">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="panel panel-default middle" style="max-width:400px;">
+                            <div class="panel-body" >
                                 <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
                                     <li data-thumb="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}">
                                         <div class="indiv_pic_size "
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 " style="max-width:400px;">
                             <div class="alert alert-success">
                                 <div class="row">
                                     <div class="col-md-4">

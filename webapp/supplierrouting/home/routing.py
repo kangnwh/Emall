@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Blueprint, flash, request
+from flask import Blueprint, flash, request,redirect,url_for
 from flask import render_template
 from flask_login import current_user, login_required
 from flask_paginate import Pagination
@@ -145,4 +145,18 @@ def upload_user_logo():
 def sendtest(to):
     from webapp.common.mails import send_email_indiv
     send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
-    render_template("home_temp/index.html")
+    return render_template("home_temp/index.html")
+
+
+@homeRoute.route('/search', methods=['GET'])
+@login_required
+def search():
+    key_words = request.args.get("q")
+    # supplier = request.args.get("supplier")
+    # product = request.args.get("product").
+    print(key_words)
+    if key_words:
+        pass
+    else:
+        flash("Please provide key words when you search something","warning")
+        return redirect(url_for("homeRoute.index"))

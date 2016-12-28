@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% from "home_temp/_material_card.html" import material_card with context %}
+{% set prod_list_page = 1 %}
+{% block title %}{{ sub_cat_name }}  - {{ config.get('APP_NAME','An Empty System') }}{% endblock %}
+
+{% block undersidebar %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading ">
+            <input id="switch-offColor" type="checkbox" data-off-color="warning"
+                   data-label-text="Show Logo">
+        </div>
+    </div>
+{% endblock %}
+{% block page %}
+
+    <div class="row">
+        {% if prod_list.total >0 %}
+            {% for prod in prod_list.items %}
+                {{ material_card(prod) }}
+            {% endfor %}
+        {% else %}
+            <h3>No production found under category : <strong>{{ sub_cat_name }}</strong></h3>
+        {% endif %}
+    </div>
+    {{ pagination.links }}
+    <div id="update-prod-win" class="iziModal" data-izimodal-title="Update Production">
+
+    </div>
+
+    <div id="show-prod-win" class="iziModal" data-izimodal-title="Production Detail">
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+
+        $(function () {
+
+        });
+        function onUpdateProd(prod_id) {
+
+            new $.Zebra_Dialog('', {
+                source: {
+                    'iframe': {
+                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,
+                        'height': 600
+                    }
+                },
+                position: ['center', 'top + 5'],
+                width: 1200,
+                title: 'Production Information',
+                buttons:[],
+                'onClose': function () {
+                    location.reload();
+                }
+            });
+        }
+        function onShowProd(prod_id) {
+            new $.Zebra_Dialog('', {
+                source: {
+                    'iframe': {
+                        'src': '{{ url_for('homeRoute.indiv_prod') }}' + '?prod_id=' + prod_id,
+                        'height':600
+                    }
+                },
+                position: ['center', 'top + 5'],
+                width: 1200
+            });
+
+        }
+        {#        TODO Hiden when is not admimistrator#}
+        function ajax_delete_prod_form(name, prod_id) {
+            if (confirm("Do you really want to delete [" + name + "] ? ")) {
+                $.post("{{ url_for('supplierRoute.delete_prod') }}", {prod_id: prod_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+        function change_logo_choice(state) {
+            var processed = $("#control-logo-processed");
+            var original = $("#control-logo-original");
+            if (state) {
+                processed.removeClass('invisible');
+                original.removeClass('invisible');
+                if (processed.hasClass('panel-primary')) {
+                    $("[name='img-logo-processed']").removeClass('invisible');
+                    $("[name='img-logo-original']").addClass('invisible');
+                } else {
+                    $("[name='img-logo-original']").removeClass('invisible');
+                    $("[name='img-logo-processed']").addClass('invisible');
+                }
+            } else {
+                $("[name='img-logo-processed']").addClass('invisible');
+                $("[name='img-logo-original']").addClass('invisible');
+                processed.addClass('invisible');
+                original.addClass('invisible');
+            }
+        }
+        function switch_logo(active, inactive) {
+            $("#" + active).removeClass('panel-default');
+            $("#" + active).addClass('panel-primary');
+
+            $("#" + inactive).removeClass('panel-primary');
+            $("#" + inactive).addClass('panel-default');
+
+            change_logo_choice(true);
+        }
+        var el = $("#switch-offColor").bootstrapSwitch();
+        el.bootstrapSwitch('state', false);
+        el.on('switchChange.bootstrapSwitch', function (event, state) {
+            change_logo_choice(state);
+        });
+
+    </script>
+
+{% endblock scripts %}
