@@ -1,4 +1,4 @@
-{% macro material_card(quote) -%}
+{% macro material_card(quote,supp_update_quote_form) -%}
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">{{ quote.quote_create_time.date() }} | Sys QuoteID:{{ quote.quote_id }}  (User:{{ quote.user.email }} | Supplier:{{ quote.supplier.supplier_name }})</h3>
@@ -32,12 +32,46 @@
                 <button type="button" class="btn btn-default" onclick="onShowQuote('{{ quote.quote_id }}')">
                     Detail
                 </button>
-
-                    <button onclick="reply_user_quote('{{ quote.quote_id }}')" role="button" class="btn btn-default">Reply User</button>
-
+               {% if quote.is_return_flg == 0 %}
+                   <button type="button" class="btn btn-primary trigger-supp-update-win" data-izimodal-transitionin="fadeInDown"
+                data-izimodal-open="modal-supp-update-win">Reply Prices
+        </button>
+                {% endif %}
                 </div>
 {#        </div>#}
             </div>
     </div>
 </div>
+
+    <div id="supp-update-win" class="iziModal" data-izimodal-title="Set Your Perfered Prices">
+        <form action="{{ url_for("orderRoute.supp_update_quote") }}" method="post" name="create">
+            {{ supp_update_quote_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                        <div class="invisible">{{ supp_update_quote_form.quote_id(value=quote.quote_id) }}
+                        </div>
+
+                <dt>Perferred Unit Price:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_unit_price (size=20) }}</dd>
+                <br>
+                <dt>Perferred Imprint Price:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_imprinting_prices (size=20) }}</dd>
+                <br>
+                <dt>Perferred Setup Cost:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_setup_cost(size=20) }}</dd>
+                <br>
+                <dt>Perferred Freight Cost:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_freight_cost(size=20)}}</dd>
+                <br>
+                <dt>Perferred Total Cost:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_total(size=20) }}</dd>
+                <br>
+                <dt>Comments:</dt>
+                <dd>{{ supp_update_quote_form.supplier_perfer_comment(size=30) }}</dd>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Submit"></dt>
+            </dl>
+        </form>
+    </div>
+
+
 {% endmacro %}

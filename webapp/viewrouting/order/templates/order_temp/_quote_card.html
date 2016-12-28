@@ -1,4 +1,4 @@
-{% macro material_card(quote) -%}
+{% macro quote_card(quote) -%}
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title">{{ quote.quote_create_time.date() }} | Sys QuoteID:{{ quote.quote_id }}  (User:{{ quote.user.email }} | Supplier:{{ quote.supplier.supplier_name }})</h3>
@@ -33,11 +33,10 @@
                     Detail
                 </button>
 
-                {% if quote.is_return_flg==1 %}
-                    {#                    <a href="{{ url_for("orderRoute.user_feedback",client_order_id=order.client_order_id) }}"#}
-                    {#                       class="btn btn-default ">Feedback</a>#}
+                {% if current_user.is_administrator %}
+                    <td> </td>
+                {% elif quote.is_return_flg==1 %}
                     <button onclick="create_order('{{ quote.quote_id }}')" role="button" class="btn btn-default">BUY</button>
-
                 {% endif %}
                 </div>
 {#        </div>#}

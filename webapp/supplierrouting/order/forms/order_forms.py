@@ -52,6 +52,13 @@ class UserQuoteForm(Form):
     user_perfer_freight_cost = DecimalField("User Perferred Freight Cost")
     user_perfer_total = DecimalField("User Perferred Total Cost")
     user_perfer_comment = StringField("User Comments")
-
-
     special_instruction = StringField("Special Instruction")
+
+class UpdateQuoteForm(Form):
+    quote_id = IntegerField("Quote ID")
+    supplier_perfer_unit_price = DecimalField("Supplier Perferred Unit Price")
+    supplier_perfer_imprinting_prices = DecimalField("Supplier Perferred Imprinting Price")
+    supplier_perfer_setup_cost = DecimalField("Supplier Perferred Setup Cost")
+    supplier_perfer_freight_cost = DecimalField("Supplier Perferred Freight Cost")
+    supplier_perfer_total = DecimalField("Supplier Perferred Total Cost")
+    supplier_perfer_comment = StringField("Supplier Comments")

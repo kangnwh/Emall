@@ -9,6 +9,7 @@ from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
 from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
+from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm
 
 import datetime
 
@@ -124,3 +125,38 @@ def show_one_quote():
     # s.close()
     return render_template('order_temp/show_one_quote.html',
                            this_quote=this_quote), s.close()
+
+@orderRoute.route('/supp_update_quote', methods=['GET', 'POST'])
+@login_required
+def supp_update_quote():
+    supp_update_quote_form = UpdateQuoteForm()
+
+    if supp_update_quote_form.validate_on_submit():
+        quote_id = supp_update_quote_form.quote_id.data
+        supplier_perfer_unit_price = supp_update_quote_form.supplier_perfer_unit_price.data
+        supplier_perfer_imprinting_prices = supp_update_quote_form.supplier_perfer_imprinting_prices.data
+        supplier_perfer_setup_cost = supp_update_quote_form.supplier_perfer_setup_cost.data
+        supplier_perfer_freight_cost = supp_update_quote_form.supplier_perfer_freight_cost.data
+        supplier_perfer_total = supp_update_quote_form.supplier_perfer_total.data
+        supplier_perfer_comment = supp_update_quote_form.supplier_perfer_comment.data
+        is_return_flg = 1
+
+        s = Session()
+        s.query(Quote_system).filter_by(quote_id=quote_id).update(
+            {
+                "supplier_perfer_unit_price": supplier_perfer_unit_price,
+                "supplier_perfer_imprinting_prices": supplier_perfer_imprinting_prices,
+                "supplier_perfer_setup_cost": supplier_perfer_setup_cost,
+                "supplier_perfer_freight_cost": supplier_perfer_freight_cost,
+                "supplier_perfer_total": supplier_perfer_total,
+                "supplier_perfer_comment": supplier_perfer_comment,
+                "is_return_flg": is_return_flg
+            }
+         )
+        s.commit()
+        s.close()
+        flash("Supplier update successfully!",category='success')
+    elif request.method == 'POST':
+        flash(supp_update_quote_form.errors,category='danger')
+
+    return redirect(url_for('userRoute.user_quotes',type='ongoing'))

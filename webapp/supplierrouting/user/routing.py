@@ -9,6 +9,7 @@ from webapp.Models.supplier import Supplier
 from webapp.Models.db_basic import Session
 from webapp.common import generate_md5
 from flask_login import current_user,login_user,logout_user,login_required
+from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm
 #models
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
@@ -160,6 +161,7 @@ def user_orders(type):
 @userRoute.route("/user_quotes/<type>",methods=["GET"])
 @login_required
 def user_quotes(type):
+    supp_update_quote_form = UpdateQuoteForm()
     search = False
     q = request.args.get('q')
     if q:
@@ -184,4 +186,5 @@ def user_quotes(type):
 
     return render_template('user_temp/my_quotes.html',quote_active=type,
                            quote_list=quote_list,
+                           supp_update_quote_form=supp_update_quote_form,
                            pagination=pagination)

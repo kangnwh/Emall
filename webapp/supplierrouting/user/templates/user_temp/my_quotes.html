@@ -1,4 +1,5 @@
 {% extends "user_temp/quote_base.html" %}
+{% from "order_temp/_quote_card.html" import quote_card %}
 {% set active_page = 4 %}
 
 {% block quotelist %}
@@ -8,7 +9,7 @@
         {% if quote_list.total >0 %}
             {{ pagination.info }}
             {% for quote in quote_list.items %}
-                {{ material_card(quote) }}
+                {{ material_card(quote,supp_update_quote_form) }}
             {% endfor %}
             {{ pagination.links }}
         {% else %}
@@ -16,6 +17,25 @@
         {% endif %}
     </div>
     <script>
+            $(function () {
+            {#			  $("#slider").easySlider({});#}
+            $("#supp-update-win").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+                onOpened: function () {
+                    console.log('onOpened');
+                },
+                onClosed: function () {
+                    console.log('onClosed');
+                }
+            });
+            $(document).on('click', '.trigger-supp-update-win', function (event) {
+                event.preventDefault();
+                $('#supp-update-win').iziModal('open');
+            });
+        });
         function onShowQuote(quote_id) {
             new $.Zebra_Dialog('', {
                 source: {
