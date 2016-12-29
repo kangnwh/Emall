@@ -1,5 +1,5 @@
 {% extends "non_nav_base.html" %}
-{% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper %}
+{% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper,num_input_helper %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}"
@@ -42,12 +42,6 @@
                         {{ input_helper("col-md-6",user_quote_form.colors,input_class="form-control",input_comment = this_prod.colors) }}
                         {{ input_helper("col-md-6",user_quote_form.user_perfer_comment,input_class="form-control",input_comment = "Comments you want supplier to know") }}
 
-                        {#                        {{ input_helper("invisible",user_quote_form.prod_quantity) }}#}
-                        {#                        {{ input_helper("invisible",user_quote_form.unit_price,input_class="form-control ") }}#}
-                        {#                        {{ input_helper("invisible",user_quote_form.imprinting_prices,input_class="form-control ") }}#}
-                        {#                        {{ input_helper("invisible",user_quote_form.setup_cost,input_class="form-control ") }}#}
-                        {#                        {{ input_helper("invisible",user_quote_form.freight_cost,input_class="form-control ") }}#}
-                        {#                        {{ input_helper("invisible",user_quote_form.total_price,input_class="form-control ") }}#}
                     </div>
 
                 </div>
@@ -56,10 +50,14 @@
                 <div class="row col-md-12">
                             <table class="table table-hover text-right">
                             <tr>
-                                    <td name="unit_price" >Unit Price: ${{user_quote_form.user_perfer_unit_price(default_value=0,size=10)}}</td>
-                                    <td name="unit_price" >Imprinting Prices: ${{user_quote_form.user_perfer_imprinting_prices(default_value=0,size=10)}}</td>
-                                    <td name="unit_price" >Setup: ${{user_quote_form.user_perfer_freight_cost(default_value=0,size=10)}}</td>
-                                    <td name="unit_price" >Freight Cost: ${{user_quote_form.user_perfer_setup_cost(default_value=0,size=10)}}</td>
+{#                                    <td name="unit_price" >Unit Price: ${{user_quote_form.user_perfer_unit_price(default_value=0,size=10)}}</td>#}
+{#                                    <td name="unit_price" >Imprinting Prices: ${{user_quote_form.user_perfer_imprinting_prices(default_value=0,size=10)}}</td>#}
+{#                                    <td name="unit_price" >Setup: ${{user_quote_form.user_perfer_freight_cost(default_value=0,size=10)}}</td>#}
+{#                                    <td name="unit_price" >Freight Cost: ${{user_quote_form.user_perfer_setup_cost(default_value=0,size=10)}}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_unit_price) }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_imprinting_prices) }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_freight_cost) }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_setup_cost) }}</td>#}
                             </tr>
                         </table>
 
@@ -105,12 +103,39 @@
                             </div>
                         </div>
                         <div class="col-md-offset-1 col-md-4 ">
+{#                             <td>{{ user_quote_form.user_perfer_unit_price(class='form-control',type='number') }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_imprinting_prices) }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_freight_cost) }}</td>#}
+{#                                <td>{{ num_input_helper('',user_quote_form.user_perfer_setup_cost) }}</td>#}
                             <table class="table table-hover text-right">
-                                                       <tr>
+                            <thead>
+                            <tr>
+                                <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                <th class="indiv-price-big col-md-5 text-right">${{ user_quote_form.user_perfer_unit_price(class='form-control float-right',type='number',style="width:90%;",onkeyup="onPriceInfoKeyUp()") }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="">Setup</td>
+                                <th class="indiv-price-big col-md-5 text-right">${{ user_quote_form.user_perfer_setup_cost(class='form-control float-right',type='number',style="width:90%;",onkeyup="onPriceInfoKeyUp()") }}</th>
+{#                                <td><span>$</span><span id="setup_price"></span></td>#}
+                            </tr>
+                            <tr>
+                                <td class="">Imprinting Prices</td>
+                                <th class="indiv-price-big col-md-5 text-right">${{ user_quote_form.user_perfer_imprinting_prices(class='form-control float-right',type='number',style="width:90%;",onkeyup="onPriceInfoKeyUp()") }}</th>
+{#                                <td><span>$</span><span id="imprinting_prices"></span></td>#}
+                            </tr>
+                            <tr>
+                                <td class="">Freight Cost</td>
+                                <th class="indiv-price-big col-md-5 text-right">${{ user_quote_form.user_perfer_freight_cost(class='form-control float-right',type='number',style="width:90%;",onkeyup="onPriceInfoKeyUp()") }}</th>
+{#                                <td><span>$</span><span id="freight_cost"></span></td>#}
+                            </tr>
+                            <tr>
                                 <td class="indiv-price-big"><strong>Total</strong></td>
                                 <td class="indiv-price-big"><strong><span>$</span><span
                                         id="total_price"></span></strong></td>
                             </tr>
+                            </tbody>
                         </table>
                         </div>
                     </div>
@@ -162,21 +187,27 @@
         function refreshPrice() {
             var val = parseInt(input_qty.val());
             slider_block.slider('setValue', val);
+            var unit_price = $('#user_perfer_unit_price');
+            var setup_price = $('#user_perfer_setup_cost');
+            var imprinting_prices = $('#user_perfer_imprinting_prices');
+            var freight_cost = $('#user_perfer_freight_cost');
+            var total_price = $('#total_price');
+
             if (val > price_range[price_range.length - 1].quantity_to) {
-                $('#unit_price').text(price_range[price_range.length - 1].unit_price);
-                $('#setup_price').text(price_range[price_range.length - 1].setup_cost);
-                $('#imprinting_prices').text(price_range[price_range.length - 1].imprinting_prices);
-                $('#freight_cost').text(price_range[price_range.length - 1].freight_cost);
+                unit_price.val(price_range[price_range.length - 1].unit_price);
+                setup_price.val(price_range[price_range.length - 1].setup_cost);
+                imprinting_prices.val(price_range[price_range.length - 1].imprinting_prices);
+                freight_cost.val(price_range[price_range.length - 1].freight_cost);
                 var total = price_range[price_range.length - 1].unit_price * val + price_range[price_range.length - 1].setup_cost + price_range[price_range.length - 1].imprinting_prices + price_range[price_range.length - 1].freight_cost;
-                $('#total_price').text(total);
+                total_price.text(total);
                 return;
             }
             for (i = 0; i < price_range.length; i++) {
                 if (val >= price_range[i].quantity_from && val <= price_range[i].quantity_to) {
-                    $('#unit_price').text(price_range[i].unit_price);
-                    $('#setup_price').text(price_range[i].setup_cost);
-                    $('#imprinting_prices').text(price_range[i].imprinting_prices);
-                    $('#freight_cost').text(price_range[i].freight_cost);
+                    unit_price.val(price_range[i].unit_price);
+                    setup_price.val(price_range[i].setup_cost);
+                    imprinting_prices.val(price_range[i].imprinting_prices);
+                    freight_cost.val(price_range[i].freight_cost);
                     var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost).toFixed(2);
                     $('#total_price').text(total);
                     break;
@@ -196,6 +227,19 @@
             $(active).addClass('success');
             input_qty.val(parseInt($(active).find("[name=price_base]").text()));
             refreshPrice();
+        }
+        function onPriceInfoKeyUp(){
+
+            var val = parseInt(input_qty.val());
+            slider_block.slider('setValue', val);
+            var unit_price = $('#user_perfer_unit_price');
+            var setup_price = $('#user_perfer_setup_cost');
+            var imprinting_prices = $('#user_perfer_imprinting_prices');
+            var freight_cost = $('#user_perfer_freight_cost');
+            var total_price = $('#total_price');
+            console.log();
+            var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
+            total_price.text(total.toFixed(2));
         }
 
         var el = $("#switch-offColor").bootstrapSwitch();
