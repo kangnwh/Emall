@@ -141,10 +141,10 @@ def supp_update_quote():
         supplier_perfer_imprinting_prices = supp_update_quote_form.supplier_perfer_imprinting_prices.data
         supplier_perfer_setup_cost = supp_update_quote_form.supplier_perfer_setup_cost.data
         supplier_perfer_freight_cost = supp_update_quote_form.supplier_perfer_freight_cost.data
-        supplier_perfer_total = supplier_perfer_unit_price * this_quote.prod_quantity + \
+        supplier_perfer_total = (supp_update_quote_form.supplier_perfer_unit_price.data * this_quote.prod_quantity + \
                                 supplier_perfer_imprinting_prices + \
                                 supplier_perfer_setup_cost + \
-                                supplier_perfer_freight_cost #supp_update_quote_form.supplier_perfer_total.data
+                                supplier_perfer_freight_cost) * (1+prod_profit_rate.profit_rate) #supp_update_quote_form.supplier_perfer_total.data
         supplier_perfer_comment = supp_update_quote_form.supplier_perfer_comment.data
         is_return_flg = 1
 
