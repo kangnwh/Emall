@@ -169,9 +169,13 @@
                                     {% else %}
                                         <tbody>
                                         <tr>
-                                            <td class="">Unit Price</td>
+                                            <td class="">Unit Price<br>
+                                                <small>Note: There is a rate :
+                                                    <u>{{ prod_profit_rate.profit_rate }}%</u></small>
+                                            </td>
                                             <td class="col-md-5 text-right">
-                                                ${{ supp_update_quote_form.supplier_perfer_unit_price(class='form-control float-right number',style="width:80%;",onkeyup="onPriceInfoKeyUp()") }}</td>
+                                                ${{ supp_update_quote_form.supplier_perfer_unit_price(class='form-control float-right number',style="width:80%;",onkeyup="onPriceInfoKeyUp()") }}<br>
+                                                <span id="actua_unit_price"></span></td>
                                         </tr>
                                         <tr>
                                             <td class="">Setup</td>
@@ -232,16 +236,21 @@
         </div>
     </form>
     <script>
-       function onPriceInfoKeyUp(){
-            var val = {{ this_quote.prod_quantity }};
-            var unit_price = $('#supplier_perfer_unit_price');
-            var setup_price = $('#supplier_perfer_setup_cost');
-            var imprinting_prices = $('#supplier_perfer_imprinting_prices');
-            var freight_cost = $('#supplier_perfer_freight_cost');
-            var total_price = $('#supplier_total_price');
+
+        function onPriceInfoKeyUp() {
+            actual_up_value = (1+rate)*unit_price.val();
+            actual_unit_price.text("$"+actual_up_value);
             var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
             total_price.text(total.toFixed(2));
         }
-    onPriceInfoKeyUp();
+        var rate = {{ prod_profit_rate.profit_rate }}/100.00;
+        var val = {{ this_quote.prod_quantity }};
+        var unit_price = $('#supplier_perfer_unit_price');
+        var actual_unit_price = $('#actual_unit_price');
+        var setup_price = $('#supplier_perfer_setup_cost');
+        var imprinting_prices = $('#supplier_perfer_imprinting_prices');
+        var freight_cost = $('#supplier_perfer_freight_cost');
+        var total_price = $('#supplier_total_price');
+        onPriceInfoKeyUp();
     </script>
 {% endblock page %}

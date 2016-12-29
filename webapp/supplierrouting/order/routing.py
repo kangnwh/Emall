@@ -8,6 +8,7 @@ from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
 from webapp.Models.compliment_system import Compliment_system
+from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
 from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm
 
@@ -172,4 +173,9 @@ def supp_update_quote():
             return  redirect(url_for("userRoute.user_quotes",type="ongoing"))
 
     this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
-    return render_template("order_temp/update_one_quote.html",this_quote=this_quote,supp_update_quote_form=supp_update_quote_form),s.close()
+    prod_profit_rate = s.query(Prod_profit_rate).order_by(Prod_profit_rate.profit_rate_create_ts.desc()).first()
+
+    return render_template("order_temp/update_one_quote.html",
+                           this_quote=this_quote,
+                           supp_update_quote_form=supp_update_quote_form,
+                           prod_profit_rate=prod_profit_rate),s.close()
