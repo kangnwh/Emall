@@ -30,7 +30,7 @@ class Quote_system(Base):
     user_perfer_freight_cost=Column(DECIMAL(12,2),default=0)
     user_perfer_total=Column(DECIMAL(12,2),default=0)
     user_perfer_comment = Column(String(300))
-    supplier_perfer_unit_price=Column(DECIMAL(12,2),default=0)
+    supplier_perfer_unit_price=Column(DECIMAL(12,4),default=0)
     supplier_perfer_imprinting_prices=Column(DECIMAL(12,2),default=0)
     supplier_perfer_setup_cost=Column(DECIMAL(12,2),default=0)
     supplier_perfer_freight_cost=Column(DECIMAL(12,2),default=0)
