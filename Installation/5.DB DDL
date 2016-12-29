@@ -269,7 +269,7 @@ user_perfer_setup_cost decimal(12,2) not null default 0,
 user_perfer_freight_cost decimal(12,2) not null default 0,
 user_perfer_total decimal(12,2) not null default 0,
 user_perfer_comment varchar(300) not null default '',
-supplier_perfer_unit_price decimal(12,2) not null default 0,  #写到库里之前需要加上利润点
+supplier_perfer_unit_price decimal(12,4) not null default 0,  #写到库里之前需要加上利润点
 supplier_perfer_imprinting_prices decimal(12,2) not null default 0,
 supplier_perfer_setup_cost decimal(12,2) not null default 0,
 supplier_perfer_freight_cost decimal(12,2) not null default 0,
