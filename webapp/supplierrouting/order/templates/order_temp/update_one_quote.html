@@ -33,6 +33,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading"><strong>Basic Information</strong></div>
                             <div class="panel-body padding-5">
+                                <table class="table table-hover text-right font-size-14">
                                     <tbody>
                                     <tr>
                                         <td>User Name</td>
@@ -192,7 +193,7 @@
                                         <tr>
                                             <td class="indiv-price-big"><strong>Supplier Total</strong></td>
                                             <td class="indiv-price-big"><strong><span>$</span><span
-                                                    id="total_price">{{ this_quote.user_perfer_total }}</span></strong>
+                                                    id="supplier_total_price">{{ this_quote.user_perfer_total }}</span></strong>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -231,11 +232,15 @@
         </div>
     </form>
     <script>
-        slider_block = $("#ex8").slider({
-            tooltip: 'always',
-            max: {{ this_quote.prod_quantity *2 }},
-            min: 0,
-            value: {{ this_quote.prod_quantity }}
-        });
+       function onPriceInfoKeyUp(){
+            var val = {{ this_quote.prod_quantity }};
+            var unit_price = $('#supplier_perfer_unit_price');
+            var setup_price = $('#supplier_perfer_setup_cost');
+            var imprinting_prices = $('#supplier_perfer_imprinting_prices');
+            var freight_cost = $('#supplier_perfer_freight_cost');
+            var total_price = $('#supplier_total_price');
+            var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
+            total_price.text(total.toFixed(2));
+        }
     </script>
 {% endblock page %}

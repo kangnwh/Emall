@@ -237,7 +237,6 @@
             var imprinting_prices = $('#user_perfer_imprinting_prices');
             var freight_cost = $('#user_perfer_freight_cost');
             var total_price = $('#total_price');
-            console.log();
             var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
             total_price.text(total.toFixed(2));
         }
