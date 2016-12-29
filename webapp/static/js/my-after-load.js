@@ -1,0 +1,1 @@
+$('input.number').number( true, 2 );

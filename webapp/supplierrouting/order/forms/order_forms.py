@@ -60,5 +60,5 @@ class UpdateQuoteForm(Form):
     supplier_perfer_imprinting_prices = DecimalField("Supplier Perferred Imprinting Price")
     supplier_perfer_setup_cost = DecimalField("Supplier Perferred Setup Cost")
     supplier_perfer_freight_cost = DecimalField("Supplier Perferred Freight Cost")
-    supplier_perfer_total = DecimalField("Supplier Perferred Total Cost")
+    # supplier_perfer_total = DecimalField("Supplier Perferred Total Cost")
     supplier_perfer_comment = StringField("Supplier Comments")

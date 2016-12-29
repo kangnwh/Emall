@@ -100,11 +100,13 @@
                                 <tbody>
                                 <tr>
                                     <td class="">Unit Price</td>
-                                    <td><span>$</span><span id="unit_price">{{ this_quote.user_perfer_unit_price }}</span></td>
+                                    <td><span>$</span><span
+                                            id="unit_price">{{ this_quote.user_perfer_unit_price }}</span></td>
                                 </tr>
                                 <tr>
                                     <td class="">Setup</td>
-                                    <td><span>$</span><span id="setup_price">{{ this_quote.user_perfer_setup_cost }}</span></td>
+                                    <td><span>$</span><span
+                                            id="setup_price">{{ this_quote.user_perfer_setup_cost }}</span></td>
                                 </tr>
                                 <tr>
                                     <td class="">Imprinting Prices</td>
@@ -114,7 +116,8 @@
                                 </tr>
                                 <tr>
                                     <td class="">Freight Cost</td>
-                                    <td><span>$</span><span id="freight_cost">{{ this_quote.user_perfer_freight_cost }}</span></td>
+                                    <td><span>$</span><span
+                                            id="freight_cost">{{ this_quote.user_perfer_freight_cost }}</span></td>
                                 </tr>
                                 <tr>
                                     <td class="indiv-price-big"><strong>User Perfer Total</strong></td>
@@ -135,35 +138,41 @@
                         <div class="panel-heading"><strong>Supplier Perfer Information</strong></div>
                         <div class="panel-body padding-5">
                             <table class="table table-hover text-right font-size-14">
-                                <tbody>
-                                <tr>
-                                    <td class="">Unit Price</td>
-                                    <td><span>$</span><span id="unit_price">{{ this_quote.supplier_perfer_unit_price }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="">Setup</td>
-                                    <td><span>$</span><span id="setup_price">{{ this_quote.supplier_perfer_setup_cost }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="">Imprinting Prices</td>
-                                    <td><span>$</span><span
-                                            id="imprinting_prices">{{ this_quote.supplier_perfer_imprinting_prices }}</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="">Freight Cost</td>
-                                    <td><span>$</span><span id="freight_cost">{{ this_quote.supplier_perfer_freight_cost }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="indiv-price-big"><strong>Supplier Perfer Total</strong></td>
-                                    <td class="indiv-price-big"><strong><span>$</span><span
-                                            id="total_price">{{ this_quote.supplier_perfer_total }}</span></strong></td>
-                                </tr>
-                                </tbody>
+                                    <tbody>
+                                    <tr>
+                                        <td class="">Unit Price</td>
+                                        <td><span>$</span><span
+                                                id="unit_price">{{ this_quote.supplier_perfer_unit_price }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">Setup</td>
+                                        <td><span>$</span><span
+                                                id="setup_price">{{ this_quote.supplier_perfer_setup_cost }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">Imprinting Prices</td>
+                                        <td><span>$</span><span
+                                                id="imprinting_prices">{{ this_quote.supplier_perfer_imprinting_prices }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="">Freight Cost</td>
+                                        <td><span>$</span><span
+                                                id="freight_cost">{{ this_quote.supplier_perfer_freight_cost }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="indiv-price-big"><strong>Supplier Perfer Total</strong></td>
+                                        <td class="indiv-price-big"><strong><span>$</span><span
+                                                id="total_price">{{ this_quote.supplier_perfer_total }}</span></strong>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
                             </table>
                         </div>
-                        </div>
                     </div>
+                </div>
 
             </div>
             <div class="middle">
@@ -172,8 +181,8 @@
                     <ul class="pager">
                         {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
 
-                                <li><a href="#" id="status_0">User Submitted &rarr;</a></li>
-                                <li><a href="#" id="status_1">Supplier Replied </a></li>
+                        <li><a href="#" id="status_0">User Submitted &rarr;</a></li>
+                        <li><a href="#" id="status_1">Supplier Replied </a></li>
 
                         <script>
                             $("#status_{{ this_quote.is_return_flg }}").addClass("active btn-primary");

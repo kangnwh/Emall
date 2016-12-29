@@ -119,30 +119,28 @@ def deliver():
 @orderRoute.route("/show_one_quote", methods=["GET", "POST"])
 @login_required
 def show_one_quote():
-    s = Session()
     quote_id = request.args.get('quote_id', -1)
+    s = Session()
     this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
-    # s.close()
     return render_template('order_temp/show_one_quote.html',
-                           this_quote=this_quote), s.close()
+                               this_quote=this_quote), s.close()
 
-@orderRoute.route('/supp_update_quote', methods=['GET', 'POST'])
+@orderRoute.route('/supp_update_quote/', methods=['GET', 'POST'])
 @login_required
 def supp_update_quote():
+    s = Session()
     supp_update_quote_form = UpdateQuoteForm()
-
     if supp_update_quote_form.validate_on_submit():
         quote_id = supp_update_quote_form.quote_id.data
         supplier_perfer_unit_price = supp_update_quote_form.supplier_perfer_unit_price.data
         supplier_perfer_imprinting_prices = supp_update_quote_form.supplier_perfer_imprinting_prices.data
         supplier_perfer_setup_cost = supp_update_quote_form.supplier_perfer_setup_cost.data
         supplier_perfer_freight_cost = supp_update_quote_form.supplier_perfer_freight_cost.data
-        supplier_perfer_total = supp_update_quote_form.supplier_perfer_total.data
+        supplier_perfer_total = 1#supp_update_quote_form.supplier_perfer_total.data
         supplier_perfer_comment = supp_update_quote_form.supplier_perfer_comment.data
         is_return_flg = 1
 
-        s = Session()
-        s.query(Quote_system).filter_by(quote_id=quote_id).update(
+        s.query(Quote_system).filter_by(quote_id=quote_id,supplier_id=current_user.supplier_id).update(
             {
                 "supplier_perfer_unit_price": supplier_perfer_unit_price,
                 "supplier_perfer_imprinting_prices": supplier_perfer_imprinting_prices,
@@ -156,7 +154,16 @@ def supp_update_quote():
         s.commit()
         s.close()
         flash("Supplier update successfully!",category='success')
+        return redirect(url_for("orderRoute.show_one_quote",quote_id=quote_id)),s.close()
     elif request.method == 'POST':
         flash(supp_update_quote_form.errors,category='danger')
+        quote_id = supp_update_quote_form.quote_id.data
+        #this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
+    else:
+        quote_id = request.args.get('quote_id')
+        if not quote_id :
+            flash("Request invalid","warning")
+            return  redirect(url_for("userRoute.user_quotes",type="ongoing"))
 
-    return redirect(url_for('userRoute.user_quotes',type='ongoing'))
+    this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
+    return render_template("order_temp/update_one_quote.html",this_quote=this_quote,supp_update_quote_form=supp_update_quote_form),s.close()
