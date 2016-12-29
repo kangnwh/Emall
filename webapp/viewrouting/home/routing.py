@@ -23,6 +23,7 @@ homeRoute = Blueprint('homeRoute', __name__,
 
 @homeRoute.route('/', methods=['GET', 'POST'])
 def index():
+
     return render_template('home_temp/index.html')
 
 

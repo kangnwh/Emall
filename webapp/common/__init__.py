@@ -5,7 +5,7 @@ import random
 import socket
 
 from PIL import Image
-from flask import flash, redirect, url_for
+from flask import flash, redirect, url_for,current_app
 from flask_login import current_user
 from werkzeug import secure_filename
 
@@ -28,6 +28,42 @@ def generate_security_key(key_len):
 def generate_md5(data):
     md5 = hashlib.md5(data.encode('ascii'))
     return md5.hexdigest()
+
+# def update_user_point_discount_rate(rate):
+#     new_rate = {'USER_POINT_DISCOUNT_RATE':rate}
+#     current_app.config.update(new_rate)
+#
+#     import webapp as w
+#     import shutil
+#     config_folder = os.path.dirname(w.__file__)
+#     customer_config = config_folder + os.sep + 'config' + os.sep + 'customer_config.py'
+#     customer_config_temp = customer_config+".temp"
+#     with open(customer_config, 'r') as f:
+#         with open(customer_config_temp, 'w') as g:
+#             for line in f.readlines():
+#                 if 'USER_POINT_DISCOUNT_RATE' not in line:
+#                     g.write(line)
+#                 else:
+#                     g.write('USER_POINT_DISCOUNT_RATE={rate}'.format(rate))
+#     shutil.move(customer_config_temp, customer_config)
+
+def update_config_value(parameter,value):
+    new_pair = {parameter:value}
+    current_app.config.update(new_pair)
+
+    import webapp as w
+    import shutil
+    config_folder = os.path.dirname(w.__file__)
+    customer_config = config_folder + os.sep + 'config' + os.sep + 'customer_config.py'
+    customer_config_temp = customer_config+".temp"
+    with open(customer_config, 'r') as f:
+        with open(customer_config_temp, 'w') as g:
+            for line in f.readlines():
+                if parameter not in line:
+                    g.write(line)
+                else:
+                    g.write('{parameter}={value}'.format(parameter=parameter,value=value))
+    shutil.move(customer_config_temp, customer_config)
 
 
 def generate_sidebar():
