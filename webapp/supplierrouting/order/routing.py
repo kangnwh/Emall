@@ -143,7 +143,7 @@ def supp_update_quote():
         quote_id = supp_update_quote_form.quote_id.data
         this_quote = s.query(Quote_system).filter_by(quote_id=quote_id, supplier_id=current_user.supplier_id).first()
         prod_profit_rate = s.query(Prod_profit_rate).order_by(
-            Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100.00
+            Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
 
         supplier_perfer_unit_price = supp_update_quote_form.supplier_perfer_unit_price.data * (1 + prod_profit_rate)
         supplier_perfer_imprinting_prices = supp_update_quote_form.supplier_perfer_imprinting_prices.data
