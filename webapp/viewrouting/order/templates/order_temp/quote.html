@@ -1,4 +1,4 @@
-{% extends "non_nav_base.html" %}
+{% extends "base.html" %}
 {% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper,num_input_helper %}
 {% block link_ref %}
     {{ super() }}
@@ -15,7 +15,7 @@
 
 {% endblock %}
 
-{% block page %}
+{% block full_page_under_nav %}
     <form action="{{ url_for("orderRoute.create_quote") }}" method="post">
         {{ user_quote_form.hidden_tag() }}
         <div class="panel panel-default">
