@@ -43,3 +43,5 @@ QUOTE_STATUS_MAP={
     0:'User Submitted',
     1:'Supplier Replied'
 }
+
+RATE_NOTIFICATION="There will be an add-up rate when users buy this product."

@@ -170,13 +170,17 @@
                                         <tbody>
                                         <tr>
                                             <td class="">Unit Price<br>
-                                                <small>Note: There is a rate :
-                                                    <u>{{ prod_profit_rate.profit_rate }}%</u></small><br>
-                                                <strong>Actual Unit Price : </strong>
+                                                <small>{{ config.get("RATE_NOTIFICATION") }}
+                                                    <u>{{ prod_profit_rate.profit_rate }}%</u></small>
+
                                             </td>
                                             <td class="col-md-5 text-right">
                                                 ${{ supp_update_quote_form.supplier_perfer_unit_price(class='form-control float-right number',style="width:80%;",onkeyup="onPriceInfoKeyUp()") }}<br>
-                                                <br><strong id="actual_unit_price">abdc</strong></td>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Actual Unit Price : </strong></td>
+                                            <td><strong id="actual_unit_price"></strong></td>
                                         </tr>
                                         <tr>
                                             <td class="">Setup</td>
@@ -217,19 +221,6 @@
 
                 </div>
                 <div class="middle">
-                    {#                <h4><strong>Quote Status:</strong></h4>#}
-                    {#                <nav>#}
-                    {#                    <ul class="pager">#}
-                    {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
-                    {##}
-                    {#                        <li><a href="#" id="status_0">User Submitted &rarr;</a></li>#}
-                    {#                        <li><a href="#" id="status_1">Supplier Replied </a></li>#}
-                    {##}
-                    {#                        <script>#}
-                    {#                            $("#status_{{ this_quote.is_return_flg }}").addClass("active btn-primary");#}
-                    {#                        </script>#}
-                    {#                    </ul>#}
-                    {#                </nav>#}
                     <button type="submit" class="btn btn-primary">Accept</button>
                 </div>
 
@@ -240,8 +231,7 @@
 
         function onPriceInfoKeyUp() {
             var actual_up_value = (1+rate)*unit_price.val();
-            console.log(actual_up_value);
-            actual_unit_price.text("$"+actual_up_value);
+            actual_unit_price.text("$"+actual_up_value.toFixed(4));
             var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
             total_price.text(total.toFixed(2));
         }
