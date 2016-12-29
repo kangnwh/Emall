@@ -171,7 +171,7 @@
                                         <tr>
                                             <td class="">Unit Price<br>
                                                 <small>{{ config.get("RATE_NOTIFICATION") }}
-                                                    <u>{{ prod_profit_rate.profit_rate }}%</u></small>
+                                                    </small>
 
                                             </td>
                                             <td class="col-md-5 text-right">
@@ -180,7 +180,7 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Actual Unit Price : </strong></td>
-                                            <td><strong id="actual_unit_price"></strong></td>
+                                            <td><span>$</span><strong id="actual_unit_price"></strong></td>
                                         </tr>
                                         <tr>
                                             <td class="">Setup</td>
@@ -202,7 +202,7 @@
                                         <tr>
                                             <td class="indiv-price-big"><strong>Supplier Total</strong></td>
                                             <td class="indiv-price-big"><strong><span>$</span><span
-                                                    id="supplier_total_price">{{ this_quote.user_perfer_total }}</span></strong>
+                                                    id="supplier_total_price"></span></strong>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -231,8 +231,8 @@
 
         function onPriceInfoKeyUp() {
             var actual_up_value = (1+rate)*unit_price.val();
-            actual_unit_price.text("$"+actual_up_value.toFixed(4));
-            var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
+            actual_unit_price.text(actual_up_value.toFixed(4));
+            var total = actual_up_value.toFixed(4) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
             total_price.text(total.toFixed(2));
         }
         var rate = {{ prod_profit_rate.profit_rate }}/100.00;
