@@ -180,7 +180,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">{{ f.user.user_name}}</div>
                             <div class="panel-body">
-                                <select id="rating" name="rating">
+                                <select id="rating_{{ f.compliment_id }}" name="rating">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -188,7 +188,7 @@
                                 <option value="5">5</option>
                             </select>
                                 <script>
-                                    $('#rating').barrating({
+                                    $('#rating_{{ f.compliment_id }}').barrating({
                                         theme: 'bootstrap-stars',
                                         initialRating:{{ f.compliment_rate }},
                                         readonly: true
