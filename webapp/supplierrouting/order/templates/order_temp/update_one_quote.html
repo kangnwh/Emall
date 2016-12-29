@@ -242,5 +242,6 @@
             var total = parseFloat(unit_price.val()) * val + parseFloat(setup_price.val()) + parseFloat(imprinting_prices.val()) + parseFloat(freight_cost.val());
             total_price.text(total.toFixed(2));
         }
+    onPriceInfoKeyUp();
     </script>
 {% endblock page %}

@@ -52,5 +52,5 @@ class UserQuoteForm(Form):
     user_perfer_imprinting_prices = DecimalField("User Perferred Imprinting Price")
     user_perfer_setup_cost = DecimalField("User Perferred Setup Cost")
     user_perfer_freight_cost = DecimalField("User Perferred Freight Cost")
-    user_perfer_total = DecimalField("User Perferred Total Cost")
+    # user_perfer_total = DecimalField("User Perferred Total Cost")
     user_perfer_comment = StringField("User Comments")

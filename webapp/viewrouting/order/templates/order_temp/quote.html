@@ -248,10 +248,11 @@
         });
 
         var price_range = {{ this_prod.v_price_ranges[0].to_json() }};
-        var max = price_range[price_range.length - 1].quantity_to * 2;
-        if (max <= 0) {
-            max = 9999999
-        }
+{#        var max = price_range[price_range.length - 1].quantity_to * 2;#}
+{#        if (max <= 0) {#}
+{#            max = 9999999#}
+{#        }#}
+        var max = 9999999;
         var min = price_range[0].quantity_from;
 
         //init quantity min and max attr

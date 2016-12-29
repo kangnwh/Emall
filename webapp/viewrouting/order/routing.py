@@ -142,7 +142,7 @@ def create_quote():
         quote.user_perfer_imprinting_prices = user_quote_form.user_perfer_imprinting_prices.data
         quote.user_perfer_setup_cost = user_quote_form.user_perfer_setup_cost.data
         quote.user_perfer_freight_cost = user_quote_form.user_perfer_freight_cost.data
-        quote.user_perfer_total = user_quote_form.user_perfer_total.data
+        quote.user_perfer_total = quote.user_perfer_unit_price * quote.prod_quantity + quote.user_perfer_imprinting_prices + quote.user_perfer_setup_cost + quote.user_perfer_freight_cost #user_quote_form.user_perfer_total.data
 
         quote.user_perfer_comment = user_quote_form.user_perfer_comment.data
         quote.is_return_flg = 0

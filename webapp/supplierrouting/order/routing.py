@@ -131,12 +131,18 @@ def supp_update_quote():
     s = Session()
     supp_update_quote_form = UpdateQuoteForm()
     if supp_update_quote_form.validate_on_submit():
+
         quote_id = supp_update_quote_form.quote_id.data
+        this_quote = s.query(Quote_system).filter_by(quote_id=quote_id,supplier_id=current_user.supplier_id).first()
+
         supplier_perfer_unit_price = supp_update_quote_form.supplier_perfer_unit_price.data
         supplier_perfer_imprinting_prices = supp_update_quote_form.supplier_perfer_imprinting_prices.data
         supplier_perfer_setup_cost = supp_update_quote_form.supplier_perfer_setup_cost.data
         supplier_perfer_freight_cost = supp_update_quote_form.supplier_perfer_freight_cost.data
-        supplier_perfer_total = 1#supp_update_quote_form.supplier_perfer_total.data
+        supplier_perfer_total = supplier_perfer_unit_price * this_quote.prod_quantity + \
+                                supplier_perfer_imprinting_prices + \
+                                supplier_perfer_setup_cost + \
+                                supplier_perfer_freight_cost #supp_update_quote_form.supplier_perfer_total.data
         supplier_perfer_comment = supp_update_quote_form.supplier_perfer_comment.data
         is_return_flg = 1
 
