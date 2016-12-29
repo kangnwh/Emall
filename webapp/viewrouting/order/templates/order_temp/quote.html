@@ -181,7 +181,8 @@
         function qtyChange(input) {
             var val = $(input).val();
             slider_block.slider('setValue', parseInt(val));
-            refreshPrice();
+{#            refreshPrice();#}
+            onPriceInfoKeyUp();
         }
 
         function refreshPrice() {
