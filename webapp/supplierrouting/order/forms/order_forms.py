@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField,IntegerField,DecimalField,DateField,BooleanField
+from wtforms import StringField,IntegerField,DecimalField,DateField,BooleanField,DateTimeField
 from wtforms.validators import DataRequired
 from wtforms import validators
 
@@ -62,3 +62,10 @@ class UpdateQuoteForm(Form):
     supplier_perfer_freight_cost = DecimalField("Supplier Perferred Freight Cost")
     # supplier_perfer_total = DecimalField("Supplier Perferred Total Cost")
     supplier_perfer_comment = StringField("Supplier Comments")
+
+
+class UpdateOrderForm(Form):
+    client_order_id = IntegerField("Client Order ID")
+    supplier_comments = StringField("Supplier Comments")
+    # supplier_perfer_total = DecimalField("Supplier Perferred Total Cost")
+    supplier_target_dt = DateField("",format='%Y-%m-%d')

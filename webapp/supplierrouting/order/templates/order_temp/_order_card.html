@@ -31,7 +31,9 @@
                 </button>
 
                 {% if order.order_stat == 1 %}
-                    <a class="btn btn-default"  href="{{ url_for("orderRoute.receive_order",client_order_id=order.client_order_id,order_list=1) }}">Receive</a>
+                   {#  <a class="btn btn-default"  href="{{ url_for("orderRoute.receive_order",client_order_id=order.client_order_id,order_list=1) }}">Receive</a> #}
+                    <button type="button" class="btn btn-primary" onclick="onUpdateOrder('{{ order.client_order_id }}')">
+                            Receive Order </button>
                 {% elif order.order_stat == 2 %}
                     <a class="btn btn-default" href="{{ url_for("orderRoute.deliver",client_order_id=order.client_order_id,order_list=1) }}">Deliver</a>
                 {% endif %}

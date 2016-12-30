@@ -10,7 +10,7 @@ from webapp.Models.quote_system import Quote_system
 from webapp.Models.compliment_system import Compliment_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
-from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm
+from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm,UpdateOrderForm
 
 import datetime
 
@@ -81,25 +81,47 @@ def show_one_order():
         # s.close()
 
 
-@orderRoute.route("/receive", methods=["GET"])
+@orderRoute.route('/receive', methods=['GET', 'POST'])
 @login_required
 def receive_order():
     s = Session()
-    client_order_id = request.args.get('client_order_id', -1)
-    request_from = request.args.get('order_list', None)
-    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-    if this_order.first().order_stat == 1:
-        this_order.update({
-            "order_stat": 2
-        })
-        s.commit()
-        flash("You received order {id}, please deliver as soon as possible.".format(id=client_order_id), "success")
-        return redirect(url_for("userRoute.user_orders", type='ongoing')) if request_from else render_template(
-            "reload_parent.html"), s.close()
+    supp_update_order=UpdateOrderForm()
+    if supp_update_order.validate_on_submit():
+        client_order_id=supp_update_order.client_order_id.data
+        this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+        supplier_target_dt=supp_update_order.supplier_target_dt.data
+        supplier_comments=supp_update_order.supplier_comments.data
+        if this_order.first().order_stat == 1:
+            this_order.update(
+                    {
+                        "supplier_target_dt": supplier_target_dt,
+                        "supplier_comments": supplier_comments,
+                        "order_stat": 2
+                    }
+            )
+            s.commit()
+            flash("Supplier update successfully!", category='success')
+            flash("You received order {id}, please deliver before the delivery target date.".format(id=client_order_id), "success")
+            return redirect(url_for("orderRoute.show_one_order", client_order_id=client_order_id)), s.close()
+        else:
+            flash("Cannot receive this order in this phase.", "warning")
+            return redirect(
+            url_for("orderRoute.show_one_order", client_order_id=request.args.get('client_order_id', -1)))
+
+
+    elif request.method == 'POST':
+        flash(supp_update_order.errors, category='danger')
+        client_order_id = supp_update_order.client_order_id.data
     else:
-        flash("Cannot receive this order in this phase.", "warning")
-        return redirect(
-            url_for("orderRoute.show_one_order", client_order_id=request.args.get('client_order_id', -1))), s.close()
+        client_order_id = request.args.get('client_order_id')
+        if not client_order_id:
+            flash("Request invalid", "warning")
+            return redirect(url_for("userRoute.user_orders", type="ongoing"))
+
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id).first()
+    return render_template("order_temp/update_one_order.html",
+                           this_order=this_order,
+                           supp_update_order=supp_update_order), s.close()
 
 
 @orderRoute.route("/deliver", methods=["GET"])
