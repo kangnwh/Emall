@@ -1,0 +1,231 @@
+{% extends "non_nav_base.html" %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper,readonly_input_helper %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
+    <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
+
+{% endblock %}
+{% block page %}
+        <form action="{{ url_for("orderRoute.receive_order") }}" method="post">
+        {{ supp_update_order.hidden_tag() }}
+        <div class="invisible">{{ supp_update_order.client_order_id(value=this_order.client_order_id) }}</div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {#            <div class="col-md-12 middle-line">#}
+            <h5 class="middle-line">Order Form</h5>
+            {#            </div>#}
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="{{ (url_for("static",filename=("img/products/"+ this_order.prod_info.cover_img))) }}"
+                         class="img-responsive ">
+
+                </div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Basic Information</strong></div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                {#                        <thead>#}
+                                {#                        <tr>#}
+                                {#                            <th class="indiv-price-big col-md-7 ">Basic</th>#}
+                                {#                            <th class="indiv-price-big col-md-5">#}
+                                {#                                Information#}
+                                {#                            </th>#}
+                                {#                        </tr>#}
+                                {#                        </thead>#}
+                                <tbody>
+                                <tr>
+                                    <td>User Name</td>
+                                    <td>{{ this_order.user.user_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Supplier Name</td>
+                                    <td>{{ this_order.supplier.supplier_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Prod Name</td>
+                                    <td>{{ this_order.prod_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="">Colors</td>
+                                    <td>{{ this_order.colors }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lead Time</td>
+                                    <td>{{ this_order.lead_time }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Imprint Information</td>
+                                    <td>{{ this_order.imprint_info }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Target Date</td>
+                                    <td>
+                                    {{ date_input_helper('col-md-12' if this_order.supplier_target_dt else 'col-md-12 visible',supp_update_order.supplier_target_dt ) }}
+                               </td>
+                                </tr>
+                                <tr>
+                                    <td>Order Create Date</td>
+                                    <td><span id="freight_cost">{{ this_order.order_create_dt }}</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Price Information</strong></div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                <tbody>
+                                <tr>
+                                    <td class="">Unit Price</td>
+                                    <td><span>$</span><span id="unit_price">{{ this_order.unit_price }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span
+                                            id="imprinting_prices">{{ this_order.imprinting_prices }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost">{{ this_order.freight_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Quantity</td>
+                                    <td><span id="freight_cost">{{ this_order.prod_quantity }}</span></td>
+                                </tr>
+                                {% if this_order.is_used_points==1 %}
+                                    <tr>
+                                        <td class="">Use Points</td>
+                                        <td><span id="used_pts">{{ this_order.used_points }}</span></td>
+                                    </tr>
+                                {% endif %}
+
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Supplier Earn Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="need_pay_supplier">{{ this_order.need_pay_supplier }}</span></strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>User Need Pay Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price">{{ this_order.total_price }}</span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="middle">
+                <h4><strong>Order Status:</strong></h4>
+                <nav>
+                    <ul class="pager">
+                        {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
+                        {% for (k,v) in config.get('ORDER_STATUS_MAP').items() %}
+                            {% if k<5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }} &rarr;</a></li>
+                            {% elif k==5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% elif k>5 and this_order.order_stat >5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        <script>
+                            $("#status_{{ this_order.order_stat }}").addClass("active btn-primary");
+                        </script>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">User Comments</div>
+                    <div class="panel-body">
+                        {{ this_order.user_comments }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Supplier Comments</div>
+                    <div class="panel-body">
+                        <td>{{ supp_update_order.supplier_comments(class='form-control') }}</td>
+                    </div>
+                </div>
+            </div>
+            {% if this_order.order_stat == 5 %}
+
+                <h4><strong>User feedback:</strong></h4>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <select id="rating" name="rating">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            {% if this_order.order_compliment_sys %}
+                                <script>
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        initialRating:{{ this_order.order_compliment_sys[0].compliment_rate }},
+                                        readonly: true
+                                    });
+                                </script>
+                                {{ this_order.order_compliment_sys[0].user_compliment_comments }}
+                            {% else %}
+                                <script>
+                                    $('#rating').barrating({
+                                        theme: 'bootstrap-stars',
+                                        readonly: true
+                                    });
+                                </script>
+                                No user feedback.
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+                <div class="middle">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+        </div>
+    </div>
+    </form>
+    <script>
+        slider_block = $("#ex8").slider({
+            tooltip: 'always',
+            max: {{ this_order.prod_quantity *2 }},
+            min: 0,
+            value: {{ this_order.prod_quantity }}
+        });
+    </script>
+{% endblock page %}
