@@ -3,7 +3,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
+
 {% endblock %}
 
 {% block jsref %}
@@ -11,7 +11,6 @@
     {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
     <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
-    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
 
 {% endblock %}
 {% block page %}

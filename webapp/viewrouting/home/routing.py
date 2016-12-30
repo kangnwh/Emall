@@ -14,6 +14,7 @@ from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
+from webapp.Models.compliment_system import Compliment_system
 from webapp.common import allowed_file,generatePNG
 from webapp.viewrouting.home.forms.home_forms import UserFeedbackForm
 
@@ -182,7 +183,7 @@ def search():
                                               [Prod_info.imprint_size.like(w) for w in like_words]+
                                               [Prod_info.price_basis.like(w) for w in like_words])
                                               ),Prod_info.valid_flg==1)#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
-        print(prod_list_query)
+        # print(prod_list_query)
         prod_list_all = prod_list_query.order_by(Prod_info.prod_id).all()#supplier.supplier_name
         supplier_list = set([p.supplier for p in prod_list_all])
         supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
@@ -205,3 +206,22 @@ def search():
     else:
         flash("Please provide key words when you search something","warning")
         return redirect(url_for("homeRoute.index"))
+
+
+@homeRoute.route('/show_feedback/<int:prod_id>', methods=['GET'])
+@login_required
+def show_feedback(prod_id):
+    s = Session()
+
+    page = request.args.get('page', type=int, default=1)
+
+    feedback = BaseQuery(Compliment_system,s).filter_by(prod_id=prod_id).order_by(Compliment_system.user_compliment_time.desc()).paginate(page,customer_config.FEEDBACK_NUM_PER_PAGE, False)
+
+    pagination = Pagination(page=page, total=feedback.total,
+                                search=False, css_framework='bootstrap3',
+                                record_name='Feedback Information',
+                                per_page=customer_config.FEEDBACK_NUM_PER_PAGE)
+
+    return render_template("home_temp/show_feedback.html",
+                           feedbacks = feedback,
+                           pagination=pagination),s.close()
