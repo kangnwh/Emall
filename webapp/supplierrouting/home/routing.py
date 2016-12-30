@@ -6,7 +6,7 @@ from flask import render_template
 from flask_login import current_user, login_required
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy import func
+from sqlalchemy import func,or_
 from werkzeug import secure_filename
 
 import webapp.config.customer_config  as customer_config
@@ -16,6 +16,7 @@ from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
+from webapp.Models.compliment_system import Compliment_system
 from webapp.common import allowed_file,generatePNG
 from webapp.viewrouting.home.forms.home_forms import UserFeedbackForm
 
@@ -152,11 +153,68 @@ def sendtest(to):
 @login_required
 def search():
     key_words = request.args.get("q")
-    # supplier = request.args.get("supplier")
-    # product = request.args.get("product").
-    print(key_words)
+    supplier_id = request.args.get("supplier")
+    # product = request.args.get("product")
     if key_words:
-        pass
+        # search = False
+        # q = request.args.get('q')
+        # if q:
+        #     search = True
+        search_words = key_words.split(" ")
+        like_words = ['%{w}%'.format(w=w) for w in search_words]
+
+        page = request.args.get('page', type=int, default=1)
+
+        s = Session()
+        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
+        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
+        query_base = BaseQuery(Prod_info,s).filter_by(approve_stat=1,supplier_id=current_user.supplier_id)
+
+        prod_list_query = query_base.filter(or_(*([Prod_info.prod_name.like(w) for w in like_words]+
+                                              [Prod_info.prod_desc.like(w) for w in like_words]+
+                                              [Prod_info.lead_time.like(w) for w in like_words]+
+                                              [Prod_info.prod_size.like(w) for w in like_words]+
+                                              [Prod_info.imprint_size.like(w) for w in like_words]+
+                                              [Prod_info.price_basis.like(w) for w in like_words])
+                                              ),Prod_info.valid_flg==1)#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+        # print(prod_list_query)
+        # prod_list_all = prod_list_query.order_by(Prod_info.prod_id).all()#supplier.supplier_name
+        # supplier_list = set([p.supplier for p in prod_list_all])
+        # supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
+
+        # if supplier_id:
+        #     prod_list_query = prod_list_query.filter_by(supplier_id=supplier_id)
+
+        prod_list = prod_list_query.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+        pagination = Pagination(page=page, total=prod_list.total,
+                                search=search, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=customer_config.PROD_NUM_PER_PAGE)
+
+        return render_template('home_temp/search.html',
+                               key_words = key_words,
+                               # supplier_list = supplier_list,
+                               active_supplier = supplier_id,
+                               prod_list=prod_list,
+                               pagination=pagination)
     else:
         flash("Please provide key words when you search something","warning")
         return redirect(url_for("homeRoute.index"))
+
+@homeRoute.route('/show_feedback/<int:prod_id>', methods=['GET'])
+@login_required
+def show_feedback(prod_id):
+    s = Session()
+
+    page = request.args.get('page', type=int, default=1)
+
+    feedback = BaseQuery(Compliment_system,s).filter_by(prod_id=prod_id).order_by(Compliment_system.user_compliment_time.desc()).paginate(page,customer_config.FEEDBACK_NUM_PER_PAGE, False)
+
+    pagination = Pagination(page=page, total=feedback.total,
+                                search=False, css_framework='bootstrap3',
+                                record_name='Feedback Information',
+                                per_page=customer_config.FEEDBACK_NUM_PER_PAGE)
+
+    return render_template("home_temp/show_feedback.html",
+                           feedbacks = feedback,
+                           pagination=pagination),s.close()

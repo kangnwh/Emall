@@ -28,7 +28,7 @@
                         {#                            onclick="onShowProd({{ indiv_prod_info.prod_id }})"#}
                         Detail
                     </a>
-                    {% if current_user.is_administrator and indiv_prod_info.approve_stat == 0 %}
+                    {% if current_user.is_administrator %}
                         <a href="#" class="btn btn-danger " role="button"#}
                            onclick="onCheckProd({{ indiv_prod_info.prod_id }})">
                             Check

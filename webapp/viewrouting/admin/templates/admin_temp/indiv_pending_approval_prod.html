@@ -18,18 +18,29 @@
 {% block page %}
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="well row">
-                <button class="col-md-2 btn btn-primary" role="button"
-                        onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'approve')">
-                    Approve
-                </button>
-                <button class="col-md-offset-1 col-md-2 btn btn-success" role="button"
-                        onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">
-                    Reject
-                </button>
-                <div class="col-md-offset-1 col-md-2 alert alert-success">
-                    {{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}
+            <div class="well">
+                <h4>Approval Status - <span
+                            class="badge">{{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}</span>
+                    </h4>
+                <div class="row">
+                    <button class="col-md-2 btn btn-primary" role="button"
+                            onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'approve')">
+                        Approve
+                    </button>
+                    <button class="col-md-offset-1 col-md-2 btn btn-danger" role="button"
+                            onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">
+                        Reject
+                    </button>
+
                 </div>
+                {#                <div class="row">#}
+                {#                    <div class="alert alert-success">#}
+                {#                    Approval Status : {{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}#}
+                {#                    </div>#}
+                {##}
+                {#                    #}
+                {#                </div>#}
+
             </div>
             <div style=" overflow:scroll;  height:500px;">
                 <div class="col-md-12 middle-line">{{ this_prod.prod_name }}

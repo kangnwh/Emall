@@ -1,16 +1,36 @@
 {% extends "base.html" %}
 {% from "home_temp/_material_card.html" import material_card with context %}
 {% set prod_list_page = 1 %}
-{% block title %}{{ sub_cat_name }}  - {{ config.get('APP_NAME','An Empty System') }}{% endblock %}
 
-{% block undersidebar %}
+{% block siderbar %}
+{#    <div class="panel panel-default">#}
+{#        <!-- Default panel contents -->#}
+{#        <div class="panel-heading">Supplier List</div>#}
+{#        <div class="panel-body alert alert-success">#}
+{#            <p>Suppliers with product(s) like <strong><u>"{{ key_words }}"</u></strong></p>#}
+{#            <p><strong><u>Click</u></strong> the supplier for its product(s)</p>#}
+{#        </div>#}
+{##}
+{#        <!-- List group -->#}
+{#        <div class="list-group">#}
+{#            {% for supplier in supplier_list %}#}
+{#                <a id="s_list{{ supplier.supplier_id }}"#}
+{#                   href="{{ url_for('homeRoute.search') }}?q={{ key_words }}&supplier={{ supplier.supplier_id }}"#}
+{#                   class="list-group-item">{{ supplier.supplier_name }}</a>#}
+{#            {% endfor %}#}
+{#            <a id="s_listall" href="{{ url_for('homeRoute.search') }}?q={{ key_words }}"#}
+{#               class="list-group-item">All Suppliers' Products</a>#}
+{#            <script>#}
+{#                {% if active_supplier %}#}
+{#                    $("#s_list{{ active_supplier }}").addClass("active");#}
+{#                {% else %}#}
+{#                    $("#s_listall").addClass("active");#}
+{#                {% endif %}#}
+{#            </script>#}
+{#        </div>#}
+{#    </div>#}
 
-    <div class="panel panel-success">
-        <div class="panel-heading ">
-            <input id="switch-offColor" type="checkbox" data-off-color="warning"
-                   data-label-text="Show Logo">
-        </div>
-    </div>
+
 {% endblock %}
 {% block page %}
 
@@ -20,7 +40,7 @@
                 {{ material_card(prod) }}
             {% endfor %}
         {% else %}
-            <h3>No production found under category : <strong>{{ sub_cat_name }}</strong></h3>
+            <h3>No production found.</h3>
         {% endif %}
     </div>
     {{ pagination.links }}
@@ -42,28 +62,28 @@
         });
         function onUpdateProd(prod_id) {
 
-            new $.Zebra_Dialog('', {
-                source: {
-                    'iframe': {
-                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,
-                        'height': 600
-                    }
-                },
-                position: ['center', 'top + 5'],
-                width: 1200,
-                title: 'Production Information',
-                buttons:[],
-                'onClose': function () {
-                    location.reload();
-                }
-            });
+            {#            new $.Zebra_Dialog('', {#}
+            {#                source: {#}
+            {#                    'iframe': {#}
+            {#                        'src': '{{ url_for('adminRoute.update_prod') }}' + '?prod_id=' + prod_id,#}
+            {#                        'height': 600#}
+            {#                    }#}
+            {#                },#}
+            {#                position: ['center', 'top + 5'],#}
+            {#                width: 1200,#}
+            {#                title: 'Production Information',#}
+            {#                buttons:[],#}
+            {#                'onClose': function () {#}
+            {#                    location.reload();#}
+            {#                }#}
+            {#            });#}
         }
         function onShowProd(prod_id) {
             new $.Zebra_Dialog('', {
                 source: {
                     'iframe': {
                         'src': '{{ url_for('homeRoute.indiv_prod') }}' + '?prod_id=' + prod_id,
-                        'height':600
+                        'height': 600
                     }
                 },
                 position: ['center', 'top + 5'],
@@ -73,15 +93,15 @@
         }
         {#        TODO Hiden when is not admimistrator#}
         function ajax_delete_prod_form(name, prod_id) {
-            if (confirm("Do you really want to delete [" + name + "] ? ")) {
-                $.post("{{ url_for('supplierRoute.delete_prod') }}", {prod_id: prod_id}, function (result) {
-                    if (result = 'succ') {
-                        location.reload();
-                    }
-                });
-            } else {
-                return false;
-            }
+            {#            if (confirm("Do you really want to delete [" + name + "] ? ")) {#}
+            {#                $.post("{{ url_for('adminRoute.delete_prod') }}", {prod_id: prod_id}, function (result) {#}
+            {#                    if (result = 'succ') {#}
+            {#                        location.reload();#}
+            {#                    }#}
+            {#                });#}
+            {#            } else {#}
+            {#                return false;#}
+            {#            }#}
         }
         function change_logo_choice(state) {
             var processed = $("#control-logo-processed");
@@ -117,6 +137,8 @@
         el.on('switchChange.bootstrapSwitch', function (event, state) {
             change_logo_choice(state);
         });
+
+    $("#search_words").val('{{ key_words }}');
 
     </script>
 

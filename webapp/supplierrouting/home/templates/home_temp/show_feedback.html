@@ -1,0 +1,32 @@
+{% extends "headers.html" %}
+
+{% block mainpage %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ pagination.links }}
+            {% for f in feedbacks.items %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ f.user.user_name }}<div class="float-right">{{ f.user_compliment_time }}</div></div>
+                    <div class="panel-body">
+                        <select id="rating_{{ f.compliment_id }}" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <script>
+                            $('#rating_{{ f.compliment_id }}').barrating({
+                                theme: 'bootstrap-stars',
+                                initialRating:{{ f.compliment_rate }},
+                                readonly: true
+                            });
+                        </script>
+                        {{ f.user_compliment_comments }}
+                    </div>
+                </div>
+            {% endfor %}
+            {{ pagination.links }}
+        </div>
+    </div>
+{% endblock %}
