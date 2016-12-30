@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, flash, request,redirect,render_template,url_for,abort,jsonify
 from flask_login import login_required,current_user
-
+from sqlalchemy import func,or_,and_,between
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
+from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
+from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
+from webapp.Models.user import User
+from webapp.Models.supplier import Supplier
 from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm
 
@@ -37,7 +41,14 @@ def create_order():
         prices = s.query(V_Prod_price_range).filter_by(prod_id=order.prod_id).first()
         order.total_price,order.unit_price,order.imprinting_prices,order.setup_cost,order.freight_cost = prices.get_prices(order.prod_quantity)
 
-        order.need_pay_supplier = 0 #TODO need complex logic to get this value
+        this_supplier=s.query(Supplier).filter_by(supplier_id=order.supplier_id).first()
+        supplier_rebate_ref=s.query(Supplier_rebate_ref).filter(between(this_supplier.supplier_points,Supplier_rebate_ref.supplier_points_from,Supplier_rebate_ref.supplier_points_to)).first()
+        supplier_rebate_rate=supplier_rebate_ref.rebate_rate
+        print(supplier_rebate_rate)
+
+        real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
+        real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
+        order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
         order.is_used_points = 1 if order.is_used_points else 0
         order.used_points = order.used_points
         order.user_comments = user_order_form.user_comments.data
@@ -115,6 +126,27 @@ def user_feedback():
         })
         s.add(feedback)
         s.commit()
+        after_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+        if this_order.first().order_stat == 5 :
+            new_pts=after_order.first().total_price
+            after_user = s.query(User).filter_by(user_id=current_user.user_id)
+            new_user_pts=current_user.credit_points + round(new_pts/100)
+            after_user.update({
+                "credit_points" : new_user_pts
+            })
+            after_supplier=s.query(Supplier).filter_by(supplier_id=this_order.first().supplier_id)
+            current_supplier_pts=after_supplier.first().supplier_points
+            new_supplier_pts=current_supplier_pts+round(new_pts/100)
+            after_supplier.update({
+                "supplier_points" : new_supplier_pts
+            })
+
+            print(new_pts)
+            print(new_user_pts)
+            print(new_supplier_pts)
+
+            s.commit()
+            s.close()
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
         flash("Cannot provide feedback to this order in this phase.","warning")
