@@ -100,3 +100,22 @@ class Prod_price_range(Base):
         jsondata.append("]")
 
         return "".join(jsondata)
+
+    def get_unit_prices(self, quantity):
+        valid_prices=[]
+        if self.quantity_to5>0:
+             valid_prices.append([self.quantity_from5,self.unit_price5,self.imprinting_prices5 , self.setup_cost5 , self.freight_cost5])
+        if self.quantity_to4>0:
+             valid_prices.append([self.quantity_from4,self.unit_price4,self.imprinting_prices4 , self.setup_cost4 , self.freight_cost4])
+        if self.quantity_to3>0:
+             valid_prices.append([self.quantity_from3,self.unit_price3,self.imprinting_prices3 , self.setup_cost3 , self.freight_cost3])
+        if self.quantity_to2>0:
+             valid_prices.append([self.quantity_from2,self.unit_price2,self.imprinting_prices2 , self.setup_cost2 , self.freight_cost2])
+        if self.quantity_to1>0:
+             valid_prices.append([self.quantity_from1,self.unit_price1,self.imprinting_prices1 , self.setup_cost1 , self.freight_cost1])
+
+        for p in valid_prices:
+            if quantity>= p[0]:
+                return p[1]
+
+        return 0
