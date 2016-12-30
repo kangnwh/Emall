@@ -1,0 +1,23 @@
+{% extends "admin_temp/admin_base.html" %}
+{#{% from "order_temp/_order_card.html" import order_card %}#}
+{% set active_page = 'pending_approval_prod' %}
+
+{% block page %}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if publish_active == 'pending' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.pending_approval_list",type='pending') }}">Pending Approval</a></li>
+        <li role="presentation" {% if publish_active == 'rejected' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.pending_approval_list",type='rejected') }}">Reject Approval</a></li>
+        <li role="presentation" {% if publish_active == 'approved' %} class="active"{% endif %}><a
+                href="{{ url_for("adminRoute.pending_approval_list",type='approved') }}">Approved Approval</a></li>
+    </ul>
+    <block class="">
+        {% block prod_list %}
+        {% endblock %}
+    </block>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock scripts %}

@@ -6,7 +6,7 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
-                                                    _prod_approve,_check_pending_approval_prod,_reject_or_approve
+                                                    _pending_approval_list,_check_pending_approval_prod,_reject_or_approve
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -192,10 +192,10 @@ def logout():
     logout_user()
     return redirect(url_for('homeRoute.index'))
 
-@adminRoute.route('/prod_approve', methods=['GET', 'POST'])
+@adminRoute.route('/pending_approval_list', methods=['GET', 'POST'])
 @login_required
-def prod_approve():
-    return _prod_approve()
+def pending_approval_list():
+    return _pending_approval_list()
 
 @adminRoute.route('/check_pending_approval_prod', methods=['GET', 'POST'])
 @login_required

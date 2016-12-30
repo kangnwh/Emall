@@ -891,16 +891,21 @@ def _all_quotes(type):
                            pagination=pagination)
 
 @admin_check
-def _prod_approve():
+def _pending_approval_list():
     search = False
     q = request.args.get('q')
     if q:
         search = True
 
     page = request.args.get('page', type=int, default=1)
-
+    type = request.args.get('type','pending')
+    type_code_mapping = {
+        "rejected":-1,
+        "pending":0,
+        "approved":1
+    }
     s = Session()
-    prod_list = BaseQuery(Prod_info,s).filter_by(approve_stat=0,is_del_flg=0).order_by(Prod_info.prod_create_ts.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+    prod_list = BaseQuery(Prod_info,s).filter_by(approve_stat=type_code_mapping.get(type),is_del_flg=0).order_by(Prod_info.prod_create_ts.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
 
 
     pagination = Pagination(page=page, total=prod_list.total,
@@ -908,18 +913,19 @@ def _prod_approve():
                             record_name='Quote List',
                             per_page=customer_config.USER_ORDER_PER_PAGE)
 
-    return render_template('admin_temp/pending_approval_prod_list.html',
+    return render_template('admin_temp/publish_approval_prod_list.html',
                            prod_list=prod_list,
-                           pagination=pagination),s.close()
+                           pagination=pagination,
+                           type=type),s.close()
 
 @admin_check
 def _check_pending_approval_prod():
     prod_id = request.args.get('prod_id')
     s = Session()
-    this_prod = s.query(Prod_info).filter(Prod_info.prod_id==prod_id,Prod_info.approve_stat==0).first()
+    this_prod = s.query(Prod_info).filter(Prod_info.prod_id==prod_id).first()
 
 
-    return render_template('admin_temp/check_pending_approval_prod.html',
+    return render_template('admin_temp/indiv_pending_approval_prod.html',
                            this_prod=this_prod),s.close()
 
 @admin_check
@@ -930,8 +936,7 @@ def _reject_or_approve():
         s = Session()
         if action == 'reject':
             s.query(Prod_info).filter_by(prod_id=prod_id).update({
-                'approve_stat':-1,
-                'is_del_flg':1
+                'approve_stat':-1
             })
         else:
             s.query(Prod_info).filter_by(prod_id=prod_id).update({

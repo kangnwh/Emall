@@ -1,8 +1,8 @@
-{% extends "admin_temp/admin_base.html" %}
+{% extends "admin_temp/publish_prod_base.html" %}
 {% from "home_temp/_material_card.html" import material_card with context %}
-{% set active_page = 'pending_approval_prod' %}
+{% set publish_active = type %}
 
-{% block page %}
+{% block prod_list %}
 
     <div class="row">
         {% if prod_list.total >0 %}
@@ -10,7 +10,7 @@
                 {{ material_card(prod) }}
             {% endfor %}
         {% else %}
-            <h3>No production found under category : <strong>{{ sub_cat_name }}</strong></h3>
+            <h3>No products found.</h3>
         {% endif %}
     </div>
     {{ pagination.links }}
