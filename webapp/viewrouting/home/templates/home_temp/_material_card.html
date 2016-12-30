@@ -9,36 +9,41 @@
 
                             <div class="img-responsive material_img_box "
                                  style="background-image: url('{{ (url_for("static",filename=("img/products/"+ indiv_prod_info.cover_img))) }}')"
-                                 >
-                                <img class="list-user-logo invisible" name="img-logo-original" src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link) )) }}">
-                                <img class="list-user-logo invisible" name="img-logo-processed" src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link) )) }}">
+                            >
+                                <img class="list-user-logo invisible" name="img-logo-original"
+                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link) )) }}">
+                                <img class="list-user-logo invisible" name="img-logo-processed"
+                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link) )) }}">
                             </div>
                         </div>
                     </div>
                 </div>
-                <p class="one-line"><strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}</p>
-{#                {% if current_user.is_administrator %}#}
-                    <div class="btn-group btn-group-sm">
-                        <a class="btn btn-success" role="button" href ="{{ url_for('homeRoute.indiv_prod',prod_id=indiv_prod_info.prod_id) }}" target="_blank">
-{#                            onclick="onShowProd({{ indiv_prod_info.prod_id }})"#}
-                            Detail
+                <p class="one-line">
+                    <strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}
+                </p>
+
+                <div class="btn-group btn-group-sm">
+                    <a class="btn btn-success" role="button"
+                       href="{{ url_for('homeRoute.indiv_prod',prod_id=indiv_prod_info.prod_id) }}" target="_blank">
+                        {#                            onclick="onShowProd({{ indiv_prod_info.prod_id }})"#}
+                        Detail
+                    </a>
+                    {% if current_user.is_administrator and indiv_prod_info.approve_stat == 0 %}
+                        <a href="#" class="btn btn-danger " role="button"#}
+                           onclick="onCheckProd({{ indiv_prod_info.prod_id }})">
+                            Check
                         </a>
-{#                        <a class="btn btn-primary " role="button"#}
-{#                                onclick="onUpdateProd({{ indiv_prod_info.prod_id }})"#}
-{#                        >Update Info#}
-{#                        </a>#}
-{#                        <a href="#" class="btn btn-danger " role="button" onclick='ajax_delete_prod_form("{{ indiv_prod_info.prod_name }}",{{ indiv_prod_info.prod_id }})'>#}
-{#                            Delete#}
-{#                        </a>#}
-                    </div>
-{#                {% else %}#}
-{#                    <p>#}
-{#                        <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">#}
-{#                            Detail#}
-{#                        </a>#}
-{##}
-{#                    </p>#}
-{#                {% endif %}#}
+
+                    {% endif %}
+                </div>
+                {#                {% else %}#}
+                {#                    <p>#}
+                {#                        <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">#}
+                {#                            Detail#}
+                {#                        </a>#}
+                {##}
+                {#                    </p>#}
+
             </div>
         </div>
     </div>

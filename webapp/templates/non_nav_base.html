@@ -29,7 +29,7 @@
 {#{% endblock head %}#}
 
 {% block mainpage %}
-    <div class="container">
+    <div class="container" style="width:100%">
     {#    <div class="bs-docs-header" tabindex="-1">#}
     {#        <div class="jumbotron no-padding-top no-padding-bottom">#}
     {#            <div class="container">#}
@@ -55,7 +55,9 @@
         {% endwith %}
 
     </div>
-{% block page %}{% endblock %}
+
+        {% block page %}{% endblock %}
+
 {% endblock mainpage %}
 </div>
 {% block scripts %}

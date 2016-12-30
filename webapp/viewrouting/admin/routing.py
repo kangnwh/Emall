@@ -5,7 +5,8 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _add_level_one,_delete_level_one,_update_level_one,_all_orders,_all_quotes,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
-                                                    _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd
+                                                    _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
+                                                    _prod_approve,_check_pending_approval_prod,_reject_or_approve
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -186,6 +187,27 @@ def all_quotes(type):
     return _all_quotes(type)
 
 @adminRoute.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('homeRoute.index'))
+
+@adminRoute.route('/prod_approve', methods=['GET', 'POST'])
+@login_required
+def prod_approve():
+    return _prod_approve()
+
+@adminRoute.route('/check_pending_approval_prod', methods=['GET', 'POST'])
+@login_required
+def check_pending_approval_prod():
+    return _check_pending_approval_prod()
+
+@adminRoute.route('/reject_or_approve', methods=['POST'])
+@login_required
+def reject_or_approve():
+    return _reject_or_approve()
+
+# @adminRoute.route('/approve_prod_request', methods=['POST'])
+# @login_required
+# def approve_prod_request():
+#     return _approve_prod_request()

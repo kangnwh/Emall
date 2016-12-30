@@ -889,3 +889,75 @@ def _all_quotes(type):
     return render_template('admin_temp/all_quotes.html',quote_active=type,
                            quote_list=quote_list,
                            pagination=pagination)
+
+@admin_check
+def _prod_approve():
+    search = False
+    q = request.args.get('q')
+    if q:
+        search = True
+
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+    prod_list = BaseQuery(Prod_info,s).filter_by(approve_stat=0,is_del_flg=0).order_by(Prod_info.prod_create_ts.desc()).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+
+
+    pagination = Pagination(page=page, total=prod_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Quote List',
+                            per_page=customer_config.USER_ORDER_PER_PAGE)
+
+    return render_template('admin_temp/pending_approval_prod_list.html',
+                           prod_list=prod_list,
+                           pagination=pagination),s.close()
+
+@admin_check
+def _check_pending_approval_prod():
+    prod_id = request.args.get('prod_id')
+    s = Session()
+    this_prod = s.query(Prod_info).filter(Prod_info.prod_id==prod_id,Prod_info.approve_stat==0).first()
+
+
+    return render_template('admin_temp/check_pending_approval_prod.html',
+                           this_prod=this_prod),s.close()
+
+@admin_check
+def _reject_or_approve():
+    prod_id = request.form.get('prod_id')
+    action = request.form.get('action')
+    if prod_id and action:
+        s = Session()
+        if action == 'reject':
+            s.query(Prod_info).filter_by(prod_id=prod_id).update({
+                'approve_stat':-1,
+                'is_del_flg':1
+            })
+        else:
+            s.query(Prod_info).filter_by(prod_id=prod_id).update({
+            'approve_stat':1,
+            'is_del_flg':0
+        })
+        s.commit()
+        s.close()
+        flash("Product publish successfully.","success")
+        return jsonify(result='succ')
+    else:
+        flash('No Valid information for this product',category='danger')
+        return jsonify(result='failed')
+#
+# @admin_check
+# def _approve_prod_request():
+#     prod_id = request.form.get('prod_id')
+#     if prod_id:
+#         s = Session()
+#         s.query(Prod_info).filter_by(prod_id=prod_id).update({
+#             'approve_stat':1,
+#             'is_del_flg':0
+#         })
+#         s.commit()
+#         s.close()
+#         return jsonify(result='succ')
+#     else:
+#         flash('No Valid information for approving product',category='danger')
+#         return jsonify(result='failed')

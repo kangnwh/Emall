@@ -44,4 +44,10 @@ QUOTE_STATUS_MAP={
     1:'Supplier Replied'
 }
 
+APPROVAL_STATUS_MAP={
+    -1:"Rejected",
+    0:"Pending",
+    1:"Approved"
+}
+
 RATE_NOTIFICATION="There will be an add-up rate when users buy this product."

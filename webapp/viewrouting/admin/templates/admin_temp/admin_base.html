@@ -31,13 +31,16 @@
             <ul class="nav nav-pills nav-stacked" role="tablist">
 
                 <li class="btn btn-warning">
-                    <a  href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
+                    <a href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
                 <li {% if 2 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.account_management') }}">User Account Management</a></li>
                 <li {% if 4 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.supplier_management') }}">Supplier Account Management</a>
                 <li {% if 3 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Category Management</a></li>
+                </li>
+                <li {% if active_page == "pending_approval_prod"  %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.prod_approve') }}">Product Pending List</a></li>
                 </li>
                 <li {% if "all_orders" == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.all_orders',type='ongoing') }}">All Orders</a>

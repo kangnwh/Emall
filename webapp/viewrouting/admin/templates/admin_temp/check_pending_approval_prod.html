@@ -1,0 +1,342 @@
+{% extends "non_nav_base.html" %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">#}
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
+    <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+    {#    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>#}
+
+{% endblock %}
+
+{% block page %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="well row">
+                <button class="col-md-2 btn btn-primary" role="button"
+                        onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'approve')">
+                    Approve
+                </button>
+                <button class="col-md-offset-1 col-md-2 btn btn-success" role="button"
+                        onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">
+                    Reject
+                </button>
+                <div class="col-md-offset-1 col-md-2 alert alert-success">
+                    {{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}
+                </div>
+            </div>
+            <div style=" overflow:scroll;  height:500px;">
+                <div class="col-md-12 middle-line">{{ this_prod.prod_name }}
+                    <div class=" right-line"><kbd>Prod ID:{{ this_prod.prod_id }}</kbd></div>
+                </div>
+                <div class="row"><!-- slider,logo change, description -->
+                    <div class="col-md-5 ">
+                        <div class="row">
+                            <div class="panel panel-default middle" style="max-width:400px;">
+                                <div class="panel-body">
+                                    <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+                                        <li data-thumb="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}">
+                                            <div class="indiv_pic_size "
+                                                 style="background-image: url('{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}')">
+                                                <img class="indiv-user-logo invisible" name='img-logo-original'
+                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
+                                                <img class="indiv-user-logo invisible" name='img-logo-processed'
+                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+                                            </div>
+
+                                        </li>
+                                        {% for pic in this_prod.prod_pics %}
+                                            <li data-thumb="{{ url_for("static",filename=("img/products/"+ pic.image_path)) }}">
+                                                <div class="indiv_pic_size "
+                                                     style="background-image: url('{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}')">
+                                                    <img class="indiv-user-logo invisible" name='img-logo-original'
+                                                         src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
+                                                    <img class="indiv-user-logo invisible" name='img-logo-processed'
+                                                         src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+                                                </div>
+
+                                                <p>{{ pic.img_desc }}</p>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 " style="max-width:400px;">
+                                <div class="alert alert-success">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input id="switch-offColor" type="checkbox" data-off-color="warning"
+                                                   data-label-text="Logo">
+                                        </div>
+
+                                        <div class="col-md-offset-1 col-md-3">
+                                            <div class="btn btn-default panel-primary invisible "
+                                                 id="control-logo-processed"
+                                                 onclick="switch_logo('control-logo-processed','control-logo-original')">
+                                                <img class="list-user-logo"
+                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <div class="btn btn-default invisible" id="control-logo-original"
+                                                 onclick="switch_logo('control-logo-original','control-logo-processed')">
+                                                <img class="list-user-logo"
+                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="">
+
+                            <strong class="indiv-prod-desc-head">Description</strong>
+                            <p>{{ this_prod.prod_desc }}</p>
+                            <strong class="indiv-prod-desc-head">Colours</strong>
+                            <p>{{ this_prod.colors }}</p>
+                            <strong class="indiv-prod-desc-head">Production Size</strong>
+                            <p>{{ this_prod.prod_size }}</p>
+                            <strong class="indiv-prod-desc-head">Imprint Size</strong>
+                            <p>{{ this_prod.imprint_size }}</p>
+                            <strong class="indiv-prod-desc-head">Lead Time</strong>
+                            <p>{{ this_prod.lead_time }}</p>
+                            <strong class="indiv-prod-desc-head">Price Basis (<a href="#price_detail">
+                                <ins>Price Detail</ins>
+                            </a>)</strong>
+                            <p>{{ this_prod.price_basis }}</p>
+                            <strong class="indiv-prod-desc-head">Subcategory</strong>
+                            <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="price_detail" class="row well"><!-- price range -->
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
+                            </div>
+                            <div class="row" style="padding-top: 30px;">
+                                <div class="col-md-9">
+                                    <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                           data-slider-max="20000"
+                                           data-slider-step="1" data-slider-value="14"/></div>
+                                <div class="col-md-3">
+                                    <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                                </div>
+                                <div class="col-md-12"><!-- select quantity -->
+
+                                    <div class="panel-body">
+                                        <div id="price_selection"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 col-md-4">
+                            <table class="table table-hover text-right">
+                                <thead>
+                                <tr>
+                                    <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                    <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                            id="unit_price"></span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span id="imprinting_prices"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price"></span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {#                <div class="row">#}
+                    {#                    <a class="col-md-2 btn btn-primary" role="button"#}
+                    {#                       href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">#}
+                    {#                        Approve#}
+                    {#                    </a>#}
+                    {#                    <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"#}
+                    {#                       href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">#}
+                    {#                        Reject#}
+                    {#                    </a>#}
+                    {#                </div>#}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function ajax_reject_or_approve(prod_id, action) {
+            if (confirm("Do you really want to " + action + " this publish request ? ")) {
+                $.post("{{ url_for('adminRoute.reject_or_approve') }}", {
+                    prod_id: prod_id,
+                    action: action
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    } else {
+                        alert(action + " failed.Please check with administrator");
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+        function change_logo_choice(state) {
+            var processed = $("#control-logo-processed");
+            var original = $("#control-logo-original");
+            if (state) {
+                processed.removeClass('invisible');
+                original.removeClass('invisible');
+                if (processed.hasClass('panel-primary')) {
+                    $("[name='img-logo-processed']").removeClass('invisible');
+                    $("[name='img-logo-original']").addClass('invisible');
+                } else {
+                    console.log('original');
+                    $("[name='img-logo-original']").removeClass('invisible');
+                    $("[name='img-logo-processed']").addClass('invisible');
+                }
+            } else {
+                $("[name='img-logo-processed']").addClass('invisible');
+                $("[name='img-logo-original']").addClass('invisible');
+                processed.addClass('invisible');
+                original.addClass('invisible');
+            }
+        }
+        function switch_logo(active, inactive) {
+            $("#" + active).removeClass('panel-default');
+            $("#" + active).addClass('panel-primary');
+
+            $("#" + inactive).removeClass('panel-primary');
+            $("#" + inactive).addClass('panel-default');
+
+            change_logo_choice(true);
+        }
+
+        function qtyChange(input) {
+            var val = $(input).val();
+            slider_block.slider('setValue', parseInt(val));
+            refreshPrice();
+        }
+
+        function refreshPrice() {
+            var val = parseInt(input_qty.val());
+            slider_block.slider('setValue', val);
+            if (val > price_range[price_range.length - 1].quantity_to) {
+                $('#unit_price').text(price_range[price_range.length - 1].unit_price);
+                $('#setup_price').text(price_range[price_range.length - 1].setup_cost);
+                $('#imprinting_prices').text(price_range[price_range.length - 1].imprinting_prices);
+                $('#freight_cost').text(price_range[price_range.length - 1].freight_cost);
+                var total = price_range[price_range.length - 1].unit_price * val + price_range[price_range.length - 1].setup_cost + price_range[price_range.length - 1].imprinting_prices + price_range[price_range.length - 1].freight_cost;
+                $('#total_price').text(total);
+                return;
+            }
+            for (i = 0; i < price_range.length; i++) {
+                if (val >= price_range[i].quantity_from && val <= price_range[i].quantity_to) {
+                    $('#unit_price').text(price_range[i].unit_price);
+                    $('#setup_price').text(price_range[i].setup_cost);
+                    $('#imprinting_prices').text(price_range[i].imprinting_prices);
+                    $('#freight_cost').text(price_range[i].freight_cost);
+                    var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost);
+                    $('#total_price').text(total.toFixed(2));
+                    break;
+                }
+            }
+        }
+        function init_price_selection(id) {
+            var parent = $("#" + id);
+            parent.append('<table class="table table-hover table-responsive" style="font-size:80%;"><thead><tr><th>Range</th><th>Unit Price</th><th>Setup</th><th>Imprinting Prices</th><th>Freight Cost</th></tr></thead><tbody></tbody></table>');
+            for (i = 0; i < price_range.length; i++) {
+                parent.find("tbody").append('<tr group="price_group" onclick="switch_group(\'price_group\',this)"><td ><span name="price_base">' + price_range[i].quantity_from + '</span> - ' + price_range[i].quantity_to + '</td>	<td>' + price_range[i].unit_price + '</td><td>' + price_range[i].setup_cost + '</td><td>' + price_range[i].imprinting_prices + '</td><td>' + price_range[i].freight_cost + '</td></tr>');
+            }
+            parent.append('</tbody></table>');
+        }
+        function switch_group(group, active) {
+            $("[group='" + group + "']").removeClass('success');
+            $(active).addClass('success');
+            $("#input_qty").val(parseInt($(active).find("[name=price_base]").text()));
+            refreshPrice();
+        }
+
+        var el = $("#switch-offColor").bootstrapSwitch();
+        el.bootstrapSwitch('state', false);
+        el.on('switchChange.bootstrapSwitch', function (event, state) {
+            change_logo_choice(state);
+        });
+
+        var price_range = {{ this_prod.v_price_ranges[0].to_json() }};
+        {#        var max = price_range[price_range.length - 1].quantity_to * 2;#}
+        {#        if (max <= 0) {#}
+        {#            max = 9999999#}
+        {#        }#}
+        var max = 9999999;
+        var min = price_range[0].quantity_from;
+
+        //init quantity min and max attr
+        var input_qty = $("#input_qty");
+        input_qty.attr('min', min);
+        input_qty.attr('max', max);
+        input_qty.val(price_range[0].quantity_to);
+        //init slider block
+
+        slider_block = $("#ex8").slider({
+            tooltip: 'always',
+            max: max,
+            min: min,
+            value: parseInt(price_range[0].quantity_to)
+        });
+        $("#ex8").on("slide", function (slideEvt) {
+            $("#input_qty").val(slideEvt.value);
+            refreshPrice();
+
+        });
+        $("#ex8").on("slideStop", function (slideEvt) {
+            $("#input_qty").val(slideEvt.value);
+            refreshPrice();
+        });
+
+        var lightslider = $('#image-gallery').lightSlider({
+            gallery: true,
+            item: 1,
+            thumbItem: 9,
+            slideMargin: 0,
+            speed: 500,
+            auto: true,
+            loop: true,
+            onSliderLoad: function () {
+                $('#image-gallery').removeClass('cS-hidden');
+            }
+        });
+
+        refreshPrice();
+        init_price_selection('price_selection')
+
+
+    </script>
+{% endblock %}
