@@ -175,14 +175,14 @@ def search():
                                               [Prod_info.price_basis.like(w) for w in like_words])
                                               ))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
         else:
-            prod_list_query = query_base.filter_by(valid_flg=1).filter(or_([Prod_info.prod_name.like(w) for w in like_words]+
+            prod_list_query = query_base.filter(or_(*([Prod_info.prod_name.like(w) for w in like_words]+
                                               [Prod_info.prod_desc.like(w) for w in like_words]+
                                               [Prod_info.lead_time.like(w) for w in like_words]+
                                               [Prod_info.prod_size.like(w) for w in like_words]+
                                               [Prod_info.imprint_size.like(w) for w in like_words]+
-                                              [Prod_info.price_basis.like(w) for w in like_words]
-                                              ))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
-
+                                              [Prod_info.price_basis.like(w) for w in like_words])
+                                              ),Prod_info.valid_flg==1)#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+        print(prod_list_query)
         prod_list_all = prod_list_query.order_by(Prod_info.prod_id).all()#supplier.supplier_name
         supplier_list = set([p.supplier for p in prod_list_all])
         supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
