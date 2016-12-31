@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 'publish' %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
@@ -15,7 +16,7 @@
 
 {% endblock %}
 
-{% block full_page_under_nav %}
+{% block content %}
 
     <div class="panel panel-default">
         <div class="panel-body">

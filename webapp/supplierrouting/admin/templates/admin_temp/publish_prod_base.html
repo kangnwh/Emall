@@ -4,14 +4,22 @@
 
 {% block page %}
     <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" {% if publish_active == 'add_new' %} class="active"{% endif %}><a
+                href="{{ url_for('supplierRoute.add_new_prod') }}">Publish New</a></li>
         <li role="presentation" {% if publish_active == 'pending' %} class="active"{% endif %}><a
-                href="{{ url_for("supplierRoute.publish_prod",type='pending') }}">Pending Approval</a></li>
+                href="{{ url_for("supplierRoute.publish_prod",type='pending') }}">Pending</a></li>
         <li role="presentation" {% if publish_active == 'rejected' %} class="active"{% endif %}><a
-                href="{{ url_for("supplierRoute.publish_prod",type='rejected') }}">Reject Approval</a></li>
+                href="{{ url_for("supplierRoute.publish_prod",type='rejected') }}">Rejected</a></li>
         <li role="presentation" {% if publish_active == 'approved' %} class="active"{% endif %}><a
-                href="{{ url_for("supplierRoute.publish_prod",type='approved') }}">Approved Approval</a></li>
-        <li role="presentation" {% if publish_active == 'search' %} class="active"{% endif %}><a
-                href="{{ url_for("supplierRoute.publish_prod",type='search') }}">Search Product</a></li>
+                href="{{ url_for("supplierRoute.publish_prod",type='approved') }}">Approved</a></li>
+        {#        <li role="presentation" {% if publish_active == 'search' %} class="active"{% endif %}><a#}
+        {#                href="{{ url_for("supplierRoute.publish_prod",type='search') }}">Search Product</a></li>#}
+        <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input id="search_words" type="text" class="form-control" placeholder="Search" value="{{ key_words }}">
+            </div>
+            <button class="btn btn-default" onclick="search()">Search</button>
+        </div>
     </ul>
     <block class="">
         {% block prod_list %}
@@ -22,7 +30,13 @@
 {% block scripts %}
     {{ super() }}
     <script>
-    function onUpdateProd(prod_id) {
+        function search() {
+            var search_words = $("#search_words").val();
+
+{#            window.open("{{ url_for("supplierRoute.search") }}?q=" + search_words);#}
+            location.href = "{{ url_for("supplierRoute.search") }}?q=" + search_words;
+        }
+        function onUpdateProd(prod_id) {
 
             new $.Zebra_Dialog('', {
                 source: {
@@ -34,7 +48,7 @@
                 position: ['center', 'top + 5'],
                 width: 1200,
                 title: 'Production Information',
-                buttons:[],
+                buttons: [],
                 'onClose': function () {
                     location.reload();
                 }

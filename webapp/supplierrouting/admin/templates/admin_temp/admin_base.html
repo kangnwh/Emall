@@ -28,7 +28,7 @@
         <div class="col-md-3">
             <ul class="nav nav-pills nav-stacked" role="tablist">
                 <li class="btn btn-warning">
-                    <a href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a></li>
+                    <a href="http://{{ config.get("HOST_INFO").get("HOME_HOST").get("IP") }}:{{ config.get("HOST_INFO").get("HOME_HOST").get("PORT") }}" target="_blank"><strong>Open Home Page</strong></a></li>
                 <li {% if active_page=='dashboard' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
                 <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>

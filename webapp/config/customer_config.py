@@ -45,9 +45,15 @@ QUOTE_STATUS_MAP={
 }
 
 APPROVAL_STATUS_MAP={
-    -1:"Rejected",
-    0:"Pending",
-    1:"Approved"
+    -1:["Rejected","danger"],
+    0:["Approval Pending","info"],
+    1:["Approved","success"]
+}
+
+VALID_INFO_MAP={
+    #valid_flg:[valid_info,valid_class]
+    0:["UnShelve","danger"],
+    1:["On Show","success"]
 }
 
 RATE_NOTIFICATION="There will be an add-up rate when users buy this product."

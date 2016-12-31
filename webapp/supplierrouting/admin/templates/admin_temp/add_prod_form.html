@@ -1,8 +1,10 @@
-{% extends "admin_temp/admin_base.html" %}
+{% extends "admin_temp/publish_prod_base.html" %}
 {% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
 
 {% set active_page = 'publish' %}
-{% block page %}
+{% set publish_active = 'add_new' %}
+
+{% block prod_list %}
     {#    <div id="add-new-prod" class="iziModal" data-izimodal-title="Add New Production">#}
     <form action="{{ url_for('supplierRoute.add_new_prod') }}" method="post" name="create"
           enctype="multipart/form-data" class="form" autocomplete="off">
