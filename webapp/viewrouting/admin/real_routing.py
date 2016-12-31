@@ -932,11 +932,14 @@ def _check_pending_approval_prod():
 def _reject_or_approve():
     prod_id = request.form.get('prod_id')
     action = request.form.get('action')
+    reject_reason = request.form.get('reject_reason')
     if prod_id and action:
         s = Session()
         if action == 'reject':
             s.query(Prod_info).filter_by(prod_id=prod_id).update({
-                'approve_stat':-1
+                'approve_stat':-1,
+                'reject_reason':reject_reason,
+                'valid_flg':0
             })
         else:
             s.query(Prod_info).filter_by(prod_id=prod_id).update({

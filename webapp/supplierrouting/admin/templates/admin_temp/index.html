@@ -1,6 +1,6 @@
 {% extends "admin_temp/admin_base.html" %}
 {% set active_page = 'dashboard' %}
-{% block title %}Admin Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block title %}Supplier Console - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
 {% block link_ref %}
     {{ super() }}
 {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
@@ -40,10 +40,10 @@
 
 {% block scripts %}
     {{ super() }}
-    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
-    <script type="text/javascript">
-		$(function() {
-			  $("#slider").easySlider({});
-		  });
-	</script>
+{#    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>#}
+{#    <script type="text/javascript">#}
+{#		$(function() {#}
+{#			  $("#slider").easySlider({});#}
+{#		  });#}
+{#	</script>#}
 {% endblock scripts %}

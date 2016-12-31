@@ -1,5 +1,5 @@
-from webapp.Models.db_basic import Base
-from sqlalchemy import Integer, String, Column,Sequence,Boolean,DateTime
+from webapp.Models.db_basic import Base,Session
+from sqlalchemy import Integer, String, Column,Sequence,Boolean,DateTime,or_
 from sqlalchemy.sql import func
 from datetime import datetime
 
@@ -19,6 +19,8 @@ class User(Base):
     is_subscribe = Column(Integer,default = 0)
     credit_points = Column(Integer,default = 0)
     user_create_ts = Column(DateTime,default=func.now())
+    pending_order_count = 0
+    pending_quote_count = 0
 
 
     def __repr__(self):
@@ -44,6 +46,7 @@ class User(Base):
     @property
     def is_member_paid(self):
         return self.is_paid==1
+
 
 class AnonymousUser(AnonymousUserMixin):
     logo_link='default_logo.png'

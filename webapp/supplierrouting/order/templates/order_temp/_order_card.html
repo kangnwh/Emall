@@ -25,7 +25,7 @@
                     class="label label-info">{{ config.get('ORDER_STATUS_MAP')[order.order_stat] }}</span></strong>
             </div>
 
-            <div class="btn-group">
+            <div class="col-md-2 btn-group-xs">
                 <button type="button" class="btn btn-default" onclick="onShowOrder('{{ order.client_order_id }}')">
                     Detail
                 </button>
@@ -33,7 +33,7 @@
                 {% if order.order_stat == 1 %}
                    {#  <a class="btn btn-default"  href="{{ url_for("orderRoute.receive_order",client_order_id=order.client_order_id,order_list=1) }}">Receive</a> #}
                     <button type="button" class="btn btn-primary" onclick="onUpdateOrder('{{ order.client_order_id }}')">
-                            Receive Order </button>
+                            Accept</button>
                 {% elif order.order_stat == 2 %}
                     <a class="btn btn-default" href="{{ url_for("orderRoute.deliver",client_order_id=order.client_order_id,order_list=1) }}">Deliver</a>
                 {% endif %}

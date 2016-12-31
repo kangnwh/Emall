@@ -15,16 +15,18 @@ from webapp.supplierrouting.user.routing import userRoute
 from webapp.supplierrouting.order.routing import orderRoute
 from webapp.common import get_host_info
 #Models
+from webapp.Models import get_pending_order_count,get_pending_quote_count
 from webapp.Models.db_basic import Session
 # from webapp.Models.user import User,AnonymousUser
-from webapp.Models.supplier import Supplier
-
+from webapp.Models.supplier import Supplier,AnonymousSupplier
+from webapp.Models import get_pending_order_count,get_pending_quote_count
 #flask mail
 import flask_mail
 mail = flask_mail.Mail()
 
 login_manager = LoginManager()
 login_manager.login_view="userRoute.register_login"
+login_manager.anonymous_user = AnonymousSupplier
 
 #Modules
 Report_Modules={
@@ -49,7 +51,12 @@ for module,url_prefix in Report_Modules:
 @login_manager.user_loader
 def load_user(supplier_id):
     s = Session()
-    return s.query(Supplier).filter_by(supplier_id=supplier_id).first()
+    u = s.query(Supplier).filter_by(supplier_id=supplier_id).first()
+    if u:
+        u.get_pending_order_count = lambda id : get_pending_order_count('supplier',supplier_id)
+        u.get_pending_quote_count = lambda id : get_pending_quote_count('supplier',supplier_id)
+    s.close()
+    return u
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():

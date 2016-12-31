@@ -5,7 +5,16 @@
         <div class="jumbotron no-padding-top no-padding-bottom">
             <div class="container">
                 <h1>{{ config.get('APP_NAME','Reprot.py') }} User Console</h1>
-                <p>User Console for Emall !</p>
+
+                {% if current_user.is_active %}
+                    <ul class="list-inline">
+                        <li><span class="label label-primary">User Name : {{ current_user.user_name }}</span></li>
+                        <li><span class="label label-primary">Email : {{ current_user.email }}</span></li>
+                        <li><span class="label label-primary">Points : {{ current_user.credit_points }}</span></li>
+                    </ul>
+                {% else %}
+                    <p>User Console for Emall !</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -27,19 +36,19 @@
         <div class="col-md-3">
             <ul class="nav nav-pills nav-stacked" role="tablist">
                 <li class="btn btn-warning">
-                    <a  href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a>
+                    <a href="{{ url_for('homeRoute.index') }}" target="_blank"><strong>Open Home Page</strong></a>
                 </li>
                 <li {% if 2 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('userRoute.user_management') }}">Account Management</a></li>
-                <li {% if active_page == 'change_password'  %} class="active"{% endif %}>
+                <li {% if active_page == 'change_password' %} class="active"{% endif %}>
                     <a href="{{ url_for('userRoute.change_password') }}">Change Password</a>
                 </li>
                 <li {% if active_page == 'orders' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">My Orders</a>
+                    <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">My Orders<span class="float-right  badge">{{ current_user.get_pending_order_count(current_user.user_id) }}</span></a>
                 <li {% if active_page == 'quotes' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">My Quotes</a>
+                    <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">My Quotes<span class="float-right badge">{{ current_user.get_pending_quote_count(current_user.user_id) }}</span></a>
                 </li>
-                            <li>
+                <li>
                     <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
             </ul>
 

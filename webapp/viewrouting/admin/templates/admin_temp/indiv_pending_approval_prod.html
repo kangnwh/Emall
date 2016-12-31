@@ -20,15 +20,15 @@
         <div class="panel-body">
             <div class="well">
                 <h4>Approval Status - <span
-                            class="badge">{{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}</span>
-                    </h4>
+                        class="label label-{{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat][1] }}">{{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat][0] }}</span>
+                </h4>
                 <div class="row">
                     <button class="col-md-2 btn btn-primary" role="button"
                             onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'approve')">
                         Approve
                     </button>
                     <button class="col-md-offset-1 col-md-2 btn btn-danger" role="button"
-                            onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">
+                            onclick="reject_button({{ this_prod.prod_id }})">
                         Reject
                     </button>
 
@@ -186,16 +186,30 @@
                             </table>
                         </div>
                     </div>
-                    {#                <div class="row">#}
-                    {#                    <a class="col-md-2 btn btn-primary" role="button"#}
-                    {#                       href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">#}
-                    {#                        Approve#}
-                    {#                    </a>#}
-                    {#                    <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"#}
-                    {#                       href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">#}
-                    {#                        Reject#}
-                    {#                    </a>#}
-                    {#                </div>#}
+                    <!-- reject reason modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="Reject Reason"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        Please Provide Reject Reason
+                                    </h4>
+                                </div>
+                                <div class="modal-body form-group">
+                                    <textarea id="feedback_content" class="form-control" rows=3></textarea>
+                                </div>
+                                <div class="modal-footer" id="modal_footer">
+
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button id="feedback_sub" type="button" class="btn btn-primary" onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">Confim Reject</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
                 </div>
 
             </div>
@@ -203,11 +217,21 @@
     </div>
 
     <script type="text/javascript">
+        function reject_button(prod_id) {
+            var div = $("#modal_footer");
+{#            $("#feedback_sub").remove();#}
+            $("#myModal").modal();
+        }
         function ajax_reject_or_approve(prod_id, action) {
+            if (action == 'reject') {
+                reject_reason_content = $("#feedback_content").val();
+                console.log(reject_reason_content);
+            }
             if (confirm("Do you really want to " + action + " this publish request ? ")) {
                 $.post("{{ url_for('adminRoute.reject_or_approve') }}", {
                     prod_id: prod_id,
-                    action: action
+                    action: action,
+                    reject_reason:reject_reason_content
                 }, function (result) {
                     if (result = 'succ') {
                         location.reload();

@@ -1,61 +1,72 @@
 {% extends "headers.html" %}
 
 {% block mainpage %}
-<div class="bs-docs-header" tabindex="-1">
-    <div class="jumbotron no-padding-top no-padding-bottom">
-        <div class="container">
-            <h1>{{ config.get('APP_NAME','Reprot.py') }} Admin Console</h1>
-            <p>Admin Console for Logo Show !</p>
-            <!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category,message in messages %}
-                <div class="alert alert-{{ category }}" role="alert">
-                    <ul class='list-unstyled'>
-                        <li>{{ message }}</li>
+    <div class="bs-docs-header" tabindex="-1">
+        <div class="jumbotron no-padding-top no-padding-bottom">
+            <div class="container">
+                <h1>{{ config.get('APP_NAME','Reprot.py') }} Supplier Console</h1>
+                {% if current_user.is_active %}
+                    <ul class="list-inline">
+                        <li><span class="label label-primary">User Name : {{ current_user.supplier_name }}</span></li>
+                        <li><span class="label label-primary">Email : {{ current_user.email }}</span></li>
+                        <li><span class="label label-primary">Points : \How to find it ?\</span></li>
+                        <li><span class="label label-primary">Level : \How to find it ?\</span></li>
                     </ul>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+                    {% else %}
+                    <p>This is the management console for suppliers.</p>
+                {% endif %}
 
-    {% block content %}
-        <div class="col-md-3">
-            <ul class="nav nav-pills nav-stacked" role="tablist">
-                <li class="btn btn-warning">
-                    <a href="http://{{ config.get("HOST_INFO").get("HOME_HOST").get("IP") }}:{{ config.get("HOST_INFO").get("HOME_HOST").get("PORT") }}" target="_blank"><strong>Open Home Page</strong></a></li>
-                <li {% if active_page=='dashboard' %} class="active"{% endif %}>
-                    <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
-                <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>
-                    <a href="{{ url_for('supplierRoute.update_supplier') }}">Account Management</a></li>
-                <li {% if active_page=='publish' %} class="active"{% endif %}>
-                    <a href="{{ url_for('supplierRoute.publish_prod') }}">Product Management</a></li>
-                <li {% if active_page=='orders' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">Orders</a></li>
-                 <li {% if active_page=='quotes' %} class="active"{% endif %}>
-                    <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">Quotes</a></li>
-                <li>
-                    <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
-            </ul>
-        </div>
 
-        <div class="col-md-9">
-            <div class="row">
-                {% block page %}{% endblock %}
             </div>
         </div>
-    {% endblock content %}
+    </div>
 
-</div>
-{% block footer %}
-    {% include("footer.html") %}
-{% endblock footer %}
-</div>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category,message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        <ul class='list-unstyled'>
+                            <li>{{ message }}</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+            <div class="col-md-3">
+                <ul class="nav nav-pills nav-stacked" role="tablist">
+                    <li class="btn btn-warning">
+                        <a href="http://{{ config.get("HOST_INFO").get("HOME_HOST").get("IP") }}:{{ config.get("HOST_INFO").get("HOME_HOST").get("PORT") }}"
+                           target="_blank"><strong>Open Home Page</strong></a></li>
+                    <li {% if active_page=='dashboard' %} class="active"{% endif %}>
+                        <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
+                    <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>
+                        <a href="{{ url_for('supplierRoute.update_supplier') }}">Account Management</a></li>
+                    <li {% if active_page=='publish' %} class="active"{% endif %}>
+                        <a href="{{ url_for('supplierRoute.publish_prod') }}">Product Management</a></li>
+                    <li {% if active_page=='orders' %} class="active"{% endif %}>
+                        <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">Orders<span class="float-right badge">{{ current_user.get_pending_order_count(current_user.supplier_id) }}</span></a></li>
+                    <li {% if active_page=='quotes' %} class="active"{% endif %}>
+                        <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">Quotes<span class="float-right badge">{{ current_user.get_pending_quote_count(current_user.supplier_id) }}</span></a></li>
+                    <li>
+                        <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row">
+                    {% block page %}{% endblock %}
+                </div>
+            </div>
+        {% endblock content %}
+
+    </div>
+    {% block footer %}
+        {% include("footer.html") %}
+    {% endblock footer %}
+    </div>
 {% endblock mainpage %}
 
 

@@ -15,6 +15,7 @@ from webapp.common import get_host_info
 #Models
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
+from webapp.Models import get_pending_order_count,get_pending_quote_count
 
 #flask mail
 import flask_mail
@@ -47,7 +48,12 @@ for module,url_prefix in Report_Modules:
 @login_manager.user_loader
 def load_user(user_id):
     s = Session()
-    return s.query(User).filter_by(user_id=user_id).first()
+    u = s.query(User).filter_by(user_id=user_id).first()
+    if u:
+        u.get_pending_order_count = lambda id : get_pending_order_count('user',user_id)
+        u.get_pending_quote_count = lambda id : get_pending_quote_count('user',user_id)
+    # u.pending_ordr_count = u.user_order_sys.total()
+    return u
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():

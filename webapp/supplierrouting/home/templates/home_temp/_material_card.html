@@ -23,6 +23,15 @@
                 </div>
                 <p class="one-line">
                     <strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}
+                    {% if indiv_prod_info.approve_stat == -1 %}
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">Reject Reason</div>
+                            <div class="panel-body">
+                                {{ indiv_prod_info.reject_reason }}
+                            </div>
+                        </div>
+                    {% endif %}
+
                 </p>
                 {#                {% if current_user.is_administrator %}#}
                 <div class="btn-group btn-group-sm">
@@ -41,14 +50,6 @@
                         </a>
                     {% endif %}
                 </div>
-                {#                {% else %}#}
-                {#                    <p>#}
-                {#                        <a class="btn btn-success" role="button" onclick="onShowProd({{ indiv_prod_info.prod_id }})">#}
-                {#                            Detail#}
-                {#                        </a>#}
-                {##}
-                {#                    </p>#}
-                {#                {% endif %}#}
             </div>
         </div>
     </div>

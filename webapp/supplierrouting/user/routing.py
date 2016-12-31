@@ -7,6 +7,7 @@ from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
 from webapp.Models.supplier import Supplier
 from webapp.Models.db_basic import Session
+from webapp.Models import get_pending_order_count,get_pending_quote_count
 from webapp.common import generate_md5
 from flask_login import current_user,login_user,logout_user,login_required
 from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm
@@ -58,7 +59,7 @@ def login():
 @userRoute.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect(url_for('homeRoute.index'))
+    return redirect(url_for('supplierRoute.index'))
 
 @userRoute.route('/register', methods=['POST'])
 def register():
