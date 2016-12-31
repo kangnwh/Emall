@@ -1,0 +1,44 @@
+{% extends "admin_temp/admin_base.html" %}
+{#{% from "order_temp/_order_card.html" import order_card %}#}
+{% set active_page = 'publish' %}
+
+{% block page %}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if publish_active == 'pending' %} class="active"{% endif %}><a
+                href="{{ url_for("supplierRoute.publish_prod",type='pending') }}">Pending Approval</a></li>
+        <li role="presentation" {% if publish_active == 'rejected' %} class="active"{% endif %}><a
+                href="{{ url_for("supplierRoute.publish_prod",type='rejected') }}">Reject Approval</a></li>
+        <li role="presentation" {% if publish_active == 'approved' %} class="active"{% endif %}><a
+                href="{{ url_for("supplierRoute.publish_prod",type='approved') }}">Approved Approval</a></li>
+        <li role="presentation" {% if publish_active == 'search' %} class="active"{% endif %}><a
+                href="{{ url_for("supplierRoute.publish_prod",type='search') }}">Search Product</a></li>
+    </ul>
+    <block class="">
+        {% block prod_list %}
+        {% endblock %}
+    </block>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+    function onUpdateProd(prod_id) {
+
+            new $.Zebra_Dialog('', {
+                source: {
+                    'iframe': {
+                        'src': '{{ url_for('supplierRoute.update_prod') }}' + '?prod_id=' + prod_id,
+                        'height': 600
+                    }
+                },
+                position: ['center', 'top + 5'],
+                width: 1200,
+                title: 'Production Information',
+                buttons:[],
+                'onClose': function () {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+{% endblock scripts %}

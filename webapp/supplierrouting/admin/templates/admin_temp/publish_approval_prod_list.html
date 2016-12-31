@@ -1,0 +1,45 @@
+{% extends "admin_temp/publish_prod_base.html" %}
+{% from "home_temp/_material_card.html" import material_card with context %}
+{% set publish_active = type %}
+
+{% block prod_list %}
+
+    <div class="row">
+        {% if prod_list.total >0 %}
+            {% for prod in prod_list.items %}
+                {{ material_card(prod) }}
+            {% endfor %}
+        {% else %}
+            <h3>No products found.</h3>
+        {% endif %}
+    </div>
+    {{ pagination.links }}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+
+{#        function onCheckProd(prod_id) {#}
+{##}
+{#            new $.Zebra_Dialog('', {#}
+{#                source: {#}
+{#                    'iframe': {#}
+{#                        'src': '{{ url_for('supplierRoute.check_pending_approval_prod') }}' + '?prod_id=' + prod_id,#}
+{#                        'height': 700#}
+{#                    }#}
+{#                },#}
+{#                position: ['center', 'top + 5'],#}
+{#                width: 1200,#}
+{#                title: 'Production Information',#}
+{#                buttons: [],#}
+{#                'onClose': function () {#}
+{#                    location.reload();#}
+{#                }#}
+{#            });#}
+{#        }#}
+
+    </script>
+
+{% endblock scripts %}

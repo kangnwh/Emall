@@ -34,7 +34,7 @@
                 <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>
                     <a href="{{ url_for('supplierRoute.update_supplier') }}">Account Management</a></li>
                 <li {% if active_page=='publish' %} class="active"{% endif %}>
-                    <a href="{{ url_for('supplierRoute.publish_prod') }}">Publish Prod</a></li>
+                    <a href="{{ url_for('supplierRoute.publish_prod') }}">Product Management</a></li>
                 <li {% if active_page=='orders' %} class="active"{% endif %}>
                     <a href="{{ url_for('userRoute.user_orders',type='ongoing') }}">Orders</a></li>
                  <li {% if active_page=='quotes' %} class="active"{% endif %}>
