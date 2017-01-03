@@ -245,8 +245,7 @@ def update_prod():
         new_prod['prod_size'] = update_form.prod_size.data
         new_prod['imprint_size'] = update_form.imprint_size.data
         new_prod['price_basis'] = update_form.price_basis.data
-        new_prod[
-            'valid_flg'] = update_form.valid_flg.data  # 1 if update_form.valid_flg.data else 0 # add_form.valid_flg.data
+        new_prod['valid_flg'] = update_form.valid_flg.data  # 1 if update_form.valid_flg.data else 0 # add_form.valid_flg.data
         new_prod['prod_cat_sub_id'] = update_form.prod_cat_sub_id.data
         new_prod['colors'] = update_form.colors.data
         new_prod['is_special_price_flg'] = update_form.is_special_price_flg.data
@@ -256,8 +255,8 @@ def update_prod():
             new_prod['special_price_new'] = update_form.special_price_new.data
             new_prod['special_price_campaign_time'] = update_form.special_price_campaign_time.data
         else:
-            new_prod['special_price_old'] = None
-            new_prod['special_price_new'] = None
+            new_prod['special_price_old'] = 0
+            new_prod['special_price_new'] = 0
             new_prod['special_price_campaign_time'] = None
 
         new_prod['is_clearance'] = update_form.is_clearance.data
