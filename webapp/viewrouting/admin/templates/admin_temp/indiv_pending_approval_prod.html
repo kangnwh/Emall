@@ -33,14 +33,6 @@
                     </button>
 
                 </div>
-                {#                <div class="row">#}
-                {#                    <div class="alert alert-success">#}
-                {#                    Approval Status : {{ config.get("APPROVAL_STATUS_MAP")[this_prod.approve_stat] }}#}
-                {#                    </div>#}
-                {##}
-                {#                    #}
-                {#                </div>#}
-
             </div>
             <div style=" overflow:scroll;  height:500px;">
                 <div class="col-md-12 middle-line">{{ this_prod.prod_name }}
@@ -223,6 +215,7 @@
             $("#myModal").modal();
         }
         function ajax_reject_or_approve(prod_id, action) {
+            var reject_reason_content ='';
             if (action == 'reject') {
                 reject_reason_content = $("#feedback_content").val();
                 console.log(reject_reason_content);
