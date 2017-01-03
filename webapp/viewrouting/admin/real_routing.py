@@ -939,8 +939,7 @@ def _reject_or_approve():
         if action == 'reject':
             s.query(Prod_info).filter_by(prod_id=prod_id).update({
                 'approve_stat':-1,
-                'reject_reason':reject_reason,
-                'valid_flg':0
+                'reject_reason':reject_reason
             })
         else:
             s.query(Prod_info).filter_by(prod_id=prod_id).update({
