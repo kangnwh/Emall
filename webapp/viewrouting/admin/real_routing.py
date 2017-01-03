@@ -17,12 +17,13 @@ from webapp.Models.quote_system import Quote_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
-from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage
+from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
 from webapp.viewrouting.admin.forms.production_forms import CreateNewProfitRateForm,UpdateProfitRateForm,DeleteProfitRateForm,CreateNewRebateForm,UpdateRebateForm,DeleteRebateForm
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
+from webapp.viewrouting.admin.forms.parameter_forms import ParameterForm
 
 adminRoute = Blueprint('adminRoute', __name__,
                        template_folder='templates', static_folder='static')
@@ -849,7 +850,7 @@ def _all_orders(type):
     elif type=='ongoing':
         order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
     elif type=='canceled':
-        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7,8])).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
     else:
         abort(404)
 
@@ -948,7 +949,7 @@ def _reject_or_approve():
         })
         s.commit()
         s.close()
-        flash("Product publish successfully.","success")
+        flash("Product {name} successfully.".format(name=action),"success")
         return jsonify(result='succ')
     else:
         flash('No Valid information for this product',category='danger')
@@ -987,3 +988,21 @@ def _admin_cancel_order():
     else:
         flash("Cannot Cancel this order in this phase.","warning")
         return jsonify(result='failed')#return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()
+
+@admin_check
+def _manage_config():
+    update_parameter_form=ParameterForm()
+    return render_template('admin_temp/parameter_config.html',
+                           update_parameter_form=update_parameter_form)
+
+@admin_check
+def _update_config():
+    update_parameter_form = ParameterForm()
+    if update_parameter_form.validate_on_submit():
+        user_reward_rate=update_parameter_form.USER_POINT_DISCOUNT_RATE.data
+        remind_before_days=update_parameter_form.REMINDER_PRE_DAYS.data
+        update_config_value('USER_POINT_DISCOUNT_RATE',user_reward_rate)
+        update_config_value('REMINDER_PRE_DAYS',remind_before_days)
+    else:
+        flash(update_parameter_form.errors, category='danger')
+    return redirect(url_for('adminRoute.manage_config',update_parameter_form=update_parameter_form))

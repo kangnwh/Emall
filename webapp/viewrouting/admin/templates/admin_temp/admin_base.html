@@ -54,6 +54,9 @@
                 <li {% if 7 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.manage_supplier_rebate_rate') }}">Manage Supplier Rebate Rate</a>
                 </li>
+                <li {% if 8 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.manage_config') }}">Manage Configure Parameter</a>
+                </li>
                 <li>
                     <a href="{{ url_for('adminRoute.logout') }}">Logout</a></li>
             </ul>
