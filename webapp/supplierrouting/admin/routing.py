@@ -239,6 +239,7 @@ def update_prod():
         # prod.is_clearance = update_form.is_clearance.data
         # prod.is_new_prod = update_form.is_new_prod.data
         # prod.is_patent_prod = update_form.is_patent_prod.data
+        new_prod['approve_stat'] = 0
         new_prod['prod_name'] = update_form.prod_name.data
         new_prod['prod_desc'] = update_form.prod_desc.data
         new_prod['lead_time'] = update_form.lead_time.data
