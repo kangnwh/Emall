@@ -62,7 +62,7 @@ def update_config_value(parameter,value):
                 if parameter not in line:
                     g.write(line)
                 else:
-                    g.write('{parameter}={value}'.format(parameter=parameter,value=value))
+                    g.write('{parameter}={value}{breaker}'.format(parameter=parameter,value=value,breaker=os.linesep))
     shutil.move(customer_config_temp, customer_config)
 
 
