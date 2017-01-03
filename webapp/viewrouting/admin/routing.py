@@ -3,7 +3,7 @@ from flask import Blueprint,request,redirect,url_for
 from flask_login import login_required,current_user,logout_user
 from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
                                                     _add_level_one,_delete_level_one,_update_level_one,_all_orders,_all_quotes,\
-                                                    _delete_level_two,_update_level_two,_add_level_two,_reset_password,\
+                                                    _delete_level_two,_update_level_two,_add_level_two,_reset_password,_admin_cancel_order,\
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
                                                     _pending_approval_list,_check_pending_approval_prod,_reject_or_approve
@@ -211,3 +211,8 @@ def reject_or_approve():
 # @login_required
 # def approve_prod_request():
 #     return _approve_prod_request()
+
+@adminRoute.route('/admin_cancel_order', methods=['POST'])
+@login_required
+def admin_cancel_order():
+    return _admin_cancel_order()

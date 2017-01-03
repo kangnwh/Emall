@@ -969,3 +969,21 @@ def _reject_or_approve():
 #     else:
 #         flash('No Valid information for approving product',category='danger')
 #         return jsonify(result='failed')
+@admin_check
+def _admin_cancel_order():
+    s = Session()
+    client_order_id = request.form.get('client_order_id')
+    content = request.form.get('content','')
+    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
+
+    if this_order.first().order_stat <5 :
+        this_order.update({
+            "order_stat":8,
+            "cancel_reason":content
+            # 'user_comments':this_order.first().user_comments +content
+        })
+        s.commit()
+        return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
+    else:
+        flash("Cannot Cancel this order in this phase.","warning")
+        return jsonify(result='failed')#return redirect(url_for("userRoute.user_orders",type='ongoing')), s.close()

@@ -36,7 +36,8 @@ ORDER_STATUS_MAP={
     4:'User Feedback Submitted',
     5:'Finished',
     6:'User Canceled',
-    7:'Supplier Canceled'
+    7:'Supplier Canceled',
+    8:'Admin Canceled'
 }
 
 QUOTE_STATUS_MAP={
