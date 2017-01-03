@@ -257,7 +257,7 @@ def update_prod():
         else:
             new_prod['special_price_old'] = 0
             new_prod['special_price_new'] = 0
-            new_prod['special_price_campaign_time'] = None
+            new_prod['special_price_campaign_time'] = '1900-01-01'
 
         new_prod['is_clearance'] = update_form.is_clearance.data
         new_prod['is_new_prod'] = update_form.is_new_prod.data
