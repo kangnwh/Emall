@@ -1,0 +1,87 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper,num_input_helper %}
+{% set active_page = 8 %}
+{% block title %}Parameter Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/reset.css") }}">#}
+    {#	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/normalize.css") }}">#}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+<h3>Parameter Configuration</h3>
+
+     <form action="{{ url_for('adminRoute.update_config') }}" method="post" name="create">
+            {{ update_parameter_form.hidden_tag() }}
+            <dl class="dl-horizontal">
+                <dd>{{ num_input_helper('col-md-6',update_parameter_form.USER_POINT_DISCOUNT_RATE,default_value=config.get("USER_POINT_DISCOUNT_RATE"))}}%</dd>
+                <br>
+                <dd>*If the rate is 1%, it means user can deduct $1 if user use 100 points</dd>
+                <br>
+                <dd>{{input_helper('col-md-6',update_parameter_form.REMINDER_PRE_DAYS,default_value=config.get("REMINDER_PRE_DAYS"),type='number')}}</dd>
+                <br>
+                <br>
+                <dt><input type="submit" class='btn btn-primary' value="Update"></dt>
+            </dl>
+        </form>
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            {#			  $("#slider").easySlider({});#}
+            $("#new-user-win").iziModal({
+                overlayClose: false,
+                width: 600,
+                autoOpen: false,
+                overlayColor: 'rgba(0, 0, 0, 0.6)',
+                onOpened: function () {
+                    console.log('onOpened');
+                },
+                onClosed: function () {
+                    console.log('onClosed');
+                }
+            });
+            $(document).on('click', '.trigger-new-user-win', function (event) {
+                event.preventDefault();
+                $('#new-user-win').iziModal('open');
+            });
+        });
+        function ajax_update_user_form(name, user_id ) {
+            if (confirm("Do you really want to update [" + name + "] ? ")) {
+                is_admin =0;
+                is_valid=0;
+                if($('#is_admin_'+user_id).is(':checked')){is_admin =1;}
+                if($('#is_valid_'+user_id).is(':checked')){is_valid =1;}
+                $.post("{{ url_for('adminRoute.update_user') }}", {
+                    user_id: user_id,
+                    is_admin: is_admin,
+                    valid_flg: is_valid
+                }, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+        function ajax_delete_user_form(name, user_id) {
+            if (confirm("Do you really want to delete [" + name + "] ? ")) {
+                console.log('begin')
+                $.post("{{ url_for('adminRoute.delete_user') }}", {user_id: user_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+    </script>
+{% endblock scripts %}

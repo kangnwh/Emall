@@ -175,7 +175,7 @@ def user_orders(type):
     elif type=='ongoing':
         order_list = order_list_base.filter(Order_system.order_stat.in_([1,2,3,4])).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)# BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(1,2,3,4)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False) #s.query(Order_system).filter(Order_system.order_stat.in_(1,2,3,4))
     elif type=='canceled':
-        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7])).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
+        order_list = order_list_base.filter(Order_system.order_stat.in_([6,7,8])).order_by(Order_system.order_create_dt.desc()).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#BaseQuery(Order_system,s).filter(Order_system.order_stat.in_(6,7)).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)#s.query(Order_system).filter(Order_system.order_stat.in_(6,7))
     else:
         abort(404)
 

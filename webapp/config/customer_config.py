@@ -24,9 +24,27 @@ MAIL_DEFAULT_SENDER = 'emalltest@tom.com'
 MAIL_PASSWORD = 'passw0rd'
 
 # user discount rate
-USER_POINT_DISCOUNT_RATE = 0.01
+USER_POINT_DISCOUNT_RATE=1
+
+
+
+
+
+
+
+
+
+
 #Reminders should be sent %d days before end date
-REMINDER_PRE_DAYS = 3
+REMINDER_PRE_DAYS=2
+
+
+
+
+
+
+
+
 
 ORDER_STATUS_MAP={
     #0:'default',

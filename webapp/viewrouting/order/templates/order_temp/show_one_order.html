@@ -175,6 +175,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Cancel Reason</div>
+                    <div class="panel-body">
+                        {{ this_order.cancel_reason }}
+                    </div>
+                </div>
+            </div>
             {% if this_order.order_stat == 5 %}
 
                 <h4><strong>User feedback:</strong></h4>
