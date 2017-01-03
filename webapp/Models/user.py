@@ -21,6 +21,7 @@ class User(Base):
     user_create_ts = Column(DateTime,default=func.now())
     pending_order_count = 0
     pending_quote_count = 0
+    supplier_level = 0
 
 
     def __repr__(self):

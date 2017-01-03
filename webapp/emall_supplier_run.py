@@ -15,7 +15,7 @@ from webapp.supplierrouting.user.routing import userRoute
 from webapp.supplierrouting.order.routing import orderRoute
 from webapp.common import get_host_info
 #Models
-from webapp.Models import get_pending_order_count,get_pending_quote_count
+from webapp.Models import get_pending_order_count,get_pending_quote_count,get_supplier_level
 from webapp.Models.db_basic import Session
 # from webapp.Models.user import User,AnonymousUser
 from webapp.Models.supplier import Supplier,AnonymousSupplier
@@ -55,6 +55,7 @@ def load_user(supplier_id):
     if u:
         u.get_pending_order_count = lambda id : get_pending_order_count('supplier',supplier_id)
         u.get_pending_quote_count = lambda id : get_pending_quote_count('supplier',supplier_id)
+        u.get_supplier_level = lambda id : get_supplier_level('supplier',supplier_id)
     s.close()
     return u
 

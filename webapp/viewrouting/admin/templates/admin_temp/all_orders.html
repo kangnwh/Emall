@@ -16,6 +16,27 @@
             <h3>You do not have any orders</h3>
         {% endif %}
     </div>
+        <div class="modal fade" id="myCancel" tabindex="-1" role="dialog" aria-labelledby="myCancelLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myCancelLabel">
+                        Please input your cancel reason.
+                    </h4>
+                </div>
+                <div class="modal-body form-group">
+                    <textarea id="adm_cancel_content" class="form-control" rows=3></textarea>
+                </div>
+                <div class="modal-footer" id="modal_footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 <script>
 function onShowOrder(client_order_id) {
             new $.Zebra_Dialog('', {
@@ -27,6 +48,25 @@ function onShowOrder(client_order_id) {
                 },
                 position: ['center', 'top + 5'],
                 width: 1200
+            });
+        }
+        function admin_cancel_order(client_order_id) {
+            var div = $("#modal_footer");
+            $("#adm_cancel_order_sub").remove();
+            div.append(String.format('<button id="adm_cancel_order_sub" type="button" class="btn btn-primary" onclick="ajax_adm_cancel(\'{0}\')">Submit</button>', client_order_id));
+            $("#myCancel").modal();
+
+        }
+        function ajax_adm_cancel(client_order_id) {
+            $.post("{{ url_for('adminRoute.admin_cancel_order') }}", {
+                client_order_id: client_order_id,
+                content: $("#adm_cancel_content").val()
+            }, function (result) {
+                if (result = 'succ') {
+                    location.reload();
+                } else {
+                    alert("Reason submitted failed...");
+                }
             });
         }
 </script>

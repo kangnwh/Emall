@@ -6,7 +6,9 @@ from webapp.Models.db_basic import engine,Session,Base
 # from webapp.Models.map_tag_item import Map_Tag_Item
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
-from sqlalchemy import func
+from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
+from flask_login import login_required,current_user
+from sqlalchemy import func,between
 
 
 def get_pending_order_count(type,id):
@@ -29,6 +31,16 @@ def get_pending_quote_count(type,id):
         count = base_query.filter(Quote_system.user_id==id).first()[0]
     elif type == 'supplier':
         count = base_query.filter(Quote_system.supplier_id==id).first()[0]
+    else:
+        count = None
+    s.close()
+    return count
+
+def get_supplier_level(type,id):
+    s = Session()
+    supplier_rebate_ref=s.query(Supplier_rebate_ref).filter(between(current_user.supplier_points,Supplier_rebate_ref.supplier_points_from,Supplier_rebate_ref.supplier_points_to)).first()
+    if type == 'supplier':
+        count = supplier_rebate_ref.supplier_level
     else:
         count = None
     s.close()

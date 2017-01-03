@@ -37,6 +37,7 @@ class Order_system(Base):
     order_stat=Column(Integer,default=0)
     valid_flg=Column(Integer,default=0)
     order_create_dt = Column(DateTime,default=func.now())
+    cancel_reason = Column(String(300))
 
 
     def __repr__(self):
