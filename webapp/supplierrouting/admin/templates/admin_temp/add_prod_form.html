@@ -1,5 +1,5 @@
 {% extends "admin_temp/publish_prod_base.html" %}
-{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper,file_input_helper %}
 
 {% set active_page = 'publish' %}
 {% set publish_active = 'add_new' %}
@@ -32,7 +32,7 @@
 
                 {{ input_helper('col-md-6',add_form.imprint_size ) }}
                 {{ input_helper('col-md-6',add_form.price_basis ) }}
-                {{ input_helper('col-md-6',add_form.cover_img_file ) }}
+                {{ file_input_helper('col-md-6',add_form.cover_img_file ) }}
 
                 {{ input_helper('col-md-12',add_form.colors ) }}
                 <div class="col-md-6">

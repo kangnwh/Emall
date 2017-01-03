@@ -357,14 +357,13 @@ def update_prod():
         return redirect(url_for("supplierRoute.index"))
     else:
         prod_id = request.args.get('prod_id', 1) if request.method == 'GET' else request.form.get('prod_id', 1)
-        print(prod_id)
         this_prod = s.query(Prod_info).filter_by(prod_id=prod_id).first()
         this_prod.price_ranges = this_prod.price_ranges if this_prod.price_ranges.__len__() > 0 else [
             Prod_price_range()]
 
     return render_template("admin_temp/update_prod_form.html",
                            update_form=update_form,
-                           this_prod=this_prod)
+                           this_prod=this_prod),s.close()
 
 
 @supplierRoute.route("/delete_prod", methods=['GET', 'POST'])
