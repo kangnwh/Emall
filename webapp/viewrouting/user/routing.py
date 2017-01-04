@@ -9,7 +9,7 @@ from webapp.Models.user import User
 from webapp.Models.db_basic import Session
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
-from webapp.common import generate_md5
+from webapp.common import generate_md5,order_search_filter,quote_search_filter
 from flask_login import current_user,login_user,logout_user,login_required
 #CONFIG
 import webapp.config.customer_config as customer_config
@@ -232,19 +232,19 @@ def order_search():
         # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
         query_base = BaseQuery(Order_system,s).filter(Order_system.user_id == current_user.user_id)
 
-        order_list = query_base.filter(or_(*([Order_system.prod_name.like(w) for w in like_words]+
-                                              [Order_system.imprint_info.like(w) for w in like_words]+
-                                              [Order_system.colors.like(w) for w in like_words]+
-                                              [Order_system.user_comments.like(w) for w in like_words]+
-                                              [Order_system.supplier_comments.like(w) for w in like_words]
-                                             +[Order_system.client_order_id.like(w) for w in like_words]
-                                            ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
-
-        pagination = Pagination(page=page, total=order_list.total,
-                                search=None, css_framework='bootstrap3',
-                                record_name='Prod Information',
-                                per_page=customer_config.PROD_NUM_PER_PAGE)
-
+        # order_list = query_base.filter(or_(*([Order_system.prod_name.like(w) for w in like_words]+
+        #                                       [Order_system.imprint_info.like(w) for w in like_words]+
+        #                                       [Order_system.colors.like(w) for w in like_words]+
+        #                                       [Order_system.user_comments.like(w) for w in like_words]+
+        #                                       [Order_system.supplier_comments.like(w) for w in like_words]
+        #                                      +[Order_system.client_order_id.like(w) for w in like_words]
+        #                                     ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+        #
+        # pagination = Pagination(page=page, total=order_list.total,
+        #                         search=None, css_framework='bootstrap3',
+        #                         record_name='Prod Information',
+        #                         per_page=customer_config.PROD_NUM_PER_PAGE)
+        order_list,pagination = order_search_filter(key_words,query_base,page)
         return render_template('user_temp/my_orders.html',
                                key_words = key_words,
                                type = 'search',
@@ -261,8 +261,8 @@ def order_search():
 def quote_search():
     key_words = request.args.get("q")
     if key_words:
-        search_words = key_words.split(" ")
-        like_words = ['%{w}%'.format(w=w) for w in search_words]
+        # search_words = key_words.split(" ")
+        # like_words = ['%{w}%'.format(w=w) for w in search_words]
 
         page = request.args.get('page', type=int, default=1)
 
@@ -270,20 +270,20 @@ def quote_search():
         # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
         # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
         query_base = BaseQuery(Quote_system,s).filter(Quote_system.user_id==current_user.user_id)
-        quote_list = query_base.filter(or_(*([Quote_system.prod_name.like(w) for w in like_words]+
-                                              [Quote_system.imprint_info.like(w) for w in like_words]+
-                                              [Quote_system.special_instruction.like(w) for w in like_words]+
-                                              [Quote_system.colors.like(w) for w in like_words]+
-                                              [Quote_system.user_perfer_comment.like(w) for w in like_words]
-                                             +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
-                                             +[Quote_system.quote_id.like(w) for w in like_words]
-                                            ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
-
-        pagination = Pagination(page=page, total=quote_list.total,
-                                search=None, css_framework='bootstrap3',
-                                record_name='Prod Information',
-                                per_page=customer_config.PROD_NUM_PER_PAGE)
-
+        # quote_list = query_base.filter(or_(*([Quote_system.prod_name.like(w) for w in like_words]+
+        #                                       [Quote_system.imprint_info.like(w) for w in like_words]+
+        #                                       [Quote_system.special_instruction.like(w) for w in like_words]+
+        #                                       [Quote_system.colors.like(w) for w in like_words]+
+        #                                       [Quote_system.user_perfer_comment.like(w) for w in like_words]
+        #                                      +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
+        #                                      +[Quote_system.quote_id.like(w) for w in like_words]
+        #                                     ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+        #
+        # pagination = Pagination(page=page, total=quote_list.total,
+        #                         search=None, css_framework='bootstrap3',
+        #                         record_name='Prod Information',
+        #                         per_page=customer_config.PROD_NUM_PER_PAGE)
+        quote_list,pagination = quote_search_filter(key_words,query_base,page)
         return render_template('user_temp/my_quotes.html',
                                key_words = key_words,
                                type = 'search',

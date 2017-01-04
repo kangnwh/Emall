@@ -17,7 +17,7 @@ from webapp.Models.quote_system import Quote_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
-from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value
+from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
@@ -1010,30 +1010,14 @@ def _update_config():
 def _search():
     key_words = request.args.get("q")
     if key_words:
-        search_words = key_words.split(" ")
-        like_words = ['%{w}%'.format(w=w) for w in search_words]
 
         page = request.args.get('page', type=int, default=1)
 
         s = Session()
-        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
-        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
+
         query_base = BaseQuery(Prod_info,s)
 
-        prod_list_query = query_base.filter(or_(*([Prod_info.prod_name.like(w) for w in like_words]+
-                                              [Prod_info.prod_desc.like(w) for w in like_words]+
-                                              [Prod_info.lead_time.like(w) for w in like_words]+
-                                              [Prod_info.prod_size.like(w) for w in like_words]+
-                                              [Prod_info.imprint_size.like(w) for w in like_words]+
-                                              [Prod_info.price_basis.like(w) for w in like_words])
-                                              ))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
-
-        prod_list = prod_list_query.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
-        pagination = Pagination(page=page, total=prod_list.total,
-                                search=None, css_framework='bootstrap3',
-                                record_name='Prod Information',
-                                per_page=customer_config.PROD_NUM_PER_PAGE)
-
+        prod_list,supplier_list,pagination = prod_search_filter(key_words,query_base,page)
         return render_template('admin_temp/publish_approval_prod_list.html',
                                key_words = key_words,
                                type = 'search',
@@ -1049,30 +1033,12 @@ def _search():
 def _order_search():
     key_words = request.args.get("q")
     if key_words:
-        search_words = key_words.split(" ")
-        like_words = ['%{w}%'.format(w=w) for w in search_words]
-
         page = request.args.get('page', type=int, default=1)
 
         s = Session()
-        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
-        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
         query_base = BaseQuery(Order_system,s)
 
-        order_list = query_base.filter(or_(*([Order_system.prod_name.like(w) for w in like_words]+
-                                              [Order_system.imprint_info.like(w) for w in like_words]+
-                                              [Order_system.colors.like(w) for w in like_words]+
-                                              [Order_system.user_comments.like(w) for w in like_words]+
-                                              [Order_system.supplier_comments.like(w) for w in like_words]
-                                              +[Order_system.order_id.like(w) for w in like_words]
-                                              +[Order_system.client_order_id.like(w) for w in like_words]
-                                            ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
-
-        pagination = Pagination(page=page, total=order_list.total,
-                                search=None, css_framework='bootstrap3',
-                                record_name='Prod Information',
-                                per_page=customer_config.PROD_NUM_PER_PAGE)
-
+        order_list,pagination = order_search_filter(key_words,query_base,page)
         return render_template('admin_temp/all_orders.html',
                                key_words = key_words,
                                type = 'search',
@@ -1088,8 +1054,8 @@ def _order_search():
 def _quote_search():
     key_words = request.args.get("q")
     if key_words:
-        search_words = key_words.split(" ")
-        like_words = ['%{w}%'.format(w=w) for w in search_words]
+        # search_words = key_words.split(" ")
+        # like_words = ['%{w}%'.format(w=w) for w in search_words]
 
         page = request.args.get('page', type=int, default=1)
 
@@ -1097,20 +1063,20 @@ def _quote_search():
         # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
         # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
         query_base = BaseQuery(Quote_system,s)
-        quote_list = query_base.filter(or_(*([Quote_system.prod_name.like(w) for w in like_words]+
-                                              [Quote_system.imprint_info.like(w) for w in like_words]+
-                                              [Quote_system.special_instruction.like(w) for w in like_words]+
-                                              [Quote_system.colors.like(w) for w in like_words]+
-                                              [Quote_system.user_perfer_comment.like(w) for w in like_words]
-                                             +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
-                                             +[Quote_system.quote_id.like(w) for w in like_words]
-                                            ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+        # quote_list = query_base.filter(or_(*([Quote_system.prod_name.like(w) for w in like_words]+
+        #                                       [Quote_system.imprint_info.like(w) for w in like_words]+
+        #                                       [Quote_system.special_instruction.like(w) for w in like_words]+
+        #                                       [Quote_system.colors.like(w) for w in like_words]+
+        #                                       [Quote_system.user_perfer_comment.like(w) for w in like_words]
+        #                                      +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
+        #                                      +[Quote_system.quote_id.like(w) for w in like_words]
+        #                                     ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
 
-        pagination = Pagination(page=page, total=quote_list.total,
-                                search=None, css_framework='bootstrap3',
-                                record_name='Prod Information',
-                                per_page=customer_config.PROD_NUM_PER_PAGE)
-
+        # pagination = Pagination(page=page, total=quote_list.total,
+        #                         search=None, css_framework='bootstrap3',
+        #                         record_name='Prod Information',
+        #                         per_page=customer_config.PROD_NUM_PER_PAGE)
+        quote_list,pagination = quote_search_filter(key_words,query_base,page)
         return render_template('admin_temp/all_quotes.html',
                                key_words = key_words,
                                type = 'search',

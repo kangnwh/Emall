@@ -7,12 +7,21 @@ import socket
 from PIL import Image
 from flask import flash, redirect, url_for,current_app
 from flask_login import current_user
+from flask_paginate import Pagination
+from sqlalchemy import or_
 from werkzeug import secure_filename
 
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
+from webapp.Models.prod_info import Prod_info
+from webapp.Models.order_system import Order_system
+from webapp.Models.quote_system import Quote_system
+from webapp.Models.supplier import Supplier
+from webapp.Models.prod_sub_cat import Prod_sub_cat
+
 from webapp.config.config import HOST_INFO
-from webapp.config.customer_config import PROD_UPLOAD_PATH, ALLOWED_EXTENSIONS,USER_LOGO_UPLOAD_PATH
+# from webapp.config.customer_config import PROD_UPLOAD_PATH, ALLOWED_EXTENSIONS,USER_LOGO_UPLOAD_PATH
+# from webapp.config import customer_config
 
 
 def generate_security_key(key_len):
@@ -113,7 +122,7 @@ def admin_check(func):
 
 
 def allowed_file(filename):
-    if '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS:
+    if '.' in filename and filename.rsplit('.', 1)[1] in current_app.config.get("ALLOWED_EXTENSIONS"):
         return True
     else:
         return False
@@ -127,16 +136,16 @@ def saveImage(request_file, prod):
                                                                                                          '_').replace(
                                                             '.', '_'),
                                                         ext=secure_filename(request_file.filename)[-3:])
-            request_file.save(os.path.join(PROD_UPLOAD_PATH, filename))
+            request_file.save(os.path.join(current_app.config.get("PROD_UPLOAD_PATH"), filename))
             return filename
         else:
-            flash("Only accept {types} file".format(types=ALLOWED_EXTENSIONS), category='danger')
+            flash("Only accept {types} file".format(types=current_app.config.get("ALLOWED_EXTENSIONS")), category='danger')
 
     return False
 
 
 def generatePNG(image):
-    img = Image.open(USER_LOGO_UPLOAD_PATH + image)
+    img = Image.open(current_app.config.get("USER_LOGO_UPLOAD_PATH") + image)
     img = img.convert("RGBA")
     datas = img.getdata()
 
@@ -148,7 +157,7 @@ def generatePNG(image):
             newData.append(item)
 
     img.putdata(newData)
-    img.save(USER_LOGO_UPLOAD_PATH + 'GEN_' + image, "PNG")
+    img.save(current_app.config.get("USER_LOGO_UPLOAD_PATH") + 'GEN_' + image, "PNG")
 
 
 def object2dict(obj):
@@ -166,3 +175,63 @@ def get_host_info(type):
 
     ipList = socket.gethostbyname_ex(socket.gethostname())
     return ip if ip in ipList[2] else '127.0.0.1',port
+
+
+def prod_search_filter(keyword,query_base,page,supplier_id=None):
+    if keyword and query_base:
+        w = "%{keyword}%".format(keyword=keyword)
+        s = Session()
+        prod_list_query = query_base.filter(Prod_info.supplier_id == Supplier.supplier_id)\
+                                    .filter(Prod_info.prod_cat_sub_id == Prod_sub_cat.prod_cat_sub_id)\
+                                        .filter(or_(Supplier.supplier_name.like(w),
+                                                Prod_info.prod_name.like(w),
+                                                Prod_info.prod_id.like(w),
+                                                Prod_sub_cat.prod_cat_sub_name.like(w)))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+
+        # print(prod_list_query)
+        prod_list_all = prod_list_query.order_by(Prod_info.prod_id).all()#supplier.supplier_name
+        supplier_list = set([p.supplier for p in prod_list_all])
+        supplier_list = sorted(supplier_list,key=lambda x:x.supplier_id)
+
+        if supplier_id:
+            prod_list_query = prod_list_query.filter_by(supplier_id=supplier_id)
+
+        prod_list = prod_list_query.paginate(page,current_app.config.get("PROD_NUM_PER_PAGE"), False)
+        pagination = Pagination(page=page, total=prod_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=current_app.config.get("PROD_NUM_PER_PAGE"))
+
+        return prod_list,supplier_list,pagination
+
+
+def order_search_filter(keyword,query_base,page):
+    if keyword and query_base:
+        w = "%{keyword}%".format(keyword=keyword)
+        s = Session()
+        order_list_query = query_base.filter(or_(Order_system.order_id.like(w),
+                                                Order_system.client_order_id.like(w),
+                                                Order_system.prod_name.like(w)))
+
+        order_list = order_list_query.paginate(page,current_app.config.get("USER_ORDER_PER_PAGE"), False)
+        pagination = Pagination(page=page, total=order_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=current_app.config.get("USER_ORDER_PER_PAGE"))
+
+        return order_list,pagination
+
+def quote_search_filter(keyword,query_base,page):
+    if keyword and query_base:
+        w = "%{keyword}%".format(keyword=keyword)
+        s = Session()
+        quote_list_query = query_base.filter(or_(Quote_system.quote_id.like(w),
+                                                Quote_system.prod_name.like(w)))
+
+        quote_list = quote_list_query.paginate(page,current_app.config.get("USER_QUOTE_PER_PAGE"), False)
+        pagination = Pagination(page=page, total=quote_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=current_app.config.get("USER_QUOTE_PER_PAGE"))
+
+        return quote_list,pagination
