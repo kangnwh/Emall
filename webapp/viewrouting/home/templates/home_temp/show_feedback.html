@@ -6,7 +6,9 @@
             {{ pagination.links }}
             {% for f in feedbacks.items %}
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ f.user.user_name }}<div class="float-right">{{ f.user_compliment_time }}</div></div>
+                    <div class="panel-heading">{{ f.user.user_name }}    |    {{ f.user_compliment_time }}<div class="panel-right">{% if current_user.is_administrator %}
+                     <a href="{{ url_for("adminRoute.admin_cancel_compliment",compliment_id=f.compliment_id) }}"   class="btn btn-default ">Delete</a>
+                    {% endif %}</div></div>
                     <div class="panel-body">
                         <select id="rating_{{ f.compliment_id }}" name="rating">
                             <option value="1">1</option>
