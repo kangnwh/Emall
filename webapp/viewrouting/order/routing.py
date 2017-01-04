@@ -12,7 +12,7 @@ from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
 from webapp.Models.user import User
 from webapp.Models.supplier import Supplier
 from webapp.Models.compliment_system import Compliment_system
-from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm
+from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm,QuoteToOrderForm
 
 import datetime
 
@@ -35,7 +35,8 @@ def create_order():
         order.imprint_info = user_order_form.imprint_info.data
         order.colors = user_order_form.colors.data
         order.lead_time = user_order_form.lead_time.data
-
+        order.prod_size=user_order_form.prod_size.data
+        order.special_instruction=user_order_form.special_instruction.data
 
         s = Session()
         prices = s.query(V_Prod_price_range).filter_by(prod_id=order.prod_id).first()
@@ -169,6 +170,7 @@ def create_quote():
         quote.special_instruction = user_quote_form.special_instruction.data
         quote.colors = user_quote_form.colors.data
         quote.lead_time = user_quote_form.lead_time.data
+        quote.prod_size=user_quote_form.prod_size.data
 
         quote.user_perfer_unit_price = user_quote_form.user_perfer_unit_price.data
         quote.user_perfer_imprinting_prices = user_quote_form.user_perfer_imprinting_prices.data
@@ -208,3 +210,65 @@ def show_one_quote():
     # s.close()
     return render_template('order_temp/show_one_quote.html',
                            this_quote=this_quote), s.close()
+
+@orderRoute.route("/quote_to_order",methods=["GET","POST"])
+@login_required
+def quote_to_order():
+    s = Session()
+    quote_to_order_form=QuoteToOrderForm()
+    if quote_to_order_form.validate_on_submit():
+        new_quote = s.query(Quote_system).filter_by(quote_id=quote_to_order_form.quote_id.data).first()
+        order = Order_system()
+        order.user_id = current_user.user_id
+        order.client_order_id = datetime.datetime.now().strftime("%y%m%d%H%M%S%f")#int("{userid}{timeflag}".format(userid=current_user.user_id,timeflag=timeflag))
+        order.supplier_id = new_quote.supplier_id
+        order.prod_id = new_quote.prod_id
+        order.prod_name = new_quote.prod_name
+        order.prod_quantity = new_quote.prod_quantity
+        order.imprint_info = new_quote.imprint_info
+        order.colors = new_quote.colors
+        order.lead_time = new_quote.lead_time
+        order.prod_size=new_quote.prod_size
+        order.special_instruction=new_quote.special_instruction
+
+        order.total_price=new_quote.supplier_perfer_total
+        order.unit_price=new_quote.supplier_perfer_unit_price
+        order.imprinting_prices=new_quote.supplier_perfer_imprinting_prices
+        order.setup_cost=new_quote.supplier_perfer_setup_cost
+        order.freight_cost=new_quote.supplier_perfer_freight_cost
+
+        this_supplier=s.query(Supplier).filter_by(supplier_id=order.supplier_id).first()
+        supplier_rebate_ref=s.query(Supplier_rebate_ref).filter(between(this_supplier.supplier_points,Supplier_rebate_ref.supplier_points_from,Supplier_rebate_ref.supplier_points_to)).first()
+        supplier_rebate_rate=supplier_rebate_ref.rebate_rate
+        print(supplier_rebate_rate)
+
+        real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
+        real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
+        order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
+        order.is_used_points = 0
+        order.used_points = 0
+        order.user_comments = quote_to_order_form.user_comments.data
+        order.order_stat = 1 # stands for user submitting
+        order.valid_flg = 1
+        order.sys_quote_id=quote_to_order_form.quote_id.data
+
+
+        s.add(order)
+        s.commit()
+        s.close()
+
+        quote_id=quote_to_order_form.quote_id.data
+        flash("Order Submitted","success")
+    elif request.method == 'POST':
+        flash(quote_to_order_form.errors, category='danger')
+        quote_id = quote_to_order_form.quote_id.data
+    else:
+        quote_id = request.args.get('quote_id')
+        if not quote_id:
+            flash("Request invalid", "warning")
+            return redirect(url_for("userRoute.user_quotes", type="finish"))
+
+    this_quote = s.query(Quote_system).filter_by(quote_id=quote_id).first()
+    return render_template("order_temp/quote_to_order.html",
+                           this_quote=this_quote,
+                           quote_to_order_form=quote_to_order_form), s.close()

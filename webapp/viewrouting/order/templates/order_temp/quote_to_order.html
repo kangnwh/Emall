@@ -1,4 +1,5 @@
 {% extends "non_nav_base.html" %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper,readonly_input_helper %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
@@ -15,10 +16,14 @@
 
 {% endblock %}
 {% block page %}
+        <form action="{{ url_for("orderRoute.quote_to_order") }}" method="post">
+        {{ quote_to_order_form.hidden_tag() }}
+        <div class="invisible">{{ quote_to_order_form.quote_id(value=this_quote.quote_id) }}</div>
+
     <div class="panel panel-default">
         <div class="panel-body">
             {#            <div class="col-md-12 middle-line">#}
-            <h5 class="middle-line">Quote Form</h5>
+            <h5 class="middle-line">Order Form</h5>
             {#            </div>#}
             <div class="row">
                 <div class="col-md-2">
@@ -26,7 +31,7 @@
                          class="img-responsive ">
 
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-5">
                     <div class="panel panel-default">
                         <div class="panel-heading"><strong>Basic Information</strong></div>
                         <div class="panel-body padding-5">
@@ -65,28 +70,16 @@
                                     <td>{{ this_quote.prod_size }}</td>
                                 </tr>
                                 <tr>
+                                    <td>Special Instruction</td>
+                                    <td>{{ this_quote.special_instruction }}</td>
+                                </tr>
+                                <tr>
                                     <td>Imprint Information</td>
                                     <td>{{ this_quote.imprint_info }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Special Instruction</td>
-                                    <td><span id="freight_cost">{{ this_quote.special_instruction }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Quantity</td>
-                                    <td><span id="Quantity">{{ this_quote.prod_quantity }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>User Perfer Comments:</td>
-                                    <td><span id="freight_cost">{{ this_quote.user_perfer_comment }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Supplier Perfer Comments:</td>
-                                    <td><span id="freight_cost">{{ this_quote.supplier_perfer_comment }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Quote Create Date</td>
-                                    <td><span id="freight_cost">{{ this_quote.user_last_quote_time }}</span></td>
+                                    <td>From Quote Id</td>
+                                    <td>{{ this_quote.quote_id }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -95,109 +88,64 @@
 
 
                 </div>
-                <div class="col-md-2"></div>
                 <div class="col-md-5">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><strong>User perfer Information</strong></div>
+                        <div class="panel-heading"><strong>Price Information</strong></div>
                         <div class="panel-body padding-5">
                             <table class="table table-hover text-right font-size-14">
                                 <tbody>
                                 <tr>
                                     <td class="">Unit Price</td>
-                                    <td><span>$</span><span
-                                            id="unit_price">{{ this_quote.user_perfer_unit_price }}</span></td>
+                                    <td><span>$</span><span id="unit_price">{{ this_quote.supplier_perfer_unit_price }}</span></td>
                                 </tr>
                                 <tr>
                                     <td class="">Setup</td>
-                                    <td><span>$</span><span
-                                            id="setup_price">{{ this_quote.user_perfer_setup_cost }}</span></td>
+                                    <td><span>$</span><span id="setup_price">{{ this_quote.supplier_perfer_setup_cost }}</span></td>
                                 </tr>
                                 <tr>
                                     <td class="">Imprinting Prices</td>
                                     <td><span>$</span><span
-                                            id="imprinting_prices">{{ this_quote.user_perfer_imprinting_prices }}</span>
+                                            id="imprinting_prices">{{ this_quote.supplier_perfer_imprinting_prices }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="">Freight Cost</td>
-                                    <td><span>$</span><span
-                                            id="freight_cost">{{ this_quote.user_perfer_freight_cost }}</span></td>
+                                    <td><span>$</span><span id="freight_cost">{{ this_quote.supplier_perfer_freight_cost }}</span></td>
                                 </tr>
                                 <tr>
-                                    <td class="indiv-price-big"><strong>User Perfer Total</strong></td>
+                                    <td class="">Quantity</td>
+                                    <td><span id="freight_cost">{{ this_quote.prod_quantity }}</span></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="indiv-price-big"><strong>User need pay Total</strong></td>
                                     <td class="indiv-price-big"><strong><span>$</span><span
-                                            id="total_price">{{ this_quote.user_perfer_total }}</span></strong></td>
+                                            id="need_pay_supplier">{{ this_quote.supplier_perfer_total }}</span></strong></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
 
                 </div>
 
-                <div class="col-md-5">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><strong>Supplier Perfer Information</strong></div>
-                        <div class="panel-body padding-5">
-                            <table class="table table-hover text-right font-size-14">
-                                    <tbody>
-                                    <tr>
-                                        <td class="">Unit Price</td>
-                                        <td><span>$</span><span
-                                                id="unit_price">{{ this_quote.supplier_perfer_unit_price }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="">Setup</td>
-                                        <td><span>$</span><span
-                                                id="setup_price">{{ this_quote.supplier_perfer_setup_cost }}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="">Imprinting Prices</td>
-                                        <td><span>$</span><span
-                                                id="imprinting_prices">{{ this_quote.supplier_perfer_imprinting_prices }}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="">Freight Cost</td>
-                                        <td><span>$</span><span
-                                                id="freight_cost">{{ this_quote.supplier_perfer_freight_cost }}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="indiv-price-big"><strong>Supplier Perfer Total</strong></td>
-                                        <td class="indiv-price-big"><strong><span>$</span><span
-                                                id="total_price">{{ this_quote.supplier_perfer_total }}</span></strong>
-                                        </td>
-                                    </tr>
-                                    </tbody>
 
-                            </table>
-                        </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">User Comments</div>
+                    <div class="panel-body">
+                        {{ quote_to_order_form.user_comments(class='form-control') }}
                     </div>
                 </div>
-
-            </div>
-            <div class="middle">
-                <h4><strong>Quote Status:</strong></h4>
-                <nav>
-                    <ul class="pager">
-                        {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
-
-                        <li><a href="#" id="status_0">User Submitted &rarr;</a></li>
-                        <li><a href="#" id="status_1">Supplier Replied </a></li>
-
-                        <script>
-                            $("#status_{{ this_quote.is_return_flg }}").addClass("active btn-primary");
-                        </script>
-                    </ul>
-                </nav>
             </div>
 
+                <div class="middle">
+                    <button type="submit" class="btn btn-primary">Submit Order</button>
+                </div>
         </div>
     </div>
-
+    </form>
     <script>
         slider_block = $("#ex8").slider({
             tooltip: 'always',

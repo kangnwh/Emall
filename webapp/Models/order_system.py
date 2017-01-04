@@ -38,6 +38,9 @@ class Order_system(Base):
     valid_flg=Column(Integer,default=0)
     order_create_dt = Column(DateTime,default=func.now())
     cancel_reason = Column(String(300))
+    prod_size=Column(String(100))
+    special_instruction=Column(String(100))
+    sys_quote_id=Column(BIGINT)
 
 
     def __repr__(self):

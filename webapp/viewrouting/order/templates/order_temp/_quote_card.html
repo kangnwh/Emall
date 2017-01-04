@@ -36,7 +36,7 @@
                 {% if current_user.is_administrator %}
                     <td> </td>
                 {% elif quote.is_return_flg==1 %}
-                    <button onclick="create_order('{{ quote.quote_id }}')" role="button" class="btn btn-default">BUY</button>
+                    <button onclick="quote_to_order('{{ quote.quote_id }}')" role="button" class="btn btn-default">BUY</button>
                 {% endif %}
                 </div>
 {#        </div>#}

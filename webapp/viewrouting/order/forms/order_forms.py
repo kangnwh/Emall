@@ -14,7 +14,8 @@ class UserOrderForm(Form):
     prod_size = StringField('Production Size')
     imprint_info = StringField('Imprint Info') #user
     colors = StringField('Color',validators=[DataRequired()]) #user
-
+    special_instruction = StringField("Special Instruction")
+    sys_quote_id = IntegerField("System Quote Id")
     #money info
     # unit_price = DecimalField("Unit Price",validators=[DataRequired()]) #user
     # imprinting_prices = DecimalField("Imprinting Price",validators=[DataRequired()]) #user
@@ -44,6 +45,7 @@ class UserQuoteForm(Form):
     prod_id = IntegerField("Product ID")
     prod_name = StringField("Product Name")
     prod_quantity = IntegerField("Product Quantity")
+    prod_size = StringField('Production Size')
     imprint_info = StringField("Imprint Information")
     special_instruction = StringField("Special Instruction")
     lead_time = StringField("Lead Time")
@@ -54,3 +56,9 @@ class UserQuoteForm(Form):
     user_perfer_freight_cost = DecimalField("User Perferred Freight Cost")
     # user_perfer_total = DecimalField("User Perferred Total Cost")
     user_perfer_comment = StringField("User Comments")
+
+class QuoteToOrderForm(Form):
+    user_comments = StringField("Comments")
+    quote_id = IntegerField("System Quote Id")
+    sys_quote_id = IntegerField("System Quote Id")
+    #supplier_comments = Column(String(500)) should be input when supplier handle this order

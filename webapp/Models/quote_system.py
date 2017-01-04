@@ -1,5 +1,5 @@
 from webapp.Models.db_basic import Base
-from sqlalchemy import Integer, String, Column,Sequence,Boolean,DateTime,ForeignKey,DECIMAL
+from sqlalchemy import Integer, String, Column,Sequence,Boolean,DateTime,ForeignKey,DECIMAL,BIGINT
 from sqlalchemy.sql import func
 from datetime import datetime
 from webapp.Models.user import User
@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 class Quote_system(Base):
     __tablename__= 'quote_system'
     #__table_args__ = {'schema':'admin'}
-    quote_id = Column(Integer, primary_key = True)
+    quote_id = Column(BIGINT, primary_key = True)
     quote_name = Column(String(300))
     supplier_id = Column(Integer , ForeignKey('supplier.supplier_id'))
     supplier=relationship(Supplier,backref='supp_quote_sys')
@@ -41,6 +41,7 @@ class Quote_system(Base):
     is_return_flg=Column(Integer,default=0)
     valid_flg=Column(Integer,default=0)
     quote_create_time = Column(DateTime,default=func.now())
+    prod_size=Column(String(100))
 
 
     def __repr__(self):
