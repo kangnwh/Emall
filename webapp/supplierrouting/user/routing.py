@@ -212,6 +212,7 @@ def order_search():
                                               [Order_system.user_comments.like(w) for w in like_words]+
                                               [Order_system.supplier_comments.like(w) for w in like_words]
                                              +[Order_system.client_order_id.like(w) for w in like_words]
+                                             +[Order_system.order_id.like(w) for w in like_words]
                                             ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
 
         pagination = Pagination(page=page, total=order_list.total,
