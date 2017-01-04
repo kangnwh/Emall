@@ -9,6 +9,7 @@ from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
 from webapp.Models.supplier import Supplier
 from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
+from webapp.Models.compliment_system import Compliment_system
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
@@ -1087,3 +1088,15 @@ def _quote_search():
     else:
         flash("Please provide key words when you search something","warning")
         return redirect(url_for("adminRoute.all_quotes",type="ongoing"))
+
+@admin_check
+def _admin_cancel_compliment():
+    s = Session()
+    compliment_id = request.args.get('compliment_id')
+    print(compliment_id)
+    this_compliment_system=s.query(Compliment_system).filter_by(compliment_id=compliment_id)
+    prod_id=this_compliment_system.first().prod_id
+    this_compliment_system.delete()
+    s.commit()
+
+    return redirect(url_for("homeRoute.show_feedback",prod_id=prod_id)),s.close()

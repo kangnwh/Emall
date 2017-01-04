@@ -7,7 +7,7 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
                                                     _pending_approval_list,_check_pending_approval_prod,_reject_or_approve,_manage_config,_update_config,\
-                                                    _search,_order_search,_quote_search
+                                                    _search,_order_search,_quote_search,_admin_cancel_compliment
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -242,3 +242,8 @@ def order_search():
 @login_required
 def quote_search():
     return _quote_search()
+
+@adminRoute.route('/admin_cancel_compliment', methods=['GET'])
+@login_required
+def admin_cancel_compliment():
+    return _admin_cancel_compliment()
