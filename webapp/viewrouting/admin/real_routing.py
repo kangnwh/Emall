@@ -3,7 +3,7 @@ from flask import Blueprint, url_for, flash, request
 from flask import render_template, redirect,jsonify,abort
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
-
+from sqlalchemy import or_
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
@@ -1005,3 +1005,116 @@ def _update_config():
     else:
         flash(update_parameter_form.errors, category='danger')
     return redirect(url_for('adminRoute.manage_config',update_parameter_form=update_parameter_form))
+
+@admin_check
+def _search():
+    key_words = request.args.get("q")
+    if key_words:
+        search_words = key_words.split(" ")
+        like_words = ['%{w}%'.format(w=w) for w in search_words]
+
+        page = request.args.get('page', type=int, default=1)
+
+        s = Session()
+        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
+        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
+        query_base = BaseQuery(Prod_info,s)
+
+        prod_list_query = query_base.filter(or_(*([Prod_info.prod_name.like(w) for w in like_words]+
+                                              [Prod_info.prod_desc.like(w) for w in like_words]+
+                                              [Prod_info.lead_time.like(w) for w in like_words]+
+                                              [Prod_info.prod_size.like(w) for w in like_words]+
+                                              [Prod_info.imprint_size.like(w) for w in like_words]+
+                                              [Prod_info.price_basis.like(w) for w in like_words])
+                                              ))#.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+
+        prod_list = prod_list_query.paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+        pagination = Pagination(page=page, total=prod_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=customer_config.PROD_NUM_PER_PAGE)
+
+        return render_template('admin_temp/publish_approval_prod_list.html',
+                               key_words = key_words,
+                               type = 'search',
+                               # supplier_list = supplier_list,
+                               # active_supplier = supplier_id,
+                               prod_list=prod_list,
+                               pagination=pagination)
+    else:
+        flash("Please provide key words when you search something","warning")
+        return redirect(url_for("adminRoute.pending_approval_list"))
+
+@admin_check
+def _order_search():
+    key_words = request.args.get("q")
+    if key_words:
+        search_words = key_words.split(" ")
+        like_words = ['%{w}%'.format(w=w) for w in search_words]
+
+        page = request.args.get('page', type=int, default=1)
+
+        s = Session()
+        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
+        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
+        query_base = BaseQuery(Order_system,s)
+
+        order_list = query_base.filter(or_(*([Order_system.prod_name.like(w) for w in like_words]+
+                                              [Order_system.imprint_info.like(w) for w in like_words]+
+                                              [Order_system.colors.like(w) for w in like_words]+
+                                              [Order_system.user_comments.like(w) for w in like_words]+
+                                              [Order_system.supplier_comments.like(w) for w in like_words]
+                                            ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
+
+        pagination = Pagination(page=page, total=order_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=customer_config.PROD_NUM_PER_PAGE)
+
+        return render_template('admin_temp/all_orders.html',
+                               key_words = key_words,
+                               type = 'search',
+                               # supplier_list = supplier_list,
+                               # active_supplier = supplier_id,
+                               order_list=order_list,
+                               pagination=pagination)
+    else:
+        flash("Please provide key words when you search something","warning")
+        return redirect(url_for("adminRoute.all_orders",type="ongoing"))
+
+@admin_check
+def _quote_search():
+    key_words = request.args.get("q")
+    if key_words:
+        search_words = key_words.split(" ")
+        like_words = ['%{w}%'.format(w=w) for w in search_words]
+
+        page = request.args.get('page', type=int, default=1)
+
+        s = Session()
+        # sub_cat_id = sub_cat_id if sub_cat_id>0 else s.query(func.min(Prod_sub_cat.prod_cat_id).label('min')).first().min
+        # prod_cat_sub = s.query(Prod_sub_cat).filter_by(prod_cat_sub_id=sub_cat_id).first()
+        query_base = BaseQuery(Quote_system,s)
+        quote_list = query_base.filter(or_(*([Quote_system.prod_name.like(w) for w in like_words]+
+                                              [Quote_system.imprint_info.like(w) for w in like_words]+
+                                              [Quote_system.special_instruction.like(w) for w in like_words]+
+                                              [Quote_system.colors.like(w) for w in like_words]+
+                                              [Quote_system.user_perfer_comment.like(w) for w in like_words]
+                                             +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
+                                            ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
+
+        pagination = Pagination(page=page, total=quote_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=customer_config.PROD_NUM_PER_PAGE)
+
+        return render_template('admin_temp/all_quotes.html',
+                               key_words = key_words,
+                               type = 'search',
+                               # supplier_list = supplier_list,
+                               # active_supplier = supplier_id,
+                               quote_list=quote_list,
+                               pagination=pagination)
+    else:
+        flash("Please provide key words when you search something","warning")
+        return redirect(url_for("adminRoute.all_quotes",type="ongoing"))

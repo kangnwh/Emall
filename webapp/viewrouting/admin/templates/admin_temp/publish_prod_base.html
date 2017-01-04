@@ -10,6 +10,12 @@
                 href="{{ url_for("adminRoute.pending_approval_list",type='rejected') }}">Reject Approval</a></li>
         <li role="presentation" {% if publish_active == 'approved' %} class="active"{% endif %}><a
                 href="{{ url_for("adminRoute.pending_approval_list",type='approved') }}">Approved Approval</a></li>
+        <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input id="search_words" type="text" class="form-control" placeholder="Search" value="{{ key_words }}">
+            </div>
+            <button class="btn btn-default" onclick="search()">Search</button>
+        </div>
     </ul>
     <block class="">
         {% block prod_list %}
@@ -19,5 +25,10 @@
 
 {% block scripts %}
     {{ super() }}
-
+    <script>
+    function search() {
+            var search_words = $("#search_words").val();
+            location.href = "{{ url_for("adminRoute.approval_prod_search") }}?q=" + search_words;
+        }
+    </script>
 {% endblock scripts %}

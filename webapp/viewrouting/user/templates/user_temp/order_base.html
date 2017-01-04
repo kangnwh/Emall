@@ -10,13 +10,23 @@
                 href="{{ url_for("userRoute.user_orders",type='finished') }}">Finished Orders</a></li>
         <li role="presentation" {% if order_active == 'canceled' %} class="active"{% endif %}><a
                 href="{{ url_for("userRoute.user_orders",type='canceled') }}">Canceled Orders</a></li>
+        <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input id="search_words" type="text" class="form-control" placeholder="Search" value="{{ key_words }}">
+            </div>
+            <button class="btn btn-default" onclick="search()">Search</button>
+        </div>
     </ul>
     {% block orderlist %}
     {% endblock %}
 
 {% endblock %}
-
 {% block scripts %}
     {{ super() }}
-
+    <script>
+        function search() {
+            var search_words = $("#search_words").val();
+            location.href = "{{ url_for("userRoute.order_search") }}?q=" + search_words;
+        }
+    </script>
 {% endblock scripts %}
