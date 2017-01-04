@@ -237,6 +237,7 @@ def order_search():
                                               [Order_system.colors.like(w) for w in like_words]+
                                               [Order_system.user_comments.like(w) for w in like_words]+
                                               [Order_system.supplier_comments.like(w) for w in like_words]
+                                             +[Order_system.client_order_id.like(w) for w in like_words]
                                             ))).paginate(page,customer_config.USER_ORDER_PER_PAGE, False)
 
         pagination = Pagination(page=page, total=order_list.total,
@@ -275,6 +276,7 @@ def quote_search():
                                               [Quote_system.colors.like(w) for w in like_words]+
                                               [Quote_system.user_perfer_comment.like(w) for w in like_words]
                                              +[Quote_system.supplier_perfer_comment.like(w) for w in like_words]
+                                             +[Quote_system.quote_id.like(w) for w in like_words]
                                             ))).paginate(page,customer_config.USER_QUOTE_PER_PAGE, False)
 
         pagination = Pagination(page=page, total=quote_list.total,
