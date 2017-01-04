@@ -1,8 +1,13 @@
-{% macro input_helper(group_class,input,input_class="form-control",label_class='labels',default_value='',input_comment="",type="text") -%}
+{% macro input_helper(group_class,input,input_class="form-control",label_class='labels',default_value='',input_comment="",type=None) -%}
     <div class="form-group {{ group_class }}">
         {{ input.label(class=label_class) }}
         <small>{{ input_comment }}</small>
-        {{ input(class=input_class,value=default_value,type=type) }}
+        {% if type %}
+            {{ input(class=input_class,value=default_value,type=type) }}
+        {% else %}
+            {{ input(class=input_class,value=default_value) }}
+        {% endif %}
+
 
     </div>
 {% endmacro %}
