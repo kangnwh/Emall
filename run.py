@@ -12,9 +12,9 @@ sys.path.append(cur_path)
 #
 #     app = Report.create_app()
 #     app.logger.info("main application run")
-#     app.run(host=app.config.get("HOST", "127.0.0.1"), port=app.config.get("PORT", "5001"), threaded=True)
+#     app.run(host=app.config.get("HOST", "127.0.0.1"), emall_port=app.config.get("PORT", "5001"), threaded=True)
 # except:
 #     from webapp import Install
 #     app = Install.create_app()
 #     app.logger.info("installation application run")
-#     app.run(host=app.config.get("HOST", "127.0.0.1"), port=app.config.get("PORT", "5001"), threaded=True)
+#     app.run(host=app.config.get("HOST", "127.0.0.1"), emall_port=app.config.get("PORT", "5001"), threaded=True)

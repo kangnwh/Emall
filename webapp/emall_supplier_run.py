@@ -66,8 +66,11 @@ def unauthorized_callback():
 
 if __name__ == '__main__':
     # app = create_app()
-    ip,port = get_host_info('SUPPLIER_HOST')
-    app.run(host=ip, port=port, threaded=True)
+    emall_ip, emall_port = get_host_info('HOME_HOST')
+    supplier_ip, supplier_port = get_host_info('SUPPLIER_HOST')
+    app.config["EMALL_APPLICATION_ADDRESS"] = "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
+    app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
+    app.run(host=supplier_ip, port=supplier_port, threaded=True)
 
 def create_app():
     return app
