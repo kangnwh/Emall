@@ -103,6 +103,8 @@
                         <p>{{ this_prod.price_basis }}</p>
                         <strong class="indiv-prod-desc-head">Subcategory</strong>
                         <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>
+                        <strong class="indiv-prod-desc-head">Other</strong>
+                        <p> <strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}   &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}   &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>
                     </div>
                 </div>
             </div>
