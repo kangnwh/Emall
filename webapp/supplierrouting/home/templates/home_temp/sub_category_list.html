@@ -94,7 +94,6 @@
             });
 
         }
-        {#        TODO Hiden when is not admimistrator#}
         function ajax_delete_prod_form(name, prod_id) {
             if (confirm("Do you really want to delete [" + name + "] ? ")) {
                 $.post("{{ url_for('supplierRoute.delete_prod') }}", {prod_id: prod_id}, function (result) {

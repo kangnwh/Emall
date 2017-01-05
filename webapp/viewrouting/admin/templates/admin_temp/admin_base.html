@@ -40,7 +40,7 @@
                     <a href="{{ url_for('adminRoute.prod_cate_mgt') }}">Product Category Management</a></li>
                 </li>
                 <li {% if active_page == "pending_approval_prod"  %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.pending_approval_list') }}">Product Pending List</a></li>
+                    <a href="{{ url_for('adminRoute.pending_approval_list') }}">Product Pending List<span class="float-right badge">{{ current_user.get_approval_pending_count(current_user.user_id) }}</span></a>
                 </li>
                 <li {% if "all_orders" == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.all_orders',type='ongoing') }}">All Orders</a>
