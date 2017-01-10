@@ -147,7 +147,24 @@
 
 
             </div>
-            <div class="middle">
+
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">User Comments</div>
+                    <div class="panel-body">
+                        {{ this_order.user_comments }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Supplier Comments</div>
+                    <div class="panel-body">
+                        <td>{{ supp_update_order.supplier_comments(class='form-control') }}</td>
+                    </div>
+                </div>
+            </div>
+                    <div class="middle">
                 <h4><strong>Order Status:</strong></h4>
                 <nav>
                     <ul class="pager">
@@ -167,22 +184,6 @@
                         </script>
                     </ul>
                 </nav>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default ">
-                    <div class="panel-heading">User Comments</div>
-                    <div class="panel-body">
-                        {{ this_order.user_comments }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Supplier Comments</div>
-                    <div class="panel-body">
-                        <td>{{ supp_update_order.supplier_comments(class='form-control') }}</td>
-                    </div>
-                </div>
             </div>
             {% if this_order.order_stat == 5 %}
 
