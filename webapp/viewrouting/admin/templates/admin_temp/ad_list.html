@@ -1,6 +1,6 @@
 {% extends "admin_temp/advertisement_base.html" %}
 
-{% set ad_active = 'ad_list' %}
+{% set ad_active = type %}
 
 {% block ad_list %}
 
@@ -26,9 +26,12 @@
                                 <td>{{ ad.submit_date }}</td>
                                 <td>{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</td>
                                 <td>
-                                    {#                                    <button class="btn btn-info">Detail</button>#}
+                                    {% if ad.approval_status == 1 %}
+                                         <button class="btn btn-primary" onclick="ajax_approve_ad({{ ad.email_advertisement_id }})">Approve</button>
+                                        <button class="btn btn-danger" onclick="ajax_reject_ad({{ ad.email_advertisement_id }})">Reject</button>
+                                    {% endif %}
                                     <a data-toggle="modal" class="btn btn-info" href="#modal_{{ ad.email_advertisement_id }}">Detail</a>
-                                    <button class="btn btn-danger" onclick="ajax_cancel_ad({{ ad.submit_date }},{{ ad.email_advertisement_id }})">Cancel</button>
+
                                     <div class="modal fade" id="modal_{{ ad.email_advertisement_id }}" tabindex="-1"
                                          role="dialog"
                                          aria-labelledby="modal_label_{{ ad.email_advertisement_id }}"
@@ -73,9 +76,20 @@
         {% endif %}
     </div>
     <script>
-       function ajax_cancel_ad(date,ad_id) {
-            if (confirm("Do you really want to cancel the advertisement submitted on [" + date + "] ? ")) {
-                $.post("{{ url_for('supplierRoute.cancel_ad') }}", {ad_id: ad_id}, function (result) {
+       function ajax_approve_ad(ad_id) {
+            if (confirm("Do you really want to send the advertisement ? ")) {
+                $.post("{{ url_for('adminRoute.approve_ad') }}", {ad_id: ad_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+    function ajax_reject_ad(ad_id) {
+            if (confirm("Do you really want to reject the advertisement ? ")) {
+                $.post("{{ url_for('adminRoute.reject_ad') }}", {ad_id: ad_id}, function (result) {
                     if (result = 'succ') {
                         location.reload();
                     }

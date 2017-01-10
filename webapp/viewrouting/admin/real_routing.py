@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, url_for, flash, request
+from flask import Blueprint, url_for, flash, request,current_app
 from flask import render_template, redirect,jsonify,abort
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
@@ -18,6 +18,7 @@ from webapp.Models.quote_system import Quote_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
+from webapp.Models.email_advertisement import Email_advertisement
 from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
@@ -1102,3 +1103,64 @@ def _admin_cancel_compliment():
     s.commit()
 
     return redirect(url_for("homeRoute.show_feedback",prod_id=prod_id)),s.close()
+
+@admin_check
+def _ad_list():
+
+    page = request.args.get('page', type=int, default=1)
+    type = request.args.get('type',1)
+
+    s = Session()
+
+    query_base = BaseQuery(Email_advertisement,s).filter(Email_advertisement.approval_status == type)
+
+    ad_list = query_base.paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
+    pagination = Pagination(page=page, total=ad_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=current_app.config.get("USER_ORDER_PER_PAGE"))
+
+    return render_template('admin_temp/ad_list.html',
+                           type = type,
+                           ad_list=ad_list,
+                           pagination=pagination)
+@admin_check
+def _approve_ad():
+
+    ad_id = request.form.get('ad_id')
+    if not ad_id:
+        flash("Advertisement info invalid!",'warning')
+        return redirect(url_for("supplierRoute.ad_list"))
+
+
+    s = Session()
+    ad = s.query(Email_advertisement).filter(Email_advertisement.email_advertisement_id == ad_id)
+    if ad:
+        #TODO send advertisement email
+        pass
+    ad.update({
+        'approval_status':3
+    })
+    s.commit()
+    s.close()
+
+    return jsonify("succ")
+
+@admin_check
+def _reject_ad():
+
+    ad_id = request.form.get('ad_id')
+    if not ad_id:
+        flash("Advertisement info invalid!",'warning')
+        return redirect(url_for("supplierRoute.ad_list"))
+
+
+    s = Session()
+    ad = s.query(Email_advertisement).filter(Email_advertisement.email_advertisement_id == ad_id)
+    ad.update({
+        'approval_status':-1
+    })
+    s.commit()
+    s.close()
+
+    return jsonify("succ")
