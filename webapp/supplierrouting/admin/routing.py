@@ -520,3 +520,20 @@ def ad_list():
                            ad_list=ad_list,
                            pagination=pagination)
 
+@supplierRoute.route("/cancel_ad",methods=["POST","GET"])
+@login_required
+def cancel_ad():
+
+    ad_id = request.form.get('ad_id')
+    if not ad_id:
+        flash("Advertisement info invalid!",'warning')
+        return redirect(url_for("supplierRoute.ad_list"))
+
+
+    s = Session()
+    ad = s.query(Email_advertisement).filter(Email_advertisement.supplier_id == current_user.supplier_id,Email_advertisement.email_advertisement_id == ad_id)
+    ad.delete()
+    s.commit()
+    s.close()
+
+    return jsonify("succ")

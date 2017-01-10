@@ -29,7 +29,7 @@
                                 <td>
                                     {#                                    <button class="btn btn-info">Detail</button>#}
                                     <a data-toggle="modal" class="btn btn-info" href="#modal_{{ ad.email_advertisement_id }}">Detail</a>
-                                    <button class="btn btn-danger">Cancel</button>
+                                    <button class="btn btn-danger" onclick="ajax_cancel_ad({{ ad.submit_date }},{{ ad.email_advertisement_id }})">Cancel</button>
                                     <div class="modal fade" id="modal_{{ ad.email_advertisement_id }}" tabindex="-1"
                                          role="dialog"
                                          aria-labelledby="modal_label_{{ ad.email_advertisement_id }}"
@@ -74,34 +74,16 @@
         {% endif %}
     </div>
     <script>
-        {#function onShowOrder(client_order_id) {#}
-        {#            new $.Zebra_Dialog('', {#}
-        {#                source: {#}
-        {#                    'iframe': {#}
-        {#                        'src': '{{ url_for('orderRoute.show_one_order') }}' + '?client_order_id=' + client_order_id,#}
-        {#                        'height':600#}
-        {#                    }#}
-        {#                },#}
-        {#                position: ['center', 'top + 5'],#}
-        {#                width: 1200#}
-        {#            });#}
-        {#        }#}
-        {#    function onUpdateOrder(client_order_id) {#}
-        {#            new $.Zebra_Dialog('', {#}
-        {#                source: {#}
-        {#                    'iframe': {#}
-        {#                        'src': '{{ url_for('orderRoute.receive_order') }}' + '?client_order_id=' + client_order_id,#}
-        {#                        'height': 600#}
-        {#                    }#}
-        {#                },#}
-        {#                 'onClose': function () {#}
-        {#                    location.reload();#}
-        {#                },#}
-        {#                position: ['center', 'top + 5'],#}
-        {#                width: 1200#}
-        {#            });#}
-        {#        }#}
-
-
+       function ajax_cancel_ad(date,ad_id) {
+            if (confirm("Do you really want to cancel the advertisement submitted on [" + date + "] ? ")) {
+                $.post("{{ url_for('supplierRoute.cancel_ad') }}", {ad_id: ad_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
     </script>
 {% endblock %}
