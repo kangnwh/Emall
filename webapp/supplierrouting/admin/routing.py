@@ -473,3 +473,11 @@ def search():
     else:
         flash("Please provide key words when you search something","warning")
         return redirect(url_for("homeRoute.index"))
+
+
+@supplierRoute.route("/ad_request",methods=["GET"])
+@login_required
+def ad_request():
+    ad_content = request.form.get("ad_content")
+    print(ad_content)
+    return render_template("admin_temp/ad_request.html")

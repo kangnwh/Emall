@@ -1,0 +1,25 @@
+{% extends "admin_temp/admin_base.html" %}
+{% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper,file_input_helper %}
+
+{% set active_page = 'ad' %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/editor.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/editor.js") }}"></script>
+{% endblock %}
+{% block page %}
+    <form action="{{ url_for("supplierRoute.ad_request") }}" onsubmit="getContent()">
+        <textarea id="ad_content">a</textarea>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <script>
+      $("#ad_content").Editor();
+    function getContent(){
+          $("#ad_content").val($("#ad_content").Editor("getText"));
+    }
+    </script>
+{% endblock %}
