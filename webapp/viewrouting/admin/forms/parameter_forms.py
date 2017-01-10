@@ -8,3 +8,4 @@ from webapp.Models.db_basic import Session
 class ParameterForm(Form):
     REMINDER_PRE_DAYS = IntegerField('Reminder Before target date', validators = [DataRequired()])
     USER_POINT_DISCOUNT_RATE = DecimalField('User reward rate', validators = [DataRequired()])
+    SHOW_HOT_PROD_NUM=IntegerField('SHOW HOT PROD NUMS', validators = [DataRequired()])

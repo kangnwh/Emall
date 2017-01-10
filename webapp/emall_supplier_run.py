@@ -19,7 +19,7 @@ from webapp.Models import get_pending_order_count,get_pending_quote_count,get_su
 from webapp.Models.db_basic import Session
 # from webapp.Models.user import User,AnonymousUser
 from webapp.Models.supplier import Supplier,AnonymousSupplier
-from webapp.Models import get_pending_order_count,get_pending_quote_count
+from webapp.Models import get_pending_order_count,get_pending_quote_count,get_approval_pending_count
 #flask mail
 import flask_mail
 mail = flask_mail.Mail()
@@ -56,6 +56,7 @@ def load_user(supplier_id):
         u.get_pending_order_count = lambda id : get_pending_order_count('supplier',supplier_id)
         u.get_pending_quote_count = lambda id : get_pending_quote_count('supplier',supplier_id)
         u.get_supplier_level = lambda id : get_supplier_level('supplier',supplier_id)
+        u.get_approval_pending_count = lambda id : get_approval_pending_count('supplier',supplier_id)
     s.close()
     return u
 

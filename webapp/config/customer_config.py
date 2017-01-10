@@ -11,6 +11,7 @@ USER_NUM_PER_PAGE = 20
 FEEDBACK_NUM_PER_PAGE = 10
 USER_ORDER_PER_PAGE = 20
 USER_QUOTE_PER_PAGE = 20
+SHOW_HOT_PROD_NUM=10
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
 
@@ -25,7 +26,11 @@ MAIL_PASSWORD = 'passw0rd'
 
 USER_POINT_DISCOUNT_RATE=1
 
+
+
 REMINDER_PRE_DAYS=2
+
+
 
 ORDER_STATUS_MAP={
     #0:'default',

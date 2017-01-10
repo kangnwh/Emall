@@ -4,8 +4,10 @@
             <div class="thumbnail">
                 <div class="panel panel-primary">
                     <div class="panel-heading one-line">{{ indiv_prod_info.prod_name }}
+                        {% if current_user.is_administrator %}
                         <span class="label label-{{ config.get("VALID_INFO_MAP").get(indiv_prod_info.valid_flg)[1] }}">{{ config.get("VALID_INFO_MAP").get(indiv_prod_info.valid_flg)[0] }}</span>
                         <span class="label label-{{ config.get("APPROVAL_STATUS_MAP").get(indiv_prod_info.approve_stat)[1] }}">{{ config.get("APPROVAL_STATUS_MAP").get(indiv_prod_info.approve_stat)[0] }}</span>
+                        {% endif %}
                     </div>
                     <div class="panel-body">
                         <div>
@@ -22,7 +24,7 @@
                     </div>
                 </div>
                 <p class="one-line">
-                    <strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}
+                    <strong>From </strong>{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}   <strong> {{ "  - New Prod" if indiv_prod_info.is_new_prod==1 else ""  }}</strong>
                 </p>
 
                 <div class="btn-group btn-group-sm">

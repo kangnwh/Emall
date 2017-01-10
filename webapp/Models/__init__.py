@@ -6,9 +6,10 @@ from webapp.Models.db_basic import engine,Session,Base
 # from webapp.Models.map_tag_item import Map_Tag_Item
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
+from webapp.Models.prod_info import Prod_info
 from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
 from flask_login import login_required,current_user
-from sqlalchemy import func,between
+from sqlalchemy import func,between,and_
 
 
 def get_pending_order_count(type,id):
@@ -46,3 +47,14 @@ def get_supplier_level(type,id):
     s.close()
     return count
 
+def get_approval_pending_count(type,id):
+    s = Session()
+    base_query = s.query(func.count(Prod_info.prod_id)).filter(and_(Prod_info.approve_stat.in_([0,-1]),Prod_info.is_del_flg==0))
+    if type == 'user':
+        count = base_query.filter(Prod_info.approve_stat==0).first()[0]
+    elif type == 'supplier':
+        count = base_query.filter(Prod_info.supplier_id==id).first()[0]
+    else:
+        count = None
+    s.close()
+    return count

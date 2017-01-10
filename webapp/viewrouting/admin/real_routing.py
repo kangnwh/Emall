@@ -1001,8 +1001,10 @@ def _update_config():
     if update_parameter_form.validate_on_submit():
         user_reward_rate=update_parameter_form.USER_POINT_DISCOUNT_RATE.data
         remind_before_days=update_parameter_form.REMINDER_PRE_DAYS.data
+        show_hot_prod_nums=update_parameter_form.SHOW_HOT_PROD_NUM.data
         update_config_value('USER_POINT_DISCOUNT_RATE',user_reward_rate)
         update_config_value('REMINDER_PRE_DAYS',remind_before_days)
+        update_config_value('SHOW_HOT_PROD_NUM',show_hot_prod_nums)
     else:
         flash(update_parameter_form.errors, category='danger')
     return redirect(url_for('adminRoute.manage_config',update_parameter_form=update_parameter_form))

@@ -6,7 +6,7 @@
                 <a role="button" data-toggle="collapse" data-parent="#accordion" class=""
                    href="#level_one{{ level_one.prod_cat_id }}"
                    aria-expanded="false" aria-controls="level_one{{ level_one.prod_cat_id }}">
-                   {{ level_one.prod_cat_order }} - {{ level_one.prod_cat_name }}
+                   {{ level_one.prod_cat_order }} - {{ level_one.prod_cat_name }} - [{{ "Valid" if level_one.valid_flg==1 else "Invalid" }}]
                 </a>
 
             </h4>
@@ -25,28 +25,29 @@
 {#                        </form>#}
                         <input type="button" value="Update Level One" class=" btn-block btn btn-warning" onclick="updete_level_one({{ level_one.prod_cat_id }},'{{ level_one.prod_cat_name  }}','{{ level_one.prod_cat_desc }}',{{ level_one.valid_flg }},{{ level_one.prod_cat_order }})">
 
-                        <form action="{{ url_for('adminRoute.delete_level_one') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_one.prod_cat_name }}')">
+{#                         <form action="{{ url_for('adminRoute.delete_level_one') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_one.prod_cat_name }}')">
                                 {{ delete_level_one_form.hidden_tag() }}
                                 <div class="invisible">{{ delete_level_one_form.prod_cat_id(value=level_one.prod_cat_id) }}</div>
                             <input type="submit" value="Delete Level One" class="btn-block btn btn-warning" >
                         </form>
-
+ #}
                     </div>
                 </div>
                 <div class="row">
                     {% for level_two in level_one.prod_sub_cat %}
 
-                        <div class="btn-group col-md-6">
+                        <div class="btn-group col-md-12">
                             <button type="button"
-                                    class="btn btn-default col-md-6">{{ level_two.prod_cat_sub_name }}</button>
+                                    class="btn btn-default col-md-10">{{ level_two.prod_cat_sub_name }} - [{{ "Valid" if level_two.valid_flg==1 else "Invalid" }}]</button>
 {#                            <button type="button" class="btn btn-primary col-md-3">Update</button>#}
-                            <button type="button" value="Update" class=" btn btn-primary col-md-3"  onclick="updete_level_two({{ level_two.prod_cat_sub_id }},{{ level_two.prod_cat_id  }},'{{ level_two.prod_cat_sub_name }}',{{ level_two.valid_flg }},'{{ level_two.prod_cat_sub_desc }}')">
+                            <button type="button" value="Update" class=" btn btn-primary col-md-2"  onclick="updete_level_two({{ level_two.prod_cat_sub_id }},{{ level_two.prod_cat_id  }},'{{ level_two.prod_cat_sub_name }}',{{ level_two.valid_flg }},'{{ level_two.prod_cat_sub_desc }}')">
                                 Update</button>
-                            <form action="{{ url_for('adminRoute.delete_level_two') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_two.prod_cat_sub_name }}')">
-                                {{ delete_level_two_form.hidden_tag() }}
+{#                        <form action="{{ url_for('adminRoute.delete_level_two') }}" method="post" name="delete" onsubmit="return deleteConfirm('{{ level_two.prod_cat_sub_name }}')">
+                                 {{ delete_level_two_form.hidden_tag() }}
                                 <div class="invisible">{{ delete_level_two_form.prod_cat_sub_id(value=level_two.prod_cat_sub_id) }}</div>
-                                <input type="submit" class="btn btn-primary col-md-3" value="Delete">
+                                <input type="submit" class="btn btn-primary col-md-2" value="Delete">
                             </form>
+                         #}
                         </div>
 
                     {% endfor %}
