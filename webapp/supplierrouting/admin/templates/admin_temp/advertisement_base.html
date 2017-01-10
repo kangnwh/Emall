@@ -1,0 +1,19 @@
+{% extends "admin_temp/admin_base.html" %}
+{#{% from "order_temp/_order_card.html" import order_card %}#}
+{% set active_page = 'ad' %}
+
+{% block page %}
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" {% if ad_active == 'ad_list' %} class="active"{% endif %}><a
+                href="{{ url_for("supplierRoute.ad_list") }}">Request List</a></li>
+        <li role="presentation" {% if ad_active == 'add_new' %} class="active"{% endif %}><a
+                href="{{ url_for('supplierRoute.ad_request') }}">Submit New Ad</a></li>
+
+
+    </ul>
+    <block class="">
+        {% block ad_list %}
+        {% endblock %}
+    </block>
+{% endblock %}
+

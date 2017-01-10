@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, url_for, flash, request
+from flask import Blueprint, url_for, flash, request,current_app
 from flask import render_template, redirect, jsonify
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
@@ -15,6 +15,7 @@ from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
+from webapp.Models.email_advertisement import Email_advertisement
 
 from webapp.common import saveImage,prod_search_filter
 
@@ -475,9 +476,47 @@ def search():
         return redirect(url_for("homeRoute.index"))
 
 
-@supplierRoute.route("/ad_request",methods=["GET"])
+@supplierRoute.route("/ad_request",methods=["POST","GET"])
 @login_required
 def ad_request():
-    ad_content = request.form.get("ad_content")
-    print(ad_content)
+    if request.method == "GET":
+        return render_template("admin_temp/ad_request.html")
+    else:
+        ad_content = request.form.get("ad_content")
+        if not ad_content:
+            flash("Please provide advertisement content before submit",'warning')
+            return render_template("admin_temp/ad_request.html")
+        else:
+            s = Session()
+            ad = Email_advertisement()
+            ad.ad_content = ad_content
+            ad.approval_status = 1
+            ad.supplier_id = current_user.supplier_id
+            s.add(ad)
+            s.commit()
+            s.close()
+            flash("Advertisement submitted successfully",'success')
+            return redirect(url_for("supplierRoute.ad_list"))
+
     return render_template("admin_temp/ad_request.html")
+
+@supplierRoute.route("/ad_list",methods=["POST","GET"])
+@login_required
+def ad_list():
+
+    page = request.args.get('page', type=int, default=1)
+    s = Session()
+
+    query_base = BaseQuery(Email_advertisement,s).filter_by(supplier_id=current_user.supplier_id)
+
+    ad_list = query_base.paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
+    pagination = Pagination(page=page, total=ad_list.total,
+                                search=None, css_framework='bootstrap3',
+                                record_name='Prod Information',
+                                per_page=current_app.config.get("USER_ORDER_PER_PAGE"))
+
+    return render_template('admin_temp/ad_list.html',
+                           type = 'search',
+                           ad_list=ad_list,
+                           pagination=pagination)
+

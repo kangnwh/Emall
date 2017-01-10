@@ -11,7 +11,8 @@ USER_NUM_PER_PAGE = 20
 FEEDBACK_NUM_PER_PAGE = 10
 USER_ORDER_PER_PAGE = 20
 USER_QUOTE_PER_PAGE = 20
-SHOW_HOT_PROD_NUM=10
+SHOW_HOT_PROD_NUM=10
+AD_LIST_PER_PAGE = 10
 
 ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF'])
 
@@ -59,6 +60,12 @@ VALID_INFO_MAP={
     #valid_flg:[valid_info,valid_class]
     0:["UnShelve","danger"],
     1:["On Show","success"]
+}
+#1 submitted by supplier,2 approved by armin, 3 ad sent out
+AD_STATUS_MAP={
+    1:["Submitted","info"],
+    2:["Approved","info"],
+    3:["Sent Out","success"]
 }
 
 RATE_NOTIFICATION="There will be an add-up rate when users buy this product."

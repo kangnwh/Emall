@@ -1,4 +1,22 @@
-<aside ><section  class="sidebar">	    <ul class="sidebar-menu">	      <li class="header">Navigation</li>
+<aside ><section  class="sidebar">	    <ul class="sidebar-menu">	      <li class="header">Navigation</li><li class="treeview">
+    <a href="{{ url_for("homeRoute.hot_prods") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>Hot Productions</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        <li class="treeview">
+    <a href="{{ url_for("homeRoute.clearance") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>Clearance</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        <li class="treeview">
+    <a href="{{ url_for("homeRoute.on_sale") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>On Sale</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        
         <li class="treeview {% if 1== nav_active %}active{% endif %}"><a href="#"> <i class="fa fa-dashboard"></i> <span>Rush Items</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu"><li><a href="{{ url_for("homeRoute.sub_category_list",sub_cat_id=1) }}"><i class="fa fa-circle-o"></i>Company Gifts</a></li><li><a href="{{ url_for("homeRoute.sub_category_list",sub_cat_id=2) }}"><i class="fa fa-circle-o"></i>Drink Bottles & Mugs</a></li><li><a href="{{ url_for("homeRoute.sub_category_list",sub_cat_id=3) }}"><i class="fa fa-circle-o"></i>Event Tees</a></li><li><a href="{{ url_for("homeRoute.sub_category_list",sub_cat_id=4) }}"><i class="fa fa-circle-o"></i>Office and Notebooks</a></li><li><a href="{{ url_for("homeRoute.sub_category_list",sub_cat_id=5) }}"><i class="fa fa-circle-o"></i>Pens & Highlighters</a></li></ul></li>
         <li class="treeview {% if 2== nav_active %}active{% endif %}"><a href="#"> <i class="fa fa-dashboard"></i> <span>Bags,Packs & Totes</span> <i class="fa fa-angle-left pull-right"></i></a>

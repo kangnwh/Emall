@@ -236,3 +236,13 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
  .slider-track{
      background: #009900 ;
  }
+
+ .strong-title{
+     font-style: italic;
+     color: #ff0931;
+ }
+ .material-card-big{
+     font-style: italic;
+     color: #ff6300;
+     font-size: 28px;
+ }

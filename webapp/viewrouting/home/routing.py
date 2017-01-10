@@ -12,6 +12,7 @@ import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.prod_sub_cat import Prod_sub_cat
+from webapp.Models.v_hot_prods import V_hot_prods
 from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
 from webapp.Models.compliment_system import Compliment_system
@@ -33,10 +34,65 @@ def Free_Shipping():
     return render_template('home_temp/Free_Shipping.html')
 
 
-@homeRoute.route('/document', methods=['GET', 'POST'])
-def document():
-    return render_template('home_temp/document.html')
+@homeRoute.route('/hot_prods', methods=['GET', 'POST'])
+def hot_prods():
+    search = False
+    page = request.args.get('page', type=int, default=1)
 
+    s = Session()
+
+    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,approve_stat=1).paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+
+    pagination = Pagination(page=page, total=prod_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Prod Information',
+                            per_page=customer_config.PROD_NUM_PER_PAGE)
+
+    return render_template('home_temp/sub_category_list.html',
+                           sub_cat_name='Hot Productions',
+                           prod_list=prod_list,
+                           nav_active=None,
+                           pagination=pagination)
+
+@homeRoute.route('/clearance', methods=['GET', 'POST'])
+def clearance():
+    search = False
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+
+    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,approve_stat=1,is_clearance=1).paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+
+    pagination = Pagination(page=page, total=prod_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Prod Information',
+                            per_page=customer_config.PROD_NUM_PER_PAGE)
+
+    return render_template('home_temp/sub_category_list.html',
+                           sub_cat_name='Clearance',
+                           prod_list=prod_list,
+                           nav_active=None,
+                           pagination=pagination)
+
+@homeRoute.route('/on_sale', methods=['GET', 'POST'])
+def on_sale():
+    search = False
+    page = request.args.get('page', type=int, default=1)
+
+    s = Session()
+
+    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,approve_stat=1,is_special_price_flg=1).paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+
+    pagination = Pagination(page=page, total=prod_list.total,
+                            search=search, css_framework='bootstrap3',
+                            record_name='Prod Information',
+                            per_page=customer_config.PROD_NUM_PER_PAGE)
+
+    return render_template('home_temp/sub_category_list.html',
+                           sub_cat_name='On Sale!',
+                           prod_list=prod_list,
+                           nav_active=None,
+                           pagination=pagination)
 
 @homeRoute.route('/User_Feedback', methods=['GET', 'POST'])
 @login_required

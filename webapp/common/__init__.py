@@ -79,6 +79,27 @@ def generate_sidebar():
     first_level_list = list()
     first_level_list.append(
         '<aside ><section  class="sidebar">	    <ul class="sidebar-menu">	      <li class="header">Navigation</li>')
+    first_level_list.append('''<li class="treeview">
+    <a href="{{ url_for("homeRoute.hot_prods") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>Hot Productions</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        ''')
+    first_level_list.append('''<li class="treeview">
+    <a href="{{ url_for("homeRoute.clearance") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>Clearance</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        ''')
+    first_level_list.append('''<li class="treeview">
+    <a href="{{ url_for("homeRoute.on_sale") }}">
+         <i class="fa fa-dashboard"></i>
+         <span class='strong-title'>On Sale</span>
+         <i class="fa fa-angle-left pull-right"></i>
+     </a>
+        ''')
     s = Session()
     category_list = s.query(Prod_cat).filter_by(valid_flg=1).order_by(Prod_cat.prod_cat_order)
 

@@ -1,0 +1,21 @@
+{% macro ad_card(ad) -%}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title font-size-14">Submit Date:{{ ad.submit_date.date() }} | Status:{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</h3>
+        </div>
+        <div class="panel-body padding-5">
+            <table>
+                <thead>
+                    <th>Submitted Date</th>
+                    <th>Status</th>
+                <th>Action</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <div class="invisible">{{ ad.ad_content|safe }}</div>
+            <button class="btn btn-info">Detail</button><button class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+{% endmacro %}

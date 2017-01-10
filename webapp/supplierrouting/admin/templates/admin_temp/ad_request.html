@@ -1,7 +1,7 @@
-{% extends "admin_temp/admin_base.html" %}
+{% extends "admin_temp/advertisement_base.html" %}
 {% from "_input_helper.html" import input_helper,date_input_helper,bool_input_helper,file_input_helper %}
 
-{% set active_page = 'ad' %}
+{% set ad_active = 'add_new' %}
 {% block link_ref %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/editor.css") }}">
@@ -11,14 +11,16 @@
     {{ super() }}
     <script src="{{ url_for("static",filename="js/editor.js") }}"></script>
 {% endblock %}
-{% block page %}
-    <form action="{{ url_for("supplierRoute.ad_request") }}" onsubmit="getContent()">
-        <textarea id="ad_content">a</textarea>
+{% block ad_list %}
+    <form action="{{ url_for("supplierRoute.ad_request") }}" onsubmit="getContent()" method="post">
+        <textarea id="ad_content" name="ad_content"></textarea>
+{#        <textarea name="ad_content" class="invisible">a</textarea>#}
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <script>
       $("#ad_content").Editor();
     function getContent(){
+{#        alert($("#ad_content").Editor("getText"));#}
           $("#ad_content").val($("#ad_content").Editor("getText"));
     }
     </script>
