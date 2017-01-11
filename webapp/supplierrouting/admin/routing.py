@@ -82,8 +82,10 @@ def add_new_prod():
         prod.prod_cat_sub_id = add_form.prod_cat_sub_id.data
         prod.colors = add_form.colors.data
         prod.is_special_price_flg = add_form.is_special_price_flg.data
-        prod.special_price_old = add_form.special_price_old.data
-        prod.special_price_new = add_form.special_price_new.data
+        prod_profit_rate = s.query(Prod_profit_rate).order_by(
+            Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
+        prod.special_price_old = add_form.special_price_old.data * (1 + prod_profit_rate)
+        prod.special_price_new = add_form.special_price_new.data * (1 + prod_profit_rate)
         print(add_form.special_price_campaign_time.data)
         prod.special_price_campaign_time = add_form.special_price_campaign_time.data if add_form.special_price_campaign_time else None
         prod.is_clearance = add_form.is_clearance.data
@@ -253,9 +255,10 @@ def update_prod():
         new_prod['colors'] = update_form.colors.data
         new_prod['is_special_price_flg'] = update_form.is_special_price_flg.data
         if new_prod['is_special_price_flg']:
-
-            new_prod['special_price_old'] = update_form.special_price_old.data
-            new_prod['special_price_new'] = update_form.special_price_new.data
+            prod_profit_rate = s.query(Prod_profit_rate).order_by(
+            Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
+            new_prod['special_price_old'] = update_form.special_price_old.data * (1+prod_profit_rate)
+            new_prod['special_price_new'] = update_form.special_price_new.data * (1+prod_profit_rate)
             new_prod['special_price_campaign_time'] = update_form.special_price_campaign_time.data
         else:
             new_prod['special_price_old'] = 0
