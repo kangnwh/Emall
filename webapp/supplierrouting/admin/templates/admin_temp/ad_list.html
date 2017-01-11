@@ -24,7 +24,7 @@
                         {% for ad in ad_list.items %}
                             <tr>
                                 <td>{{ ad.submit_date }}</td>
-                                <td>{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</td>
+                                <td><span class="label label-{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[1] }}">{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</span> </td>
                                 <td>
                                     {#                                    <button class="btn btn-info">Detail</button>#}
                                     <a data-toggle="modal" class="btn btn-info" href="#modal_{{ ad.email_advertisement_id }}">Detail</a>

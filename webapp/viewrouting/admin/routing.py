@@ -259,7 +259,7 @@ def ad_list():
 def approve_ad():
     return _approve_ad()
 
-@adminRoute.route('/approve_ad', methods=['POST'])
+@adminRoute.route('/reject_ad', methods=['POST'])
 @login_required
 def reject_ad():
     return _reject_ad()
