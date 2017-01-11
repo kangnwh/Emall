@@ -65,7 +65,8 @@ VALID_INFO_MAP={
 AD_STATUS_MAP={
     1:["Submitted","info"],
     2:["Approved","info"],
-    3:["Sent Out","success"]
+    3:["Sent Out","success"],
+    -1:["Rejected","danger"]
 }
 
 RATE_NOTIFICATION="There will be an add-up rate when users buy this product."

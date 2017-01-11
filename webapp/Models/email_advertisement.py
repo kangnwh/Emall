@@ -12,7 +12,8 @@ class Email_advertisement(Base):
     email_advertisement_id = Column(Integer, primary_key=True)
     supplier_id = Column(Integer, ForeignKey('supplier.supplier_id'))
     supplier = relationship(Supplier, backref='email_advertisement')
-    ad_content = Column(String(3000))
+    title = Column(String(255))
+    ad_content = Column(String(30000))
     approval_status = Column(Integer)
 
     submit_date = Column(DateTime, default=func.now())

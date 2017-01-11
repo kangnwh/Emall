@@ -22,6 +22,7 @@ from webapp.common import saveImage,prod_search_filter
 from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction
 # from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
 from webapp.supplierrouting.user.forms.login_form import UpdateSupplierForm
+from webapp.supplierrouting.admin.forms.ad_forms import AdForm
 
 supplierRoute = Blueprint('supplierRoute', __name__,
                           template_folder='templates', static_folder='static')
@@ -484,26 +485,44 @@ def search():
 @supplierRoute.route("/ad_request",methods=["POST","GET"])
 @login_required
 def ad_request():
-    if request.method == "GET":
-        return render_template("admin_temp/ad_request.html")
+    ad_form = AdForm()
+    if ad_form.validate_on_submit():
+        s = Session()
+        ad = Email_advertisement()
+        ad.title = ad_form.title.data
+        ad.ad_content = ad_form.ad_content.data
+        ad.approval_status = 1
+        ad.supplier_id = current_user.supplier_id
+        s.add(ad)
+        s.commit()
+        s.close()
+        flash("Advertisement submitted successfully",'success')
+        return redirect(url_for("supplierRoute.ad_list"))
+    elif request.method == 'POST':
+        flash(ad_form.errors, category='danger')
     else:
-        ad_content = request.form.get("ad_content")
-        if not ad_content:
-            flash("Please provide advertisement content before submit",'warning')
-            return render_template("admin_temp/ad_request.html")
-        else:
-            s = Session()
-            ad = Email_advertisement()
-            ad.ad_content = ad_content
-            ad.approval_status = 1
-            ad.supplier_id = current_user.supplier_id
-            s.add(ad)
-            s.commit()
-            s.close()
-            flash("Advertisement submitted successfully",'success')
-            return redirect(url_for("supplierRoute.ad_list"))
+        return render_template("admin_temp/ad_request.html",ad_form=ad_form)
 
-    return render_template("admin_temp/ad_request.html")
+    # if request.method == "GET":
+    #     return render_template("admin_temp/ad_request.html")
+    # else:
+    #     ad_content = request.form.get("ad_content")
+    #     if not ad_content:
+    #         flash("Please provide advertisement content before submit",'warning')
+    #         return render_template("admin_temp/ad_request.html")
+    #     else:
+    #         s = Session()
+    #         ad = Email_advertisement()
+    #         ad.ad_content = ad_content
+    #         ad.approval_status = 1
+    #         ad.supplier_id = current_user.supplier_id
+    #         s.add(ad)
+    #         s.commit()
+    #         s.close()
+    #         flash("Advertisement submitted successfully",'success')
+    #         return redirect(url_for("supplierRoute.ad_list"))
+
+    return render_template("admin_temp/ad_request.html",ad_form=ad_form)
 
 @supplierRoute.route("/ad_list",methods=["POST","GET"])
 @login_required
