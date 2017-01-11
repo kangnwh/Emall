@@ -20,6 +20,7 @@ from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.email_advertisement import Email_advertisement
 from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter
+from webapp.common.mails import send_email_indiv,send_advertisement
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
@@ -1132,15 +1133,14 @@ def _approve_ad():
         flash("Advertisement info invalid!",'warning')
         return redirect(url_for("supplierRoute.ad_list"))
 
-
     s = Session()
-    ad = s.query(Email_advertisement).filter(Email_advertisement.email_advertisement_id == ad_id)
+    ad_query = s.query(Email_advertisement).filter(Email_advertisement.email_advertisement_id == ad_id)
+    ad = ad_query.first()
     if ad:
-        #TODO send advertisement email
-        pass
-    ad.update({
-        'approval_status':3
-    })
+        send_advertisement(ad)
+        ad_query.update({
+            'approval_status':3
+        })
     s.commit()
     s.close()
 

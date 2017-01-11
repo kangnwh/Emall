@@ -12,14 +12,16 @@ from webapp.viewrouting.user.routing import userRoute
 from webapp.viewrouting.admin.routing import adminRoute
 from webapp.viewrouting.order.routing import orderRoute
 from webapp.common import get_host_info
+#flask mail
+from webapp.common.mails import mail
 #Models
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
 from webapp.Models import get_pending_order_count,get_pending_quote_count,get_approval_pending_count
 
 #flask mail
-import flask_mail
-mail = flask_mail.Mail()
+# import flask_mail
+# mail = flask_mail.Mail()
 
 login_manager = LoginManager()
 login_manager.login_view="userRoute.login"

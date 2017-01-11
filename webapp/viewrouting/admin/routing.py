@@ -254,12 +254,12 @@ def admin_cancel_compliment():
 def ad_list():
     return _ad_list()
 
-@adminRoute.route('/approve_ad', methods=['GET'])
+@adminRoute.route('/approve_ad', methods=['POST'])
 @login_required
 def approve_ad():
     return _approve_ad()
 
-@adminRoute.route('/approve_ad', methods=['GET'])
+@adminRoute.route('/approve_ad', methods=['POST'])
 @login_required
 def reject_ad():
     return _reject_ad()
