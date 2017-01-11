@@ -113,6 +113,11 @@
             </div>
             <div id="price_detail" class="row well"><!-- price range -->
                 <div class="row">
+                    {% if this_prod.is_special_price_flg %}
+                        <h3> Fixed Price ! <br><strong class="material-card-big">{{ this_prod.special_price_new }}</strong>
+                            <del>{{ this_prod.special_price_old }}</del>
+                        </h3>
+                    {% else %}
                     <div class="col-md-7">
                         <div class="row">
                             <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
@@ -166,6 +171,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {% endif %}
                 </div>
 {#                <div class="row">#}
 {#                    <a class="col-md-2 btn btn-primary" role="button"#}

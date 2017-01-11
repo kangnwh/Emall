@@ -52,7 +52,7 @@
                     {{ bool_input_helper('col-md-3',update_form.is_patent_prod,is_checked=this_prod.is_patent_prod ) }}
 
                     {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info invisible' ,update_form.special_price_old,default_value=this_prod.special_price_old ) }}
-                    {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info invisible',update_form.special_price_new,default_value=this_prod.special_price_new ) }}
+                    {{ input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info invisible',update_form.special_price_new_real,default_value=this_prod.special_price_new_real ) }}
                     {{ date_input_helper('col-md-3 special_info' if this_prod.is_special_price_flg else 'col-md-3 special_info invisible',update_form.special_price_campaign_time,default_value=this_prod.special_price_campaign_time.date() ) }}
                 </div>
 

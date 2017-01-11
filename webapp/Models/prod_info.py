@@ -35,6 +35,7 @@ class Prod_info(Base):
     colors = Column(String(100))
     cover_img = Column(String(200),default='default.png')
     reject_reason = Column(String(500))
+    special_price_new_real=Column(DECIMAL(12,2))
 
     def __repr__(self):
         return '<prod_info prod_id:%d,prod_name:%s>' % (self.prod_id,self.prod_name)
