@@ -150,27 +150,7 @@
 
 
             </div>
-            <div class="middle">
-                <h4><strong>Order Status:</strong></h4>
-                <nav>
-                    <ul class="pager">
-                        {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
-                        {% for (k,v) in config.get('ORDER_STATUS_MAP').items() %}
-                            {% if k<5 and this_order.order_stat<=5 %}
-                                <li><a href="#" id="status_{{ k }}">{{ v }} &rarr;</a></li>
-                            {% elif k==5 and this_order.order_stat<=5 %}
-                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
-                            {% elif k>5 and this_order.order_stat >5 %}
-                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
-                            {% endif %}
-                        {% endfor %}
 
-                        <script>
-                            $("#status_{{ this_order.order_stat }}").addClass("active btn-primary");
-                        </script>
-                    </ul>
-                </nav>
-            </div>
             <div class="col-md-6">
                 <div class="panel panel-default ">
                     <div class="panel-heading">User Comments</div>
@@ -194,6 +174,29 @@
                         {{ this_order.cancel_reason }}
                     </div>
                 </div>
+            </div>
+            <div class="middle col-md-12">
+                    <br>
+                    <br>
+                <h4><strong>Order Status:</strong></h4>
+                <nav>
+                    <ul class="pager">
+                        {#                        <li class="previous"><a href="#">&larr; Older</a></li>#}
+                        {% for (k,v) in config.get('ORDER_STATUS_MAP').items() %}
+                            {% if k<5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }} &rarr;</a></li>
+                            {% elif k==5 and this_order.order_stat<=5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% elif k>5 and this_order.order_stat >5 %}
+                                <li><a href="#" id="status_{{ k }}">{{ v }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        <script>
+                            $("#status_{{ this_order.order_stat }}").addClass("active btn-primary");
+                        </script>
+                    </ul>
+                </nav>
             </div>
             {% if this_order.order_stat == 5 %}
 
