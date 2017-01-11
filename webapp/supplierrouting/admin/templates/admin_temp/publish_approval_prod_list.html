@@ -21,24 +21,17 @@
     {{ super() }}
     <script type="text/javascript">
 
-{#        function onCheckProd(prod_id) {#}
-{##}
-{#            new $.Zebra_Dialog('', {#}
-{#                source: {#}
-{#                    'iframe': {#}
-{#                        'src': '{{ url_for('supplierRoute.check_pending_approval_prod') }}' + '?prod_id=' + prod_id,#}
-{#                        'height': 700#}
-{#                    }#}
-{#                },#}
-{#                position: ['center', 'top + 5'],#}
-{#                width: 1200,#}
-{#                title: 'Production Information',#}
-{#                buttons: [],#}
-{#                'onClose': function () {#}
-{#                    location.reload();#}
-{#                }#}
-{#            });#}
-{#        }#}
+        function ajax_delete_prod_form(name, prod_id) {
+            if (confirm("Do you really want to delete [" + name + "] ? ")) {
+                $.post("{{ url_for('supplierRoute.delete_prod') }}", {prod_id: prod_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
 
     </script>
 

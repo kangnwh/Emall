@@ -39,16 +39,24 @@ def create_order():
         order.special_instruction=user_order_form.special_instruction.data
 
         s = Session()
-        prices = s.query(V_Prod_price_range).filter_by(prod_id=order.prod_id).first()
-        order.total_price,order.unit_price,order.imprinting_prices,order.setup_cost,order.freight_cost = prices.get_prices(order.prod_quantity)
-
+        this_prod = s.query(Prod_info).filter_by(prod_id=order.prod_id,is_del_flg=0,valid_flg=1).first()
+        if not this_prod:
+            flash("Invalid production!","warning")
+            return redirect(url_for('homeRoute.index'))
         this_supplier=s.query(Supplier).filter_by(supplier_id=order.supplier_id).first()
         supplier_rebate_ref=s.query(Supplier_rebate_ref).filter(between(this_supplier.supplier_points,Supplier_rebate_ref.supplier_points_from,Supplier_rebate_ref.supplier_points_to)).first()
         supplier_rebate_rate=supplier_rebate_ref.rebate_rate
-        print(supplier_rebate_rate)
-
-        real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
-        real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
+        # print(supplier_rebate_rate)
+        if this_prod.is_special_price_flg ==1 :
+            order.unit_price = this_prod.special_price_new
+            real_unit_price = this_prod.special_price_new
+            order.total_price = this_prod.special_price_new * order.prod_quantity
+            order.imprinting_prices,order.setup_cost,order.freight_cost = [0]*3
+        else:
+            prices = s.query(V_Prod_price_range).filter_by(prod_id=order.prod_id).first()
+            order.total_price,order.unit_price,order.imprinting_prices,order.setup_cost,order.freight_cost = prices.get_prices(order.prod_quantity)
+            real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
+            real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
         order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
         order.is_used_points = 1 if order.is_used_points else 0
         order.used_points = order.used_points
@@ -70,9 +78,14 @@ def create_order():
         s = Session()
         prod_id = request.args.get('prod_id', 1)
         this_prod = s.query(Prod_info).filter_by(prod_id=prod_id).first()
-        return render_template("order_temp/buy.html",
-                               this_prod=this_prod,
-                               user_order_form = user_order_form) , s.close()
+        if this_prod.is_special_price_flg == 1:
+            return render_template("order_temp/buy_special_price.html",
+                                   this_prod=this_prod,
+                                   user_order_form = user_order_form) , s.close()
+        else:
+            return render_template("order_temp/buy.html",
+                                   this_prod=this_prod,
+                                   user_order_form = user_order_form) , s.close()
 
 @orderRoute.route("/user_cancel",methods=["GET"])
 @login_required

@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% from "_input_helper.html" import input_helper,readonly_input_helper,bool_input_helper %}
+{% block link_ref %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
+{% endblock %}
+
+{% block jsref %}
+    {{ super() }}
+    {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
+    <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
+
+{% endblock %}
+
+{% block full_page_under_nav %}
+    <form action="{{ url_for("orderRoute.create_order") }}" method="post">
+        {{ user_order_form.hidden_tag() }}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-12 middle-line">
+                    <h1>{{ this_prod.prod_name }}
+                        <small>({{ this_prod.prod_sub_cat.prod_cat_sub_name }})</small>
+                    </h1>
+                    {#                    <div class=" right-line"><kbd>Prod ID:{{ this_prod.prod_id }}</kbd></div>#}
+                </div>
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <img src="{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}"
+                             alt="{{ this_prod.prod_name }}" class="col-md-2 img-responsive material_img_box ">
+                    </div>
+                    <div class="col-md-9">
+
+                        {{ input_helper("invisible",user_order_form.prod_id,default_value=this_prod.prod_id) }}
+                        {{ input_helper("invisible",user_order_form.supplier_id,default_value=this_prod.supplier_id) }}
+                        {{ readonly_input_helper("col-md-6",user_order_form.prod_name,input_class="form-control",default_value = this_prod.prod_name) }}
+                        {{ readonly_input_helper("col-md-6",user_order_form.lead_time,input_class="form-control ",default_value = this_prod.lead_time) }}
+                        {{ input_helper("col-md-6",user_order_form.prod_size,input_class="form-control ",input_comment = this_prod.prod_size) }}
+                        {{ input_helper("col-md-6",user_order_form.imprint_info,input_class="form-control",input_comment = this_prod.imprint_size) }}
+                        {{ input_helper("col-md-6",user_order_form.colors,input_class="form-control",input_comment = this_prod.colors) }}
+                        {{ input_helper("col-md-6",user_order_form.special_instruction,input_class="form-control",input_comment = "Special instruction you want supplier to know") }}
+                        {{ input_helper("col-md-6",user_order_form.user_comments,input_class="form-control",input_comment = "Comments you want supplier to know") }}
+
+                        {#                        {{ input_helper("invisible",user_order_form.prod_quantity) }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.unit_price,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.imprinting_prices,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.setup_cost,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.freight_cost,input_class="form-control ") }}#}
+                        {#                        {{ input_helper("invisible",user_order_form.total_price,input_class="form-control ") }}#}
+                    </div>
+
+                </div>
+
+                <div id="price_detail" class="row well"><!-- price range -->
+                    <div class="row">
+                        <h3> Fixed Price ! <strong class="material-card-big">{{ this_prod.special_price_new }}</strong>
+                            <del>{{ this_prod.special_price_old }}</del>
+                        </h3>
+                        <div class="col-md-7">
+                            {#                            <div class="row">#}
+                            {#                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>#}
+                            {#                            </div>#}
+                            <div class="row" style="padding-top: 30px;">
+                                <div class="col-md-12">
+                                    <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                           data-slider-max="20000"
+                                           data-slider-step="1" data-slider-value="14"/>
+                                </div>
+                                <div class="col-md-3">
+                                    {{ user_order_form.prod_quantity.label() }}
+                                    <input id="prod_quantity" min="1" name="prod_quantity" class="form-control "
+                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                                </div>
+
+                                {#                           {{ input_helper("col-md-3",user_order_form.prod_quantity,input_class="form-control ") }}#}
+
+                                <div class="col-md-12"><!-- select quantity -->
+                                    <h3>Total Price : $<span id="total_price" class="material-card-big">0</span>
+                                        <del>$<span id="total_price_del">0</span></del>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    {{ bool_input_helper('col-md-4',user_order_form.is_used_points,func='function (event, state) {
+                        if (state) {
+                            $("#used_points").attr("readonly",false);
+                        } else {
+                            $("#used_points").attr("readonly",true);
+                        }
+                    }'|safe) }}
+                    {{ readonly_input_helper('col-md-4',user_order_form.used_points,input_class="form-control col-md-3",default_value=0,input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
+                </div>
+
+
+                <button class="col-md-3 btn btn-primary" type="submit">Go</button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        function change_logo_choice(state) {
+            var processed = $("#control-logo-processed");
+            var original = $("#control-logo-original");
+            if (state) {
+                processed.removeClass('invisible');
+                original.removeClass('invisible');
+                if (processed.hasClass('panel-primary')) {
+                    $("[name='img-logo-processed']").removeClass('invisible');
+                    $("[name='img-logo-original']").addClass('invisible');
+                } else {
+                    console.log('original');
+                    $("[name='img-logo-original']").removeClass('invisible');
+                    $("[name='img-logo-processed']").addClass('invisible');
+                }
+            } else {
+                $("[name='img-logo-processed']").addClass('invisible');
+                $("[name='img-logo-original']").addClass('invisible');
+                processed.addClass('invisible');
+                original.addClass('invisible');
+            }
+        }
+        function switch_logo(active, inactive) {
+            $("#" + active).removeClass('panel-default');
+            $("#" + active).addClass('panel-primary');
+
+            $("#" + inactive).removeClass('panel-primary');
+            $("#" + inactive).addClass('panel-default');
+
+            change_logo_choice(true);
+        }
+
+        function qtyChange(input) {
+            var val = $(input).val();
+            slider_block.slider('setValue', parseInt(val));
+            refreshPrice();
+        }
+
+        function refreshPrice() {
+            var val = parseInt(input_qty.val());
+            slider_block.slider('setValue', val);
+            $('#total_price').text(new_price * val );
+            $('#total_price_del').text(old_price * val );
+        }
+
+        function switch_group(group, active) {
+            $("[group='" + group + "']").removeClass('success');
+            $(active).addClass('success');
+            input_qty.val(parseInt($(active).find("[name=price_base]").text()));
+            refreshPrice();
+        }
+
+        var el = $("#switch-offColor").bootstrapSwitch();
+        el.bootstrapSwitch('state', false);
+        el.on('switchChange.bootstrapSwitch', function (event, state) {
+            change_logo_choice(state);
+        });
+
+        var new_price = {{ this_prod.special_price_new }};
+        var old_price = {{ this_prod.special_price_old }};
+
+        var max = 9999999;
+        var min = 1;
+
+        //init quantity min and max attr
+        var input_qty = $("#prod_quantity");
+        input_qty.attr('min', min);
+        input_qty.attr('max', max);
+        input_qty.val(1);
+        //init slider block
+
+        slider_block = $("#ex8").slider({
+            tooltip: 'always',
+            max: max,
+            min: min,
+            value: 1
+        });
+        $("#ex8").on("slide", function (slideEvt) {
+            input_qty.val(slideEvt.value);
+            refreshPrice();
+
+        });
+        $("#ex8").on("slideStop", function (slideEvt) {
+            input_qty.val(slideEvt.value);
+            refreshPrice();
+        });
+
+        var lightslider = $('#image-gallery').lightSlider({
+            gallery: true,
+            item: 1,
+            thumbItem: 9,
+            slideMargin: 0,
+            speed: 500,
+            auto: true,
+            loop: true,
+            onSliderLoad: function () {
+                $('#image-gallery').removeClass('cS-hidden');
+            }
+        });
+
+        refreshPrice();
+    </script>
+{% endblock %}

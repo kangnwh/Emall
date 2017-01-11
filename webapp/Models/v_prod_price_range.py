@@ -55,6 +55,8 @@ class V_Prod_price_range(Base):
     def to_json(self):
         jsondata = ["["]
         # if self.quantity_to1 >0 :
+        # if self.prod_info.is_special_price_flg == 1:
+        #     pass
         jsondata.append(("{quantity_from:%f,") % self.quantity_from1)
         jsondata.append(("quantity_to:%f,") % self.quantity_to1)
         jsondata.append(("unit_price:%f,") % self.unit_price1)

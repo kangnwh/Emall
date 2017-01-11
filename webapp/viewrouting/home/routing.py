@@ -81,7 +81,7 @@ def on_sale():
 
     s = Session()
 
-    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,approve_stat=1,is_special_price_flg=1).paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
+    prod_list = BaseQuery(Prod_info,s).filter_by(valid_flg=1,approve_stat=1,is_special_price_flg=1,is_del_flg=0).paginate(page,customer_config.PROD_NUM_PER_PAGE, False)
 
     pagination = Pagination(page=page, total=prod_list.total,
                             search=search, css_framework='bootstrap3',

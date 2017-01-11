@@ -41,12 +41,7 @@ def login():
         if user :
             login_user(user,remember = login_form.remember_me.data)
             next = request.args.get('next')
-            # TODO
-            # next_is_valid should check if the user has valid
-            # permission to access the `next` url
-            #if not next_is_valid(next):
-            #    return abort(400)
-            #return redirect(next or url_for('userRoute.index'))
+
             flash("User {user_name} login successfully.".format(user_name=user.supplier_name),'success')
             next = login_form.next.data
             return redirect(next)

@@ -3,7 +3,7 @@
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for("static",filename="css/lightslider.min.css") }}">
     <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-slider.min.css") }}">
-{#    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">#}
+    {#    <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">#}
 {% endblock %}
 
 {% block jsref %}
@@ -11,7 +11,7 @@
     {#    <script src="{{ url_for("static",filename="js/jquery-plus-ui.min.js") }}"></script>#}
     <script src="{{ url_for("static",filename="js/bootstrap-slider.min.js") }}"></script>
     <script src="{{ url_for("static",filename="js/lightslider.min.js") }}"></script>
-{#    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>#}
+    {#    <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>#}
 
 {% endblock %}
 
@@ -57,7 +57,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 " style="max-width:400px;">
-{#
+                            {#
                             <div class="alert alert-success">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -106,65 +106,74 @@
                         <strong class="indiv-prod-desc-head">Subcategory</strong>
                         <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>
                         <strong class="indiv-prod-desc-head">Other</strong>
-                        <p> <strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}   &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}   &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>
+                        <p><strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}
+                            &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}
+                            &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>
                     </div>
                 </div>
             </div>
+
             <div id="price_detail" class="row well"><!-- price range -->
                 <div class="row">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
-                        </div>
-                        <div class="row" style="padding-top: 30px;">
-                            <div class="col-md-9">
-                                <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
-                                       data-slider-max="20000"
-                                       data-slider-step="1" data-slider-value="14"/></div>
-                            <div class="col-md-3">
-                                <input id="input_qty" min="1" id="qty-input" class="form-control "
-                                       onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
+                    {% if this_prod.is_special_price_flg %}
+                        <h3> Fixed Price ! <br><strong class="material-card-big">{{ this_prod.special_price_new }}</strong>
+                            <del>{{ this_prod.special_price_old }}</del>
+                        </h3>
+                    {% else %}
+                        <div class="col-md-7">
+                            <div class="row">
+                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
                             </div>
-                            <div class="col-md-12"><!-- select quantity -->
-
-                                <div class="panel-body">
-                                    <div id="price_selection"></div>
+                            <div class="row" style="padding-top: 30px;">
+                                <div class="col-md-9">
+                                    <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
+                                           data-slider-max="20000"
+                                           data-slider-step="1" data-slider-value="14"/></div>
+                                <div class="col-md-3">
+                                    <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
                                 </div>
+                                <div class="col-md-12"><!-- select quantity -->
 
+                                    <div class="panel-body">
+                                        <div id="price_selection"></div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-offset-1 col-md-4">
-                        <table class="table table-hover text-right">
-                            <thead>
-                            <tr>
-                                <th class="indiv-price-big col-md-7 ">Unit Price</th>
-                                <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
-                                        id="unit_price"></span>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="">Setup</td>
-                                <td><span>$</span><span id="setup_price"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="">Imprinting Prices</td>
-                                <td><span>$</span><span id="imprinting_prices"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="">Freight Cost</td>
-                                <td><span>$</span><span id="freight_cost"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="indiv-price-big"><strong>Total</strong></td>
-                                <td class="indiv-price-big"><strong><span>$</span><span
-                                        id="total_price"></span></strong></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="col-md-offset-1 col-md-4">
+                            <table class="table table-hover text-right">
+                                <thead>
+                                <tr>
+                                    <th class="indiv-price-big col-md-7 ">Unit Price</th>
+                                    <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                            id="unit_price"></span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span id="imprinting_prices"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price"></span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="row">
                     <a class="col-md-2 btn btn-primary" role="button"
@@ -177,8 +186,12 @@
                     </a>
                 </div>
             </div>
+
+
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="{{ url_for("homeRoute.show_feedback",prod_id=this_prod.prod_id) }}">></iframe>
+                <iframe class="embed-responsive-item"
+                        src="{{ url_for("homeRoute.show_feedback",prod_id=this_prod.prod_id) }}">>
+                </iframe>
             </div>
             {#        This is for user feedback#}
             {#            <div class="panel panel-default">#}
