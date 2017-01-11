@@ -1109,13 +1109,17 @@ def _admin_cancel_compliment():
 def _ad_list():
 
     page = request.args.get('page', type=int, default=1)
-    type = request.args.get('type',1)
-
+    type = request.args.get('type','pending')
+    type_code_mapping = {
+        "rejected":-1,
+        "pending":1,
+        "sent":3,
+        "approved":2
+    }
     s = Session()
 
-    query_base = BaseQuery(Email_advertisement,s).filter(Email_advertisement.approval_status == type)
-
-    ad_list = query_base.paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
+    ad_list = BaseQuery(Email_advertisement,s).filter_by(approval_status=type_code_mapping.get(type)).order_by(Email_advertisement.submit_date.desc()).paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
+    s.close()
     pagination = Pagination(page=page, total=ad_list.total,
                                 search=None, css_framework='bootstrap3',
                                 record_name='Prod Information',
@@ -1127,6 +1131,26 @@ def _ad_list():
                            pagination=pagination)
 @admin_check
 def _approve_ad():
+
+    ad_id = request.form.get('ad_id')
+    if not ad_id:
+        flash("Advertisement info invalid!",'warning')
+        return redirect(url_for("supplierRoute.ad_list"))
+
+    s = Session()
+    ad_query = s.query(Email_advertisement).filter(Email_advertisement.email_advertisement_id == ad_id)
+    ad = ad_query.first()
+    if ad:
+        ad_query.update({
+            'approval_status':2
+        })
+    s.commit()
+    s.close()
+
+    return jsonify("succ")
+
+@admin_check
+def _send_ad():
 
     ad_id = request.form.get('ad_id')
     if not ad_id:

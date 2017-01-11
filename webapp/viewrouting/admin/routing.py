@@ -8,7 +8,7 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
                                                     _pending_approval_list,_check_pending_approval_prod,_reject_or_approve,_manage_config,_update_config,\
                                                     _search,_order_search,_quote_search,_admin_cancel_compliment,\
-                                                    _ad_list,_approve_ad,_reject_ad
+                                                    _ad_list,_approve_ad,_reject_ad,_send_ad
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -258,6 +258,11 @@ def ad_list():
 @login_required
 def approve_ad():
     return _approve_ad()
+
+@adminRoute.route('/send_ad', methods=['POST'])
+@login_required
+def send_ad():
+    return _send_ad()
 
 @adminRoute.route('/reject_ad', methods=['POST'])
 @login_required
