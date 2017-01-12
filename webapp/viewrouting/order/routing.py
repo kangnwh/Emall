@@ -13,7 +13,7 @@ from webapp.Models.user import User
 from webapp.Models.supplier import Supplier
 from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm,QuoteToOrderForm
-
+from webapp.common.mails import send_email_base,email_notifier
 import datetime
 
 orderRoute = Blueprint('orderRoute', __name__,
@@ -67,8 +67,12 @@ def create_order():
 
         s.add(order)
         s.commit()
-        s.close()
+        email_notifier(order.supplier.email, "New Order Created", order.notification_to_supplier())
 
+        s.close()
+        #send notification via email
+
+        # send_email_base("New Order Coming", ['recipients'], '', 'html_body')
         flash("Order Submitted","success")
         return redirect(url_for("userRoute.user_orders",type='ongoing'))#render_template("reload_parent.html")#reload_parent.html
     elif request.method == 'POST':
@@ -98,6 +102,7 @@ def user_cancel():
             "order_stat":6
         })
         s.commit()
+        email_notifier(this_order.supplier.email, "Order Canceled By User", this_order.notification_to_supplier())
         return redirect(url_for("adminRoute.all_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
     else:
         flash("Cannot cancel this order in this phase.","warning")
@@ -155,11 +160,13 @@ def user_feedback():
                 "supplier_points" : new_supplier_pts
             })
 
-            print(new_pts)
-            print(new_user_pts)
-            print(new_supplier_pts)
+            # print(new_pts)
+            # print(new_user_pts)
+            # print(new_supplier_pts)
 
             s.commit()
+
+            email_notifier(this_order.supplier.email, "Order Finished", this_order.notification_to_supplier())
             s.close()
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
@@ -198,6 +205,7 @@ def create_quote():
         s = Session()
         s.add(quote)
         s.commit()
+        email_notifier([quote.supplier.email], "New Quote Created", quote.notification_to_supplier())
         s.close()
 
         flash("Quote Submitted","success")

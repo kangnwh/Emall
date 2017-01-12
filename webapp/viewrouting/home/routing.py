@@ -17,7 +17,7 @@ from webapp.Models.user import User
 from webapp.Models.user_feedback import User_feedback
 from webapp.Models.compliment_system import Compliment_system
 from webapp.common import allowed_file,generatePNG,prod_search_filter
-from webapp.common.mails import send_email_indiv,send_advertisement
+from webapp.common.mails import send_email_base,send_advertisement
 from webapp.viewrouting.home.forms.home_forms import UserFeedbackForm
 
 homeRoute = Blueprint('homeRoute', __name__,
@@ -199,7 +199,7 @@ def upload_user_logo():
 @homeRoute.route('/sendmail/<to>')
 def sendtest(to):
 
-    send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
+    send_email_base("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
     return render_template("home_temp/index.html")
 
 

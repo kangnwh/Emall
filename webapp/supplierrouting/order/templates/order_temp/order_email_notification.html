@@ -1,0 +1,167 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        {#            <div class="col-md-12 middle-line">#}
+        <h5 class="middle-line">Order Form</h5>
+        {#            </div>#}
+        <div class="row">
+            <div class="col-md-2">
+                <img src="{{ (url_for("static",filename=("img/products/"+ this_order.prod_info.cover_img))) }}"
+                     class="img-responsive ">
+
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>Basic Information</strong></div>
+                    <div class="panel-body padding-5">
+                        <table class="table table-hover text-right font-size-14">
+                            {#                        <thead>#}
+                            {#                        <tr>#}
+                            {#                            <th class="indiv-price-big col-md-7 ">Basic</th>#}
+                            {#                            <th class="indiv-price-big col-md-5">#}
+                            {#                                Information#}
+                            {#                            </th>#}
+                            {#                        </tr>#}
+                            {#                        </thead>#}
+                            <tbody>
+                            <tr>
+                                <td>User Name</td>
+                                <td>{{ this_order.user.user_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Supplier Name</td>
+                                <td>{{ this_order.supplier.supplier_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Prod Name</td>
+                                <td>{{ this_order.prod_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="">Colors</td>
+                                <td>{{ this_order.colors }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lead Time</td>
+                                <td>{{ this_order.lead_time }}</td>
+                            </tr>
+                            <tr>
+                                <td>Prod Size</td>
+                                <td>{{ this_order.prod_size }}</td>
+                            </tr>
+                            <tr>
+                                <td>Special Instruction</td>
+                                <td>{{ this_order.special_instruction }}</td>
+                            </tr>
+                            <tr>
+                                <td>Imprint Information</td>
+                                <td>{{ this_order.imprint_info }}</td>
+                            </tr>
+                            <tr>
+                                <td>From Quote Id</td>
+                                <td>{{ this_order.sys_quote_id }}</td>
+                            </tr>
+                            <tr>
+                                <td>Delivery Target Date</td>
+                                <td><span id="freight_cost">{{ this_order.supplier_target_dt }}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Order Create Date</td>
+                                <td><span id="freight_cost">{{ this_order.order_create_dt }}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>Price Information</strong></div>
+                    <div class="panel-body padding-5">
+                        <table class="table table-hover text-right font-size-14">
+                            <tbody>
+                            <tr>
+                                <td class="">Unit Price</td>
+                                <td><span>$</span><span id="unit_price">{{ this_order.unit_price }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Setup</td>
+                                <td><span>$</span><span id="setup_price">{{ this_order.setup_cost }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Imprinting Prices</td>
+                                <td><span>$</span><span
+                                        id="imprinting_prices">{{ this_order.imprinting_prices }}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">Freight Cost</td>
+                                <td><span>$</span><span id="freight_cost">{{ this_order.freight_cost }}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="">Quantity</td>
+                                <td><span id="freight_cost">{{ this_order.prod_quantity }}</span></td>
+                            </tr>
+                            {% if this_order.is_used_points==1 %}
+                                <tr>
+                                    <td class="">Use Points</td>
+                                    <td><span id="used_pts">{{ this_order.used_points }}</span></td>
+                                </tr>
+                            {% endif %}
+
+                            {% if current_user.is_administrator %}
+                                <tr>
+                                    <td class="">Supplier Earn</td>
+                                    <td><span id="supplier_earn">${{ this_order.need_pay_supplier }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Profit</td>
+                                    <td><span
+                                            id="profit">${{ this_order.total_price - this_order.need_pay_supplier }}</span>
+                                    </td>
+                                </tr>
+                            {% endif %}
+
+                            <tr>
+                                <td class="indiv-price-big"><strong>User Need Pay Total</strong></td>
+                                <td class="indiv-price-big"><strong><span>$</span><span
+                                        id="total_price">{{ this_order.total_price }}</span></strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default ">
+                <div class="panel-heading">User Comments</div>
+                <div class="panel-body">
+                    {{ this_order.user_comments }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Supplier Comments</div>
+                <div class="panel-body">
+                    {{ this_order.supplier_comments }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Cancel Reason</div>
+                <div class="panel-body">
+                    {{ this_order.cancel_reason }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h4>More information please check <a href="{{ link |safe }}">here</a></h4>
+</div>

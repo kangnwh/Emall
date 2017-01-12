@@ -186,7 +186,7 @@ def user_quotes(type):
                            supp_update_quote_form=supp_update_quote_form,
                            pagination=pagination)
 
-@userRoute.route("order_search",methods=["GET"])
+@userRoute.route("/order_search",methods=["GET"])
 @login_required
 def order_search():
     key_words = request.args.get("q")

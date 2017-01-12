@@ -32,7 +32,7 @@ Report_Modules={
     (homeRoute, ''),
     (userRoute,'/user'),
     (adminRoute,'/admin'),
-    (orderRoute,'/orders')
+    (orderRoute,'/order')
 }
 
 

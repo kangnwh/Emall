@@ -143,8 +143,8 @@ def indiv_prod():
 @homeRoute.route('/sendmail/<to>')
 @login_required
 def sendtest(to):
-    from webapp.common.mails import send_email_indiv
-    send_email_indiv("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
+    from webapp.common.mails import send_email_base
+    send_email_base("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
     return render_template("home_temp/index.html")
 
 

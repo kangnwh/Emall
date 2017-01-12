@@ -1,3 +1,4 @@
+from flask import current_app,render_template
 from webapp.Models.db_basic import Base
 from sqlalchemy import Integer, String, Column,Sequence,Boolean,DateTime,ForeignKey,DECIMAL,BIGINT
 from sqlalchemy.sql import func
@@ -46,3 +47,23 @@ class Quote_system(Base):
 
     def __repr__(self):
         return '<Quote_system quote_id:%d,supplier_id:%d,user_id:%d,prod_id:%d>' % (self.quote_id,self.supplier_id,self.user_id,self.prod_id)
+
+    def notification_to_supplier(self):
+        # notification = '''<h3>Quote for Production {prod_name}</h3>
+        # <h4>Quantity : {prod_quantity}</h4>
+        # <h4>special_instruction : {special_instruction}</h4>
+        # <a href="{host}/order/show_one_quote?quote_id={quote_id}">Click here for more detail</a>
+        #
+        # '''.format(prod_name=self.prod_name,
+        #            prod_quantity=self.prod_quantity,
+        #            special_instruction=self.special_instruction,
+        #            quote_id=self.quote_id,
+        #            host=current_app.config.get("SUPPLIER_APPLICATION_ADDRESS"))
+        return render_template('order_temp/quote_email_notification.html',
+                               this_quote=self,
+                               link = "{host}/order/show_one_quote?quote_id={quote_id}".format(host=current_app.config.get("SUPPLIER_APPLICATION_ADDRESS"),quote_id=self.quote_id) )
+
+    def notification_to_user(self):
+        return render_template('order_temp/quote_email_notification.html',
+                               this_quote=self,
+                               link = "{host}/order/show_one_quote?quote_id={quote_id}".format(host=current_app.config.get("EMALL_APPLICATION_ADDRESS"),quote_id=self.quote_id) )

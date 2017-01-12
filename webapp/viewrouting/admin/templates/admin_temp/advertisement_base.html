@@ -5,13 +5,13 @@
 {% block page %}
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" {% if ad_active == 1 %} class="active"{% endif %}><a
-                href="{{ url_for("adminRoute.ad_list") }}">Pending List</a></li>
-        <li role="presentation" {% if ad_active == 2 %} class="active"{% endif %}><a
-                href="{{ url_for('adminRoute.ad_list') }}">Approved List</a></li>
+                href="{{ url_for("adminRoute.ad_list",type=1) }}">Pending List</a></li>
+{#        <li role="presentation" {% if ad_active == 2 %} class="active"{% endif %}><a#}
+{#                href="{{ url_for('adminRoute.ad_list') }}">Approved List</a></li>#}
         <li role="presentation" {% if ad_active == 3 %} class="active"{% endif %}><a
-                href="{{ url_for('adminRoute.ad_list') }}">Sent List</a></li>
+                href="{{ url_for('adminRoute.ad_list',type=3) }}">Sent List</a></li>
         <li role="presentation" {% if ad_active == -1 %} class="active"{% endif %}><a
-                href="{{ url_for('adminRoute.ad_list') }}">Rejected List</a></li>
+                href="{{ url_for('adminRoute.ad_list',type=-1) }}">Rejected List</a></li>
 
 
     </ul>

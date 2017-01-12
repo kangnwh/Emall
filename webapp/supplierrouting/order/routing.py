@@ -11,7 +11,7 @@ from webapp.Models.compliment_system import Compliment_system
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm
 from webapp.supplierrouting.order.forms.order_forms import UpdateQuoteForm,UpdateOrderForm
-
+from webapp.common.mails import email_notifier
 import datetime
 
 orderRoute = Blueprint('orderRoute', __name__,
@@ -76,7 +76,7 @@ def show_one_order():
         return render_template('order_temp/show_one_order.html',
                                this_order=this_order), s.close()
     else:
-        flash("No order found with client_order_id:{id}".format(client_order_id), "warning")
+        flash("No order found with client_order_id:{id}".format(id=client_order_id), "warning")
         return render_template("reload_parent.html")
         # s.close()
 
@@ -130,12 +130,15 @@ def deliver():
     s = Session()
     client_order_id = request.args.get('client_order_id', -1)
     request_from = request.args.get('order_list', None)
-    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-    if this_order.first().order_stat == 2:
-        this_order.update({
+    query = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    this_order = query.first()
+
+    if this_order.order_stat == 2:
+        query.update({
             "order_stat": 3
         })
         s.commit()
+        email_notifier([this_order.user.email], "Production is delivering", this_order.notification_to_user())
         flash("Order is now in delivering phase.".format(id=client_order_id), "success")
         return redirect(url_for("userRoute.user_orders", type='ongoing')) if request_from else render_template(
             "reload_parent.html"), s.close()
@@ -191,6 +194,7 @@ def supp_update_quote():
                 }
         )
         s.commit()
+        email_notifier([this_quote.supplier.email], "Quote Replied By Supplier", this_quote.notification_to_user())
         s.close()
         flash("Supplier update successfully!", category='success')
         return redirect(url_for("orderRoute.show_one_quote", quote_id=quote_id)), s.close()

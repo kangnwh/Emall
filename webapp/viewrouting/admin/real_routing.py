@@ -20,7 +20,7 @@ from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.email_advertisement import Email_advertisement
 from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter
-from webapp.common.mails import send_email_indiv,send_advertisement
+from webapp.common.mails import send_email_base,email_notifier
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
@@ -977,15 +977,16 @@ def _admin_cancel_order():
     s = Session()
     client_order_id = request.form.get('client_order_id')
     content = request.form.get('content','')
-    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-
-    if this_order.first().order_stat <5 :
-        this_order.update({
+    query = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    this_order = query.first()
+    if this_order.order_stat <5 :
+        query.update({
             "order_stat":8,
             "cancel_reason":content
             # 'user_comments':this_order.first().user_comments +content
         })
         s.commit()
+        email_notifier([this_order.supplier.email], "Production is Canceled by Administrator", this_order.notification_to_user())
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
         flash("Cannot Cancel this order in this phase.","warning")
@@ -1109,7 +1110,7 @@ def _admin_cancel_compliment():
 def _ad_list():
 
     page = request.args.get('page', type=int, default=1)
-    type = request.args.get('type',1)
+    type = request.args.get('type',type=int,default=1)
 
     s = Session()
 

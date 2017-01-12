@@ -1,0 +1,147 @@
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="{{ config.get("EMALL_APPLICATION_ADDRESS") }}{{ (url_for("static",filename=("img/products/"+ this_quote.prod_info.cover_img))) }}"
+                         class="img-responsive ">
+                </div>
+                <div class="col-md-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Basic Information</strong></div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                <tbody>
+                                <tr>
+                                    <td>User Name</td>
+                                    <td>{{ this_quote.user.user_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Supplier Name</td>
+                                    <td>{{ this_quote.supplier.supplier_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Prod Name</td>
+                                    <td>{{ this_quote.prod_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="">Colors</td>
+                                    <td>{{ this_quote.colors }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Prod Size</td>
+                                    <td>{{ this_quote.prod_size }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lead Time</td>
+                                    <td>{{ this_quote.lead_time }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Imprint Information</td>
+                                    <td>{{ this_quote.imprint_info }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Special Instruction</td>
+                                    <td><span id="freight_cost">{{ this_quote.special_instruction }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Quantity</td>
+                                    <td><span id="Quantity">{{ this_quote.prod_quantity }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>User Perfer Comments:</td>
+                                    <td><span id="freight_cost">{{ this_quote.user_perfer_comment }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Supplier Perfer Comments:</td>
+                                    <td><span id="freight_cost">{{ this_quote.supplier_perfer_comment }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Quote Create Date</td>
+                                    <td><span id="freight_cost">{{ this_quote.user_last_quote_time }}</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>User perfer Information</strong></div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                <tbody>
+                                <tr>
+                                    <td class="">Unit Price</td>
+                                    <td><span>$</span><span id="unit_price">{{ this_quote.user_perfer_unit_price }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price">{{ this_quote.user_perfer_setup_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span
+                                            id="imprinting_prices">{{ this_quote.user_perfer_imprinting_prices }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost">{{ this_quote.user_perfer_freight_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>User Perfer Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price">{{ this_quote.user_perfer_total }}</span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Supplier Perfer Information</strong></div>
+                        <div class="panel-body padding-5">
+                            <table class="table table-hover text-right font-size-14">
+                                <tbody>
+                                <tr>
+                                    <td class="">Unit Price</td>
+                                    <td><span>$</span><span id="unit_price">{{ this_quote.supplier_perfer_unit_price }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Setup</td>
+                                    <td><span>$</span><span id="setup_price">{{ this_quote.supplier_perfer_setup_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="">Imprinting Prices</td>
+                                    <td><span>$</span><span
+                                            id="imprinting_prices">{{ this_quote.supplier_perfer_imprinting_prices }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">Freight Cost</td>
+                                    <td><span>$</span><span id="freight_cost">{{ this_quote.supplier_perfer_freight_cost }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="indiv-price-big"><strong>Supplier Perfer Total</strong></td>
+                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                            id="total_price">{{ this_quote.supplier_perfer_total }}</span></strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+
+            </div>
+            <h4>More information please check <a href="{{ link |safe }}">here</a></h4>
+        </div>
+    </div>

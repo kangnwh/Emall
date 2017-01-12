@@ -28,7 +28,10 @@
                                 <td>
                                     {#                                    <button class="btn btn-info">Detail</button>#}
                                     <a data-toggle="modal" class="btn btn-info" href="#modal_{{ ad.email_advertisement_id }}">Detail</a>
-                                    <button class="btn btn-danger" onclick="ajax_cancel_ad({{ ad.submit_date }},{{ ad.email_advertisement_id }})">Cancel</button>
+                                    {% if ad.approval_status == 1 %}
+                                        <button class="btn btn-danger" onclick="ajax_cancel_ad({{ ad.submit_date }},{{ ad.email_advertisement_id }})">Cancel</button>
+                                    {% endif %}
+
                                     <div class="modal fade" id="modal_{{ ad.email_advertisement_id }}" tabindex="-1"
                                          role="dialog"
                                          aria-labelledby="modal_label_{{ ad.email_advertisement_id }}"
