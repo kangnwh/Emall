@@ -84,8 +84,9 @@ def add_new_prod():
         prod.is_special_price_flg = add_form.is_special_price_flg.data
         prod_profit_rate = s.query(Prod_profit_rate).order_by(
             Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
-        prod.special_price_old = add_form.special_price_old.data * (1 + prod_profit_rate)
-        prod.special_price_new = add_form.special_price_new.data * (1 + prod_profit_rate)
+        prod.special_price_old = add_form.special_price_old.data
+        prod.special_price_new_real=add_form.special_price_new_real.data
+        prod.special_price_new = add_form.special_price_new_real.data * (1 + prod_profit_rate)
         print(add_form.special_price_campaign_time.data)
         prod.special_price_campaign_time = add_form.special_price_campaign_time.data if add_form.special_price_campaign_time else None
         prod.is_clearance = add_form.is_clearance.data
@@ -257,8 +258,9 @@ def update_prod():
         if new_prod['is_special_price_flg']:
             prod_profit_rate = s.query(Prod_profit_rate).order_by(
             Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
-            new_prod['special_price_old'] = update_form.special_price_old.data * (1+prod_profit_rate)
-            new_prod['special_price_new'] = update_form.special_price_new.data * (1+prod_profit_rate)
+            new_prod['special_price_old'] = update_form.special_price_old.data
+            new_prod['special_price_new_real'] = update_form.special_price_new_real.data
+            new_prod['special_price_new'] = update_form.special_price_new_real.data * (1+prod_profit_rate)
             new_prod['special_price_campaign_time'] = update_form.special_price_campaign_time.data
         else:
             new_prod['special_price_old'] = 0
@@ -529,7 +531,7 @@ def ad_list():
     page = request.args.get('page', type=int, default=1)
     s = Session()
 
-    query_base = BaseQuery(Email_advertisement,s).filter_by(supplier_id=current_user.supplier_id)
+    query_base = BaseQuery(Email_advertisement,s).filter_by(supplier_id=current_user.supplier_id).order_by(Email_advertisement.submit_date.desc())
 
     ad_list = query_base.paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
     pagination = Pagination(page=page, total=ad_list.total,

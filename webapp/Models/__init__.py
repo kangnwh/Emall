@@ -6,6 +6,7 @@ from webapp.Models.db_basic import engine,Session,Base
 # from webapp.Models.map_tag_item import Map_Tag_Item
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
+from webapp.Models.email_advertisement import Email_advertisement
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
 from flask_login import login_required,current_user
@@ -54,6 +55,18 @@ def get_approval_pending_count(type,id):
         count = base_query.filter(Prod_info.approve_stat==0).first()[0]
     elif type == 'supplier':
         count = base_query.filter(Prod_info.supplier_id==id).first()[0]
+    else:
+        count = None
+    s.close()
+    return count
+
+def get_approval_pending_advertisment(type,id):
+    s = Session()
+    base_query = s.query(func.count(Email_advertisement.email_advertisement_id)).filter(Email_advertisement.approval_status.in_([1,-1]))
+    if type == 'user':
+        count = base_query.filter(Email_advertisement.approval_status==1).first()[0]
+    elif type == 'supplier':
+        count = base_query.filter(and_(Email_advertisement.supplier_id==id,Email_advertisement.approval_status==-1)).first()[0]
     else:
         count = None
     s.close()

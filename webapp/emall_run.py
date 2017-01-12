@@ -17,7 +17,7 @@ from webapp.common.mails import mail
 #Models
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
-from webapp.Models import get_pending_order_count,get_pending_quote_count,get_approval_pending_count
+from webapp.Models import get_pending_order_count,get_pending_quote_count,get_approval_pending_count,get_approval_pending_advertisment
 
 #flask mail
 # import flask_mail
@@ -55,6 +55,7 @@ def load_user(user_id):
         u.get_pending_order_count = lambda id : get_pending_order_count('user',user_id)
         u.get_pending_quote_count = lambda id : get_pending_quote_count('user',user_id)
         u.get_approval_pending_count = lambda id : get_approval_pending_count('user',user_id)
+        u.get_approval_pending_advertisment = lambda id : get_approval_pending_advertisment('user',user_id)
     # u.pending_ordr_count = u.user_order_sys.total()
     return u
 

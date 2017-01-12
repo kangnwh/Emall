@@ -17,6 +17,7 @@
                     <table class="table">
                         <thead>
                         <th>Submitted Date</th>
+                        <th>Title</th>
                         <th>Status</th>
                         <th>Action</th>
                         </thead>
@@ -24,6 +25,7 @@
                         {% for ad in ad_list.items %}
                             <tr>
                                 <td>{{ ad.submit_date }}</td>
+                                <td>{{ ad.title }}</td>
                                 <td><span class="label label-{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[1] }}">{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</span> </td>
                                 <td>
                                     {#                                    <button class="btn btn-info">Detail</button>#}
@@ -45,7 +47,8 @@
                                                     </button>
                                                     <h4 class="modal-title"
                                                         id="modal_label_{{ ad.email_advertisement_id }}">
-                                                        {{ ad.title }}
+                                                       <strong>Title :</strong> {{ ad.title }}
+                                                        <br><br><strong>Content:</strong>
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body form-group">
@@ -72,7 +75,7 @@
             </div>
             {{ pagination.links }}
         {% else %}
-            <h3>You do not have any orders</h3>
+            <h3>You do not have any advertisements</h3>
         {% endif %}
     </div>
     <script>

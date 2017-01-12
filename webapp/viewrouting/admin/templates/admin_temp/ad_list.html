@@ -16,6 +16,7 @@
                     <table class="table">
                         <thead>
                         <th>Submitted Date</th>
+                        <th>Title</th>
                         <th>Status</th>
                         <th>Action</th>
                         </thead>
@@ -23,11 +24,15 @@
                         {% for ad in ad_list.items %}
                             <tr>
                                 <td>{{ ad.submit_date }}</td>
-                                <td>{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</td>
+                                <td>{{ ad.title }}</td>
+                                <td><span class="label label-{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[1] }}">{{ config.get("AD_STATUS_MAP").get(ad.approval_status)[0] }}</span> </td>
                                 <td>
                                     {% if ad.approval_status == 1 %}
                                          <button class="btn btn-primary" onclick="ajax_approve_ad({{ ad.email_advertisement_id }})">Approve</button>
                                         <button class="btn btn-danger" onclick="ajax_reject_ad({{ ad.email_advertisement_id }})">Reject</button>
+                                    {% endif %}
+                                    {% if ad.approval_status == 2 %}
+                                         <button class="btn btn-primary" onclick="ajax_send_ad({{ ad.email_advertisement_id }})">Send Out</button>
                                     {% endif %}
                                     <a data-toggle="modal" class="btn btn-info" href="#modal_{{ ad.email_advertisement_id }}">Detail</a>
 
@@ -44,11 +49,12 @@
                                                     </button>
                                                     <h4 class="modal-title"
                                                         id="modal_label_{{ ad.email_advertisement_id }}">
-                                                        {{ ad.title }}
+                                                      <strong>Title :</strong>  {{ ad.title }}
+                                                        <br><br><strong>Content :</strong>
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body form-group">
-                                                    {{ ad.ad_content|safe }}
+                                                   {{ ad.ad_content|safe }}
                                                 </div>
                                                 <div class="modal-footer" id="modal_footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -71,13 +77,25 @@
             </div>
             {{ pagination.links }}
         {% else %}
-            <h3>You do not have any orders</h3>
+            <h3>You do not have any advertisements</h3>
         {% endif %}
     </div>
     <script>
        function ajax_approve_ad(ad_id) {
-            if (confirm("Do you really want to send the advertisement ? ")) {
+            if (confirm("Do you really want to approve the advertisement ? ")) {
                 $.post("{{ url_for('adminRoute.approve_ad') }}", {ad_id: ad_id}, function (result) {
+                    if (result = 'succ') {
+                        location.reload();
+                    }
+                });
+            } else {
+                alert(result);
+                return false;
+            }
+        }
+       function ajax_send_ad(ad_id) {
+            if (confirm("Do you really want to send this advertisement ? ")) {
+                $.post("{{ url_for('adminRoute.send_ad') }}", {ad_id: ad_id}, function (result) {
                     if (result = 'succ') {
                         location.reload();
                     }
