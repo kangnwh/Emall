@@ -22,6 +22,7 @@ class User(Base):
     pending_order_count = 0
     pending_quote_count = 0
     supplier_level = 0
+    approval_pending_advertisment = 0
 
 
     def __repr__(self):

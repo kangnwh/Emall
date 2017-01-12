@@ -531,7 +531,7 @@ def ad_list():
     page = request.args.get('page', type=int, default=1)
     s = Session()
 
-    query_base = BaseQuery(Email_advertisement,s).filter_by(supplier_id=current_user.supplier_id)
+    query_base = BaseQuery(Email_advertisement,s).filter_by(supplier_id=current_user.supplier_id).order_by(Email_advertisement.submit_date.desc())
 
     ad_list = query_base.paginate(page,current_app.config.get("AD_LIST_PER_PAGE"), False)
     pagination = Pagination(page=page, total=ad_list.total,

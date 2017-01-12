@@ -44,7 +44,8 @@
                                                     </button>
                                                     <h4 class="modal-title"
                                                         id="modal_label_{{ ad.email_advertisement_id }}">
-                                                        {{ ad.title }}
+                                                       <strong>Title :</strong> {{ ad.title }}
+                                                        <br><br><strong>Content:</strong>
                                                     </h4>
                                                 </div>
                                                 <div class="modal-body form-group">
@@ -71,7 +72,7 @@
             </div>
             {{ pagination.links }}
         {% else %}
-            <h3>You do not have any orders</h3>
+            <h3>You do not have any advertisements</h3>
         {% endif %}
     </div>
     <script>

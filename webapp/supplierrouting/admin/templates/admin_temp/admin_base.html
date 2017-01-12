@@ -52,7 +52,7 @@
                         <a href="{{ url_for('userRoute.user_quotes',type='ongoing') }}">Quotes<span class="float-right badge">{{ current_user.get_pending_quote_count(current_user.supplier_id) }}</span></a></li>
                     <li>
                         <li {% if active_page=='ad' %} class="active"{% endif %}>
-                        <a href="{{ url_for('supplierRoute.ad_list') }}">Submit Ad</a></li>
+                        <a href="{{ url_for('supplierRoute.ad_list') }}">Manage Advertisement<span class="float-right  badge">{{ current_user.get_approval_pending_advertisment(current_user.supplier_id) }}</span></a></li>
                     <li>
                         <a href="{{ url_for('userRoute.logout') }}">Logout</a></li>
                 </ul>
