@@ -19,6 +19,9 @@ from webapp.Models.db_basic import Session
 from webapp.Models.user import User,AnonymousUser
 from webapp.Models import get_pending_order_count,get_pending_quote_count,get_approval_pending_count,get_approval_pending_advertisment
 
+#scheduler
+from webapp.config.schedule_config import scheduler
+
 #flask mail
 # import flask_mail
 # mail = flask_mail.Mail()
@@ -39,9 +42,11 @@ Report_Modules={
 app = Flask(__name__)
 app.config.from_pyfile('config/config.py', silent=False)
 app.config.from_pyfile('config/customer_config.py', silent=False)
+app.config.from_pyfile('config/schedule_config.py', silent=False)
 bootstrap = Bootstrap(app)
-login_manager.init_app(app)
-mail.init_app(app)
+# login_manager.init_app(app)
+# mail.init_app(app)
+# scheduler.init_app(app)
 
 
 for module,url_prefix in Report_Modules:
@@ -70,7 +75,13 @@ if __name__ == '__main__':
     supplier_ip,supplier_port = get_host_info('SUPPLIER_HOST')
     app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
     app.config["EMALL_APPLICATION_ADDRESS"] = "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
+    login_manager.init_app(app)
+    mail.init_app(app)
+    scheduler.init_app(app)
+    scheduler.start()
     app.run(host=emall_ip, port=emall_port, threaded=True)
+
+
 
 def create_app():
     return app

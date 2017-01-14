@@ -196,11 +196,11 @@ def upload_user_logo():
     return render_template('home_temp/upload_user_logo.html',
                            allowed_files = list(customer_config.ALLOWED_EXTENSIONS))
 
-@homeRoute.route('/sendmail/<to>')
-def sendtest(to):
-
-    send_email_base("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
-    return render_template("home_temp/index.html")
+# @homeRoute.route('/sendmail/<to>')
+# def sendtest(to):
+#
+#     send_email_base("This is a testing flask mail ", [to], 'Test body', "<h1> Hello Flask Email </h1>")
+#     return render_template("home_temp/index.html")
 
 
 @homeRoute.route('/search', methods=['GET'])

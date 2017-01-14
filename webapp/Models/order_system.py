@@ -46,42 +46,27 @@ class Order_system(Base):
     pts_deduct = Column(DECIMAL(12, 2))
 
     def __repr__(self):
-        return '<Order_system quote_id:%d,supplier_id:%d,user_id:%d,prod_id:%d>' % (
-        self.quote_id, self.supplier_id, self.user_id, self.prod_id)
+        return '<Order_system order_id:%d,supplier_id:%d,user_id:%d,prod_id:%d>' % (
+        self.order_id, self.supplier_id, self.user_id, self.prod_id)
 
     def notification_to_supplier(self):
-        # notification = '''<h3>Order for Production {prod_name}</h3>
-        # <h4>Quantity : {order_quantity}</h4>
-        # <h4>User Comments:{user_comments}</h4>
-        # <h4>Supplier Comments:{supplier_comments}</h4>
-        # <a href="{host}/order/show_one_order?client_order_id={client_order_id}">Click here for more detail</a>
-        # '''.format(prod_name=self.prod_name,
-        #            order_quantity=self.prod_quantity,
-        #            user_comments=self.user_comments,
-        #            supplier_comments = self.supplier_comments,
-        #            client_order_id=self.client_order_id,
-        #            host=current_app.config.get("SUPPLIER_APPLICATION_ADDRESS"))
-        # return notification
         return render_template('order_temp/order_email_notification.html',
                                this_order=self,
                                link = "{host}/order/show_one_order?client_order_id={client_order_id}".format(host=current_app.config.get("SUPPLIER_APPLICATION_ADDRESS"),client_order_id=self.client_order_id) )
 
 
     def notification_to_user(self):
-        # notification = '''<h3>Order for Production {prod_name}</h3>
-        # <h4>Quantity : {order_quantity}</h4>
-        # <h4>User Comments : {user_comments}</h4>
-        # <h4>Supplier Comments : {supplier_comments}</h4>
-        # <a href="{host}/order/show_one_order?client_order_id={client_order_id}">Click here for more detail</a>
-        # '''.format(prod_name=self.prod_name,
-        #            order_quantity=self.prod_quantity,
-        #            user_comments=self.user_comments,
-        #            supplier_comments = self.supplier_comments,
-        #            client_order_id=self.client_order_id,
-        #            host=current_app.config.get("EMALL_APPLICATION_ADDRESS"))
-        # return notification
         return render_template('order_temp/order_email_notification.html',
                                this_order=self,
                                link = "{host}/order/show_one_order?client_order_id={client_order_id}".format(host=current_app.config.get("EMALL_APPLICATION_ADDRESS"),client_order_id=self.client_order_id) )
 
+    def deliver_notification(self):
+        return render_template('order_temp/order_email_notification.html',
+                               this_order=self,
+                               link = "{host}/order/show_one_order?client_order_id={client_order_id}".format(host=current_app.config.get("SUPPLIER_APPLICATION_ADDRESS"),client_order_id=self.client_order_id) )
+
+        # return """<h1>client_order_id : {client_order_id}</h1>
+        # <h1>Detail please check <a href="{link}">here</a></h1>""".format(client_order_id=self.client_order_id,
+        #                                                                  link="{host}/order/show_one_order?client_order_id={client_order_id}".format(host=current_app.config.get("EMALL_APPLICATION_ADDRESS"),client_order_id=self.client_order_id))
+        # return """Deliver Test, other emails were rejected as junk mails(send at {time}) """.format(time=datetime.now())
 

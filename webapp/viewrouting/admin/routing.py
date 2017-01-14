@@ -1,6 +1,6 @@
  # -*- coding: utf-8 -*-
 from flask import Blueprint,request,redirect,url_for
-from flask_login import login_required,current_user,logout_user
+from flask_login import login_required,logout_user
 from webapp.viewrouting.admin.real_routing import _index,_account_management,_prod_cate_mgt,_spec_links,_delete_user,_add_user,_update_user,\
                                                     _add_level_one,_delete_level_one,_update_level_one,_all_orders,_all_quotes,\
                                                     _delete_level_two,_update_level_two,_add_level_two,_reset_password,_admin_cancel_order,\
@@ -8,7 +8,7 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
                                                     _pending_approval_list,_check_pending_approval_prod,_reject_or_approve,_manage_config,_update_config,\
                                                     _search,_order_search,_quote_search,_admin_cancel_compliment,\
-                                                    _ad_list,_approve_ad,_reject_ad,_send_ad
+                                                    _ad_list,_approve_ad,_reject_ad,_send_ad,_deliver_notification
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -268,3 +268,7 @@ def send_ad():
 @login_required
 def reject_ad():
     return _reject_ad()
+
+@adminRoute.route('/deliver_notification', methods=['GET'])
+def deliver_notification():
+    return _deliver_notification()

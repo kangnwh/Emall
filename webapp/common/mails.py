@@ -1,11 +1,14 @@
 from webapp.Models.db_basic import Session
 from webapp.Models.user import User
-from webapp.Models.email_advertisement import Email_advertisement
+from webapp.common import get_host_info
 from flask_mail import Message
-from flask_login import current_user
 from flask import current_app
-import flask_mail
+import flask_mail,urllib
 mail = flask_mail.Mail()
+
+emall_ip, emall_port = get_host_info('HOME_HOST')
+emall_host =  "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
+
 
 def send_email_base(subject, recipients, html_body, cc_list=None):
     msg = Message(subject=subject, recipients=recipients,cc=cc_list)
@@ -22,7 +25,10 @@ def email_notifier(email, subject, html):
 #     send_email_base(subject, supplier_email, html_body=user_notification, cc_list=current_app.config.get("ADMIN_EMAIL"))
 
 def deliver_notification():
-    send_email_base("deliver_notification",["792564101@qq.com"],"schedule test")
+    result = urllib.request.urlopen("{host}/admin/deliver_notification".format(host=emall_host))
+    print(result.data )
+    return result
+
 
 def send_advertisement(ad):
     s = Session()

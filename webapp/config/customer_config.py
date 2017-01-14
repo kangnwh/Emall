@@ -30,9 +30,9 @@ ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 
 # MAIL_PORT = 465
 # MAIL_USE_SSL = True
 # MAIL_USE_TLS = False
-# MAIL_USERNAME = '1131725367'
-# MAIL_DEFAULT_SENDER = '1131725367@qq.com'
-# MAIL_PASSWORD = 'passw0rd'
+# MAIL_USERNAME = ''
+# MAIL_DEFAULT_SENDER = '@qq.com'
+# MAIL_PASSWORD = ''
 
 MAIL_SERVER = 'smtp.163.com'# 'smtp.163.com'
 MAIL_PORT = 465

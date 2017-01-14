@@ -3,7 +3,8 @@ from flask import Blueprint, url_for, flash, request,current_app
 from flask import render_template, redirect,jsonify,abort
 from flask_paginate import Pagination
 from flask_sqlalchemy import BaseQuery
-from sqlalchemy import or_
+from sqlalchemy import or_,func
+import datetime
 import webapp.config.customer_config  as customer_config
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_cat import Prod_cat
@@ -19,7 +20,7 @@ from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 from webapp.Models.user import User
 from webapp.Models.email_advertisement import Email_advertisement
-from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter
+from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter,get_host_info
 from webapp.common.mails import email_notifier,send_advertisement
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
@@ -1200,6 +1201,23 @@ def _reject_ad():
         'approval_status':-1
     })
     s.commit()
+    s.close()
+
+    return jsonify("succ")
+
+
+def _deliver_notification():
+    print(request.remote_addr)
+    emall_ip, emall_port = get_host_info('HOME_HOST')
+    # server_ip = current_app.config.get("HOST_INFO").get("HOME_HOST").get("IP")
+    print(emall_ip)
+    if not emall_ip == request.remote_addr:
+        return jsonify("failed")
+    tomorrow = datetime.datetime.today().date() + datetime.timedelta(days=1)
+    s = Session()
+    remind_list = s.query(Order_system).filter(Order_system.order_stat==2,func.date(Order_system.supplier_target_dt)==tomorrow).all()
+    for order in remind_list:
+        email_notifier([order.supplier.email],"[Remind]You need to deliver this order in ONE day",order.deliver_notification())#
     s.close()
 
     return jsonify("succ")
