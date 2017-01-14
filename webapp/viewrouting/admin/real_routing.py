@@ -985,12 +985,14 @@ def _admin_cancel_order():
             "cancel_reason":content
             # 'user_comments':this_order.first().user_comments +content
         })
-        if this_order.first().is_used_points == 1 and this_order.first().used_points != 0 :
-            user_id = this_order.first().user_id
-            this_user=s.query(User).filter_by(user_id=user_id)
-            curr_tmp_pts=this_user.first().credit_points
-            new_tmp_pts=curr_tmp_pts+this_order.first().used_points
-            s.query(User).filter_by(user_id=user_id).update(
+        if this_order.is_used_points == 1 and this_order.used_points != 0 :
+            user_id = this_order.user_id
+            this_user_query=s.query(User).filter_by(user_id=user_id).first()
+            this_user = this_user_query.first()
+
+            curr_tmp_pts=this_user.credit_points
+            new_tmp_pts=curr_tmp_pts+this_order.used_points
+            this_user_query.update(
                 {
                     "credit_points": new_tmp_pts
                 }

@@ -21,6 +21,8 @@ def email_notifier(email, subject, html):
 #     user_notification = order.notification_to_user()
 #     send_email_base(subject, supplier_email, html_body=user_notification, cc_list=current_app.config.get("ADMIN_EMAIL"))
 
+def deliver_notification():
+    send_email_base("deliver_notification",["792564101@qq.com"],"schedule test")
 
 def send_advertisement(ad):
     s = Session()

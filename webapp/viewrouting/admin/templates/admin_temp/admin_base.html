@@ -59,7 +59,7 @@
                     <a href="{{ url_for('adminRoute.manage_config') }}">Manage Configure Parameter</a>
                 </li>
                 <li {% if 9 == active_page %} class="active"{% endif %}>
-                    <a href="{{ url_for('adminRoute.ad_list') }}">Email Advertisement Management<span class="float-right  badge">{{ current_user.get_approval_pending_advertisment(current_user.user_id) }}</span></a>
+                    <a href="{{ url_for('adminRoute.ad_list') }}">Email Advertisement<span class="float-right  badge">{{ current_user.get_approval_pending_advertisment(current_user.user_id) }}</span></a>
                 </li>
                 <li>
                     <a href="{{ url_for('adminRoute.logout') }}">Logout</a></li>

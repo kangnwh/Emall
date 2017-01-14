@@ -5,6 +5,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading one-line">{{ indiv_prod_info.prod_name }}
                         {% if current_user.is_administrator %}
+                            <br>
                         <span class="label label-{{ config.get("VALID_INFO_MAP").get(indiv_prod_info.valid_flg)[1] }}">{{ config.get("VALID_INFO_MAP").get(indiv_prod_info.valid_flg)[0] }}</span>
                         <span class="label label-{{ config.get("APPROVAL_STATUS_MAP").get(indiv_prod_info.approve_stat)[1] }}">{{ config.get("APPROVAL_STATUS_MAP").get(indiv_prod_info.approve_stat)[0] }}</span>
                         {% endif %}
