@@ -25,6 +25,7 @@ class UserOrderForm(Form):
     #need_pay_supplier should be calculated
     is_used_points = BooleanField("Do you want to use your points?")
     used_points = IntegerField("How many to use?")
+    pts_deduct = DecimalField("User points deduction")
 
     #order flag
     #supplier_checked_flg = IntegerField("Supplier Checked Flag")

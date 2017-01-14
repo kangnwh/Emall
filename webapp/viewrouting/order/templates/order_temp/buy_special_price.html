@@ -86,14 +86,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{ bool_input_helper('col-md-4',user_order_form.is_used_points,func='function (event, state) {
+                    {{ bool_input_helper('col-md-4 invisible',user_order_form.is_used_points,func='function (event, state) {
                         if (state) {
                             $("#used_points").attr("readonly",false);
                         } else {
                             $("#used_points").attr("readonly",true);
                         }
                     }'|safe) }}
-                    {{ readonly_input_helper('col-md-4',user_order_form.used_points,input_class="form-control col-md-3",default_value=0,input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
+                    {{ readonly_input_helper('col-md-4 invisible',user_order_form.used_points,input_class="form-control col-md-3",default_value=0,input_comment="(<strong>{d}</strong> point(s) left)".format(d=current_user.credit_points)) }}
                 </div>
 
 

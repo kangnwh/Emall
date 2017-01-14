@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, flash, request,redirect,render_template,url_for,abort,jsonify
 from flask_login import login_required,current_user
-from sqlalchemy import func,or_,and_,between
+from sqlalchemy import func,or_,and_,between,INTEGER,DECIMAL
 from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
@@ -15,6 +15,8 @@ from webapp.Models.compliment_system import Compliment_system
 from webapp.viewrouting.order.forms.order_forms import UserOrderForm,UserQuoteForm,QuoteToOrderForm
 from webapp.common.mails import send_email_base,email_notifier
 import datetime
+import decimal
+import webapp.config.customer_config as customer_config
 
 orderRoute = Blueprint('orderRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -57,13 +59,33 @@ def create_order():
             order.total_price,order.unit_price,order.imprinting_prices,order.setup_cost,order.freight_cost = prices.get_prices(order.prod_quantity)
             real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
             real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
+        tmp_used_pts=0
+        if user_order_form.is_used_points.data ==1 :
+            order.is_used_points = 1
+            order.used_points = user_order_form.used_points.data
+            if user_order_form.used_points.data >= current_user.credit_points :
+                tmp_used_pts=current_user.credit_points
+            else:
+                tmp_used_pts=user_order_form.used_points.data
+            order.pts_deduct = (tmp_used_pts * decimal.Decimal(customer_config.USER_POINT_DISCOUNT_RATE)) / 100
+            tmp_total_price=order.total_price
+            order.total_price=decimal.Decimal(tmp_total_price) - decimal.Decimal(order.pts_deduct)
+        else:
+            order.is_used_points = 0
+            order.used_points = 0
+            order.pts_deduct = 0
         order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
-        order.is_used_points = 1 if order.is_used_points else 0
-        order.used_points = order.used_points
         order.user_comments = user_order_form.user_comments.data
         order.order_stat = 1 # stands for user submitting
         order.valid_flg = 1
 
+        new_credit_points=current_user.credit_points - tmp_used_pts
+        user_id = current_user.user_id
+        s.query(User).filter_by(user_id=user_id).update(
+                {
+                    "credit_points": new_credit_points
+                }
+        )
 
         s.add(order)
         s.commit()
@@ -101,6 +123,16 @@ def user_cancel():
         this_order.update({
             "order_stat":6
         })
+        if this_order.first().is_used_points == 1 and this_order.first().used_points != 0 :
+            user_id = this_order.first().user_id
+            this_user=s.query(User).filter_by(user_id=user_id)
+            curr_tmp_pts=this_user.first().credit_points
+            new_tmp_pts=curr_tmp_pts+this_order.first().used_points
+            s.query(User).filter_by(user_id=user_id).update(
+                {
+                    "credit_points": new_tmp_pts
+                }
+            )
         s.commit()
         email_notifier(this_order.supplier.email, "Order Canceled By User", this_order.notification_to_supplier())
         return redirect(url_for("adminRoute.all_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
@@ -268,6 +300,7 @@ def quote_to_order():
         order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
         order.is_used_points = 0
         order.used_points = 0
+        order.pts_deduct = 0
         order.user_comments = quote_to_order_form.user_comments.data
         order.order_stat = 1 # stands for user submitting
         order.valid_flg = 1

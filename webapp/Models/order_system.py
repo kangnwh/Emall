@@ -43,6 +43,7 @@ class Order_system(Base):
     prod_size = Column(String(100))
     special_instruction = Column(String(100))
     sys_quote_id = Column(BIGINT)
+    pts_deduct = Column(DECIMAL(12, 2))
 
     def __repr__(self):
         return '<Order_system quote_id:%d,supplier_id:%d,user_id:%d,prod_id:%d>' % (

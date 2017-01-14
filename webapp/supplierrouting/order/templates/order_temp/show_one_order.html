@@ -121,8 +121,8 @@
                                 </tr>
                                 {% if this_order.is_used_points==1 %}
                                     <tr>
-                                        <td class="">Use Points</td>
-                                        <td><span id="used_pts">{{ this_order.used_points }}</span></td>
+                                        <td class="">Use Points Deduct</td>
+                                        <td><span id="used_pts">{{ this_order.used_points }} pts -> ${{ this_order.pts_deduct }}</span></td>
                                     </tr>
                                 {% endif %}
 

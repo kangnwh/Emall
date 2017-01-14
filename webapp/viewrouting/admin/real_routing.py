@@ -985,6 +985,16 @@ def _admin_cancel_order():
             "cancel_reason":content
             # 'user_comments':this_order.first().user_comments +content
         })
+        if this_order.first().is_used_points == 1 and this_order.first().used_points != 0 :
+            user_id = this_order.first().user_id
+            this_user=s.query(User).filter_by(user_id=user_id)
+            curr_tmp_pts=this_user.first().credit_points
+            new_tmp_pts=curr_tmp_pts+this_order.first().used_points
+            s.query(User).filter_by(user_id=user_id).update(
+                {
+                    "credit_points": new_tmp_pts
+                }
+            )
         s.commit()
         email_notifier([this_order.supplier.email], "Production is Canceled by Administrator", this_order.notification_to_user())
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
