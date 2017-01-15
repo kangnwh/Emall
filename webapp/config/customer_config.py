@@ -26,21 +26,21 @@ ALLOWED_EXTENSIONS=set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','TXT', 'PDF', 
 # MAIL_PASSWORD = 'passw0rd'
 
 #qq mail : 1131725367@qq.com passw0rd
-# MAIL_SERVER = 'smtp.qq.com'# 'smtp.163.com'
-# MAIL_PORT = 465
-# MAIL_USE_SSL = True
-# MAIL_USE_TLS = False
-# MAIL_USERNAME = ''
-# MAIL_DEFAULT_SENDER = '@qq.com'
-# MAIL_PASSWORD = ''
-
-MAIL_SERVER = 'smtp.163.com'# 'smtp.163.com'
+MAIL_SERVER = 'smtp.qq.com'# 'smtp.163.com'
 MAIL_PORT = 465
 MAIL_USE_SSL = True
 MAIL_USE_TLS = False
-MAIL_USERNAME = 'emalltest'
-MAIL_DEFAULT_SENDER = 'emalltest@163.com'
-MAIL_PASSWORD = 'emalltest2'
+MAIL_USERNAME = '1412796539'
+MAIL_DEFAULT_SENDER = '1412796539@qq.com'
+MAIL_PASSWORD = 'frglisxtrsuegjeb'
+
+# MAIL_SERVER = 'smtp.163.com'# 'smtp.163.com'
+# MAIL_PORT = 465
+# MAIL_USE_SSL = True
+# MAIL_USE_TLS = False
+# MAIL_USERNAME = 'emalltest'
+# MAIL_DEFAULT_SENDER = 'emalltest@163.com'
+# MAIL_PASSWORD = 'emalltest2'
 
 ADMIN_EMAIL = ["792564101@qq.com","1412796539@qq.com"]
 
