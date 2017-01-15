@@ -162,32 +162,32 @@ def user_feedback():
     client_order_id = request.form.get('client_order_id')
     content = request.form.get('content','')
 
-    this_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-
+    this_order_query = s.query(Order_system).filter_by(client_order_id=client_order_id)
+    this_order = this_order_query.first()
     feedback = Compliment_system()
 
     feedback.user_id = current_user.user_id
-    feedback.prod_id = this_order.first().prod_id
-    feedback.order_id = this_order.first().order_id
+    feedback.prod_id = this_order_query.first().prod_id
+    feedback.order_id = this_order_query.first().order_id
     feedback.compliment_rate = request.form.get('rating',0)
     feedback.user_compliment_comments = content
 
-    if this_order.first().order_stat == 3 :
-        this_order.update({
+    if this_order.order_stat == 3 :
+        this_order_query.update({
             "order_stat":5
             # 'user_comments':this_order.first().user_comments +content
         })
         s.add(feedback)
         s.commit()
         after_order = s.query(Order_system).filter_by(client_order_id=client_order_id)
-        if this_order.first().order_stat == 5 :
+        if this_order.order_stat == 5 :
             new_pts=after_order.first().total_price
             after_user = s.query(User).filter_by(user_id=current_user.user_id)
             new_user_pts=current_user.credit_points + round(new_pts/100)
             after_user.update({
                 "credit_points" : new_user_pts
             })
-            after_supplier=s.query(Supplier).filter_by(supplier_id=this_order.first().supplier_id)
+            after_supplier=s.query(Supplier).filter_by(supplier_id=this_order.supplier_id)
             current_supplier_pts=after_supplier.first().supplier_points
             new_supplier_pts=current_supplier_pts+round(new_pts/100)
             after_supplier.update({
