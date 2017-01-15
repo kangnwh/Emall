@@ -69,8 +69,7 @@ def unauthorized_callback():
     flash("Please Login First",'danger')
     return redirect(url_for("userRoute.register_login",next=request.path))
 
-if __name__ == '__main__':
-    # app = create_app()
+def run_app():
     emall_ip, emall_port = get_host_info('HOME_HOST')
     supplier_ip,supplier_port = get_host_info('SUPPLIER_HOST')
     app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
@@ -80,6 +79,9 @@ if __name__ == '__main__':
     scheduler.init_app(app)
     scheduler.start()
     app.run(host=emall_ip, port=emall_port, threaded=True)
+
+if __name__ == '__main__':
+   run_app()
 
 
 

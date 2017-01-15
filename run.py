@@ -6,15 +6,14 @@ import os,sys
 cur_path = os.getcwd()
 sys.path.append(cur_path)
 
-# try:
-#     from webapp import config
-#     from webapp import Report
-#
-#     app = Report.create_app()
-#     app.logger.info("main application run")
-#     app.run(host=app.config.get("HOST", "127.0.0.1"), emall_port=app.config.get("PORT", "5001"), threaded=True)
-# except:
-#     from webapp import Install
-#     app = Install.create_app()
-#     app.logger.info("installation application run")
-#     app.run(host=app.config.get("HOST", "127.0.0.1"), emall_port=app.config.get("PORT", "5001"), threaded=True)
+try:
+    from webapp.emall_run import run_app as run_emall_app
+    from webapp.emall_supplier_run import run as run_supplier_app
+    if sys.argv[1] == 'emall':
+        app = run_emall_app()
+    elif sys.argv[1] == 'supplier':
+        app = run_supplier_app()
+    else:
+        print("run with arg = 'emall' or 'supplier'")
+except:
+    print("Start error")

@@ -66,13 +66,16 @@ def unauthorized_callback():
     flash("Please Login First",'danger')
     return redirect(url_for("userRoute.register_login",next=request.path))
 
-if __name__ == '__main__':
-    # app = create_app()
+
+def run_app():
     emall_ip, emall_port = get_host_info('HOME_HOST')
     supplier_ip, supplier_port = get_host_info('SUPPLIER_HOST')
     app.config["EMALL_APPLICATION_ADDRESS"] = "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
     app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
     app.run(host=supplier_ip, port=supplier_port, threaded=True)
+
+if __name__ == '__main__':
+    run_app()
 
 def create_app():
     return app
