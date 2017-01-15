@@ -138,7 +138,7 @@ def deliver():
             "order_stat": 3
         })
         s.commit()
-        email_notifier([this_order.user.email], "Production is delivering", this_order.notification_to_user())
+        email_notifier([this_order.user.email], "Order [client_order_id:{client_order_id}] is delivering".format(client_order_id=this_order.client_order_id), this_order.notification_to_user())
         flash("Order is now in delivering phase.".format(id=client_order_id), "success")
         return redirect(url_for("userRoute.user_orders", type='ongoing')) if request_from else render_template(
             "reload_parent.html"), s.close()
@@ -194,7 +194,7 @@ def supp_update_quote():
                 }
         )
         s.commit()
-        email_notifier([this_quote.supplier.email], "Quote Replied By Supplier", this_quote.notification_to_user())
+        email_notifier([this_quote.supplier.email], "Quote [quote_id:{quote_id}] Replied By Supplier".format(quote_id=this_quote.quote_id), this_quote.notification_to_user())
         s.close()
         flash("Supplier update successfully!", category='success')
         return redirect(url_for("orderRoute.show_one_quote", quote_id=quote_id)), s.close()

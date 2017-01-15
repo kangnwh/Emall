@@ -89,7 +89,7 @@ def create_order():
 
         s.add(order)
         s.commit()
-        email_notifier([order.supplier.email], "New Order Created", order.notification_to_supplier())
+        email_notifier([order.supplier.email], "New Order [client_order_id:{client_order_id}] Created".format(client_order_id=order.client_order_id), order.notification_to_supplier())
 
         s.close()
         #send notification via email
@@ -136,7 +136,7 @@ def user_cancel():
                 }
             )
         s.commit()
-        email_notifier([this_order.supplier.email], "Order Canceled By User", this_order.notification_to_supplier())
+        email_notifier([this_order.supplier.email], "Order [client_order_id:{client_order_id}] Canceled By User".format(client_order_id=this_order.client_order_id), this_order.notification_to_supplier())
         return redirect(url_for("adminRoute.all_orders",type='canceled')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='canceled')), s.close()
     else:
         flash("Cannot cancel this order in this phase.","warning")
@@ -200,7 +200,7 @@ def user_feedback():
 
             s.commit()
 
-            email_notifier([this_order.supplier.email], "Order Finished", this_order.notification_to_supplier())
+            email_notifier([this_order.supplier.email], "Order [client_order_id:{client_order_id}] Finished".format(client_order_id=this_order.client_order_id), this_order.notification_to_supplier())
             s.close()
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
@@ -311,6 +311,7 @@ def quote_to_order():
 
         s.add(order)
         s.commit()
+        email_notifier([order.supplier.email], "New Order [client_order_id:{client_order_id}] Created".format(client_order_id=order.client_order_id), order.notification_to_supplier())
         s.close()
 
         quote_id=quote_to_order_form.quote_id.data

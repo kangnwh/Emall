@@ -999,7 +999,7 @@ def _admin_cancel_order():
                 }
             )
         s.commit()
-        email_notifier([this_order.supplier.email], "Production is Canceled by Administrator", this_order.notification_to_user())
+        email_notifier([this_order.supplier.email], "Order [client_order_id:{client_order_id}] is Cancelled by Admin".format(client_order_id=this_order.client_order_id), this_order.notification_to_user())
         return jsonify(result='succ') #redirect(url_for("adminRoute.user_orders",type='finished')) if current_user.is_administrator else redirect(url_for("userRoute.user_orders",type='finished')), s.close()
     else:
         flash("Cannot Cancel this order in this phase.","warning")
