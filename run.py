@@ -5,6 +5,7 @@ import os,sys
 
 cur_path = os.getcwd()
 sys.path.append(cur_path)
+sys.path.append("{base}{sep}webapp".format(base=cur_path,sep=os.sep))
 
 try:
     from webapp.emall_run import run_app as run_emall_app
