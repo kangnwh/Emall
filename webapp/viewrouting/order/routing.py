@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, flash, request,redirect,render_template,url_for,abort,jsonify
+from flask import Blueprint, flash, request,redirect,render_template,url_for,abort,jsonify,current_app
 from flask_login import login_required,current_user
 from sqlalchemy import func,or_,and_,between,INTEGER,DECIMAL
 from webapp.Models.db_basic import Session
@@ -67,7 +67,7 @@ def create_order():
                 tmp_used_pts=current_user.credit_points
             else:
                 tmp_used_pts=user_order_form.used_points.data
-            order.pts_deduct = (tmp_used_pts * decimal.Decimal(customer_config.USER_POINT_DISCOUNT_RATE)) / 100
+            order.pts_deduct = (tmp_used_pts * decimal.Decimal(current_app.config.get("USER_POINT_DISCOUNT_RATE"))) / 100
             tmp_total_price=order.total_price
             order.total_price=decimal.Decimal(tmp_total_price) - decimal.Decimal(order.pts_deduct)
         else:

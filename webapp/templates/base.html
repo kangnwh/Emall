@@ -86,9 +86,10 @@
                         <li {% if 'L5' == active_page %} class="active"{% endif %}>
                             <a href="{{ url_for('homeRoute.User_Feedback') }}">User Feedback</a>
                         </li>
-                        <li {% if 'L6' == active_page %} class="active"{% endif %}>
+                   {#      <li {% if 'L6' == active_page %} class="active"{% endif %}>
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
+                     #}
                         <div class="navbar-form navbar-left" role="search">
                             <div class="form-group">
                                 <input id="search_words" type="text" class="form-control" placeholder="Search">

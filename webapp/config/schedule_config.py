@@ -11,7 +11,7 @@ JOBS = [
             'args': None,
             'trigger': 'cron',
             'hour': 14,
-            'minute':3,
+            'minute':33,
             'second':0
         }
     ]
