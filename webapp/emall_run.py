@@ -81,6 +81,7 @@ def run_app():
     try :
         app.run(host=emall_ip, port=emall_port, threaded=True)
     except:
+        print("ip {ip} is not correct, will run this app on 127.0.0.1".format(ip=emall_ip))
         app.run(host='127.0.0.1', port=emall_port, threaded=True)
 
 if __name__ == '__main__':
