@@ -9,7 +9,7 @@ sys.path.append("{base}{sep}webapp".format(base=cur_path,sep=os.sep))
 
 try:
     from webapp.emall_run import run_app as run_emall_app
-    from webapp.emall_supplier_run import run as run_supplier_app
+    from webapp.emall_supplier_run import run_app as run_supplier_app
     if sys.argv[1] == 'emall':
         app = run_emall_app()
     elif sys.argv[1] == 'supplier':
