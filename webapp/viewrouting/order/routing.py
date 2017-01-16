@@ -127,7 +127,7 @@ def user_cancel():
         })
         if this_order.is_used_points == 1 and this_order.used_points != 0 :
             user_id = this_order.user_id
-            this_user_query=s.query(User).filter_by(user_id=user_id).first()
+            this_user_query=s.query(User).filter_by(user_id=user_id)
             this_user = this_user_query.first()
             curr_tmp_pts=this_user.credit_points
             new_tmp_pts=curr_tmp_pts+this_order.used_points
