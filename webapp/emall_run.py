@@ -72,15 +72,17 @@ def unauthorized_callback():
 def run_app():
     emall_ip, emall_port = get_host_info('HOME_HOST')
     supplier_ip,supplier_port = get_host_info('SUPPLIER_HOST')
-    app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
-    app.config["EMALL_APPLICATION_ADDRESS"] = "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
     login_manager.init_app(app)
     mail.init_app(app)
     scheduler.init_app(app)
     scheduler.start()
     try :
+        app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://{supplier_ip}:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
+        app.config["EMALL_APPLICATION_ADDRESS"] = "http://{emall_ip}:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
         app.run(host=emall_ip, port=emall_port, threaded=True)
     except:
+        app.config["SUPPLIER_APPLICATION_ADDRESS"] = "http://127.0.0.1:{port}".format(supplier_ip=supplier_ip,port = supplier_port )
+        app.config["EMALL_APPLICATION_ADDRESS"] = "http://127.0.0.1:{emall_port}".format(emall_ip=emall_ip,emall_port = emall_port )
         print("address {ip}:{port} can not be used, will run this app on 127.0.0.1:{port}".format(ip=emall_ip,port=emall_port))
         app.run(host='127.0.0.1', port=emall_port, threaded=True)
 

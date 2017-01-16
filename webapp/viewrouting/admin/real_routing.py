@@ -1207,17 +1207,17 @@ def _reject_ad():
 
 
 def _deliver_notification():
-    print(request.remote_addr)
+
     emall_ip, emall_port = get_host_info('HOME_HOST')
     # server_ip = current_app.config.get("HOST_INFO").get("HOME_HOST").get("IP")
-    print(emall_ip)
+
     if not emall_ip == request.remote_addr:
         return jsonify("failed")
     tomorrow = datetime.datetime.today().date() + datetime.timedelta(days=1)
     s = Session()
     remind_list = s.query(Order_system).filter(Order_system.order_stat==2,func.date(Order_system.supplier_target_dt)==tomorrow).all()
     for order in remind_list:
-        email_notifier([order.supplier.email],"[Remind]You need to deliver this order in ONE day",order.deliver_notification())#
+        email_notifier([order.supplier.email],"[Remind]You need to deliver this order in ONE day",order.deliver_notification())
     s.close()
 
     return jsonify("succ")

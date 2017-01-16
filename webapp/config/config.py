@@ -22,11 +22,11 @@ APP_NAME = 'Emall'
 # BIND INFORMAITON
 HOST_INFO={
     'HOME_HOST':{
-        'IP':'106.14.31.132',
+        'IP':'127.0.0.1',
         'PORT':5002
     },
     'SUPPLIER_HOST':{
-         'IP':'106.14.31.132',
+         'IP':'127.0.0.1',
         'PORT':5003
     }
 }

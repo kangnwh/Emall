@@ -10,8 +10,8 @@ JOBS = [
             'func': deliver_notification,
             'args': None,
             'trigger': 'cron',
-            'hour': 21,
-            'minute':1,
+            'hour': 14,
+            'minute':3,
             'second':0
         }
     ]
