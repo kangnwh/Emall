@@ -30,9 +30,11 @@ def deliver_notification():
     try:
         print("Sending Deliver Notification...")
         result = urllib.request.urlopen("{host}/admin/deliver_notification".format(host=emall_host))
+        return result
     except:
         print("Send Deliver Notification Failed")
-    return result
+        return 'failed'
+
 
 
 def send_advertisement(ad):
