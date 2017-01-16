@@ -3,7 +3,7 @@ import webapp
 import os
 
 # upload folder
-base_dir = "/home/logoshow/Emall/webapp/static/img/user_logos"#webapp.__path__.__getitem__(0)
+base_dir = webapp.__file__
 PROD_UPLOAD_PATH = "{base_dir}{sep}static{sep}img{sep}products{sep}".format(base_dir=os.path.dirname(base_dir), sep=os.sep)
 USER_LOGO_UPLOAD_PATH = "{base_dir}{sep}static{sep}img{sep}user_logos{sep}".format(base_dir=os.path.dirname(base_dir), sep=os.sep)
 
