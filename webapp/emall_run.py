@@ -78,7 +78,10 @@ def run_app():
     mail.init_app(app)
     scheduler.init_app(app)
     scheduler.start()
-    app.run(host=emall_ip, port=emall_port, threaded=True)
+    try :
+        app.run(host=emall_ip, port=emall_port, threaded=True)
+    except:
+        app.run(host='127.0.0.1', port=emall_port, threaded=True)
 
 if __name__ == '__main__':
    run_app()

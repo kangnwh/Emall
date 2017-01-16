@@ -2,7 +2,7 @@ import datetime
 import hashlib
 import os
 import random
-import socket
+
 
 from PIL import Image
 from flask import flash, redirect, url_for,current_app
@@ -20,8 +20,7 @@ from webapp.Models.supplier import Supplier
 from webapp.Models.prod_sub_cat import Prod_sub_cat
 
 from webapp.config.config import HOST_INFO
-# from webapp.config.customer_config import PROD_UPLOAD_PATH, ALLOWED_EXTENSIONS,USER_LOGO_UPLOAD_PATH
-# from webapp.config import customer_config
+
 
 
 def generate_security_key(key_len):
@@ -38,23 +37,6 @@ def generate_md5(data):
     md5 = hashlib.md5(data.encode('ascii'))
     return md5.hexdigest()
 
-# def update_user_point_discount_rate(rate):
-#     new_rate = {'USER_POINT_DISCOUNT_RATE':rate}
-#     current_app.config.update(new_rate)
-#
-#     import webapp as w
-#     import shutil
-#     config_folder = os.path.dirname(w.__file__)
-#     customer_config = config_folder + os.sep + 'config' + os.sep + 'customer_config.py'
-#     customer_config_temp = customer_config+".temp"
-#     with open(customer_config, 'r') as f:
-#         with open(customer_config_temp, 'w') as g:
-#             for line in f.readlines():
-#                 if 'USER_POINT_DISCOUNT_RATE' not in line:
-#                     g.write(line)
-#                 else:
-#                     g.write('USER_POINT_DISCOUNT_RATE={rate}'.format(rate))
-#     shutil.move(customer_config_temp, customer_config)
 
 def update_config_value(parameter,value):
     new_pair = {parameter:value}
@@ -193,9 +175,7 @@ def object2dict(obj):
 def get_host_info(type):
     ip = HOST_INFO[type]['IP']
     port = HOST_INFO[type]['PORT']
-
-    ipList = socket.gethostbyname_ex(socket.gethostname())
-    return ip if ip in ipList[2] else '127.0.0.1',port
+    return ip,port
 
 
 def prod_search_filter(keyword,query_base,page,supplier_id=None):
