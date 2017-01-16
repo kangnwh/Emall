@@ -6,6 +6,7 @@ from webapp.Models.db_basic import Session
 from webapp.Models.prod_info import Prod_info
 from webapp.Models.v_prod_price_range import V_Prod_price_range
 from webapp.Models.prod_price_range import Prod_price_range
+from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
 from webapp.Models.supplier_rebate_ref import Supplier_rebate_ref
@@ -297,8 +298,8 @@ def quote_to_order():
         supplier_rebate_rate=supplier_rebate_ref.rebate_rate
         print(supplier_rebate_rate)
 
-        real_prices = s.query(Prod_price_range).filter_by(prod_id=order.prod_id).first()
-        real_unit_price=real_prices.get_unit_prices(order.prod_quantity)
+        prod_profit_rate = s.query(Prod_profit_rate).filter_by(valid_flg=1).first()
+        real_unit_price=new_quote.supplier_perfer_unit_price / (1 + prod_profit_rate.profit_rate/100)
         order.need_pay_supplier = (real_unit_price * (1 + supplier_rebate_rate/100)) * order.prod_quantity  + order.imprinting_prices + order.setup_cost + order.freight_cost
         order.is_used_points = 0
         order.used_points = 0
