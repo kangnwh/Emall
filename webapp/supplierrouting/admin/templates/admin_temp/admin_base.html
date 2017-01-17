@@ -40,8 +40,9 @@
                     <li class="btn btn-warning">
                         <a href="{{ config.get("EMALL_APPLICATION_ADDRESS") }}"
                            target="_blank"><strong>Open Home Page</strong></a></li>
-                    <li {% if active_page=='dashboard' %} class="active"{% endif %}>
+                {#      <li {% if active_page=='dashboard' %} class="active"{% endif %}>
                         <a href="{{ url_for('supplierRoute.index') }}">Dashboard</a></li>
+                #}
                     <li {% if active_page=='accountmanagement' %} class="active"{% endif %}>
                         <a href="{{ url_for('supplierRoute.update_supplier') }}">Account Management</a></li>
                     <li {% if active_page=='publish' %} class="active"{% endif %}>
