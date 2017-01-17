@@ -7,7 +7,7 @@
                 <h1>{{ config.get('APP_NAME','Reprot.py') }} Supplier Console</h1>
                 {% if current_user.is_active %}
                     <ul class="list-inline">
-                        <li><span class="label label-primary">User Name : {{ current_user.supplier_name }}</span></li>
+                        <li><span class="label label-primary">Supplier Name : {{ current_user.supplier_name }}</span></li>
                         <li><span class="label label-primary">Email : {{ current_user.email }}</span></li>
                         <li><span class="label label-primary">Points : {{ current_user.supplier_points }}</span></li>
                         <li><span class="label label-primary">Level : {{ current_user.get_supplier_level(current_user.supplier_id) }}</span></li>
