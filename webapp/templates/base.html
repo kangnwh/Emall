@@ -34,8 +34,65 @@
 {% extends "headers.html" %}
 
 {% block mainpage %}
+    <div class="row">
+        <nav class="navbar navbar-default" role="navigation" style=" margin-bottom:0px;">
+            <div class="container">
+                <!-- Start Header Navigation -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="#brand"><img src="images/brand/logo-black.png" class="logo"
+                                                               alt=""></a>
+                </div>
+                <!-- End Header Navigation -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-left" data-in="fadeInDown" data-out="fadeOutUp">
+                        <li class="active"><a href="{{ url_for('homeRoute.index') }}">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                        {% if current_user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle"
+                                   data-toggle="dropdown">Actions<span
+                                        class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {#                                    <li><a href="{{ url_for("userRoute.user_orders",type='finished') }}">My Orders</a></li>#}
+                                    {#                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>#}
+                                    {% if current_user.is_administrator %}
+                                        <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>
+                                    {% else %}
+                                        <li><a href="{{ url_for('userRoute.index') }}">User Console</a></li>
+                                    {% endif %}
+
+                                    <li class="divider"></li>
+                                    <li><a href="{{ url_for("userRoute.logout") }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="dropdown"><a class="btn" role="button" onclick="onRegister()"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                Register/Login</a>
+                            </li>
+                            {#                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"#}
+                            {#                                                    aria-haspopup="true" aria-expanded="false">#}
+                            {#                                Login</a>#}
+                            {#                            </li>#}
+                        {% endif %}
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+
+        </nav>
+    </div>
     <div class="bs-docs-header" tabindex="-1">
-        <div class="jumbotron no-padding-top no-padding-bottom">
+        <div class="jumbotron">
             <div class="container">
                 <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>
                 <p>This is an empty system only providing limited functionalities.</p>
@@ -44,7 +101,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" tabindex="-1">
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -86,7 +143,7 @@
                         <li {% if 'L5' == active_page %} class="active"{% endif %}>
                             <a href="{{ url_for('homeRoute.User_Feedback') }}">User Feedback</a>
                         </li>
-                   {#      <li {% if 'L6' == active_page %} class="active"{% endif %}>
+                        {#      <li {% if 'L6' == active_page %} class="active"{% endif %}>
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
                      #}
@@ -218,7 +275,7 @@
         }
         function search() {
             var search_words = $("#search_words").val();
-{#            console.log("{{ url_for("homeRoute.search") }}?q=" + search_words);#}
+            {#            console.log("{{ url_for("homeRoute.search") }}?q=" + search_words);#}
             window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
         }
     </script>

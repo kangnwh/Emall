@@ -1,5 +1,5 @@
 {% block head %}
-<title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
+    <title>{% block title %}{{ config.get('APP_NAME','An Empty System') }}{% endblock %}</title>
     <link rel="stylesheet" href=" {{ url_for("static",filename="css/bootstrap.min.css") }}">
     {% block favicon %}
         <link rel="icon" href="{{ url_for("static",filename="icon/favicon.ico") }}">
@@ -12,6 +12,10 @@
         <link rel="stylesheet" href=" {{ url_for("static",filename="css/zebra_dialog.css") }}">
         <link rel="stylesheet" href="{{ url_for("static",filename="css/datepicker.min.css") }}">
         <link rel="stylesheet" href="{{ url_for("static",filename="css/bootstrap-stars.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootsnav.css") }}">
+        <link rel="stylesheet" href="{{ url_for("static",filename="css/bootsnav-style.css") }}">
+
+
     {% endblock %}
     <link rel="stylesheet" href=" {{ url_for("static",filename="css/mystyle.css") }}">
     <script src="{{ url_for("static",filename="js/jquery-2.4.4.min.js") }}"></script>
@@ -26,16 +30,26 @@
         <script src="{{ url_for("static",filename="js/jquery.number.min.js") }}"></script>
         <script src="{{ url_for("static",filename="js/jquery.barrating.min.js") }}"></script>
 
+
+
     {% endblock %}
     <script src="{{ url_for("static",filename="js/myjs.js") }}"></script>
 {% endblock %}
 
+
+
+
 {% block mainpage %}
 {% endblock %}
+
+<script>
+    var navigation = $('#nav-main').okayNav();
+</script>
 
 {% block scripts %}
 {% endblock scripts %}
 
 {% block afterloadscripts %}
-     <script src="{{ url_for("static",filename="js/my-after-load.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/my-after-load.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/bootsnav.js") }}"></script>
 {% endblock afterloadscripts %}
