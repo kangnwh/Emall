@@ -94,9 +94,29 @@
     <div class="bs-docs-header" tabindex="-1">
         <div class="jumbotron">
             <div class="container">
-                <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>
-                <p>This is an empty system only providing limited functionalities.</p>
-                <!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>
+                        {#                        <p>This is an empty system only providing limited functionalities.</p>#}
+                    </div>
+                    <div class="col-md-5">
+{#                        <div class="input-group" role="search">#}
+{#                            <div class="form-group">#}
+{#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
+{#                            </div>#}
+{#                            <button class="btn btn-default" onclick="search()">Search</button>#}
+{#                        </div>#}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button"  onclick="search()">Go!</button>
+                              </span>
+                        </div><!-- /input-group -->
+                    </div>
+
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -117,16 +137,16 @@
         <div class="row">
             <nav class="navbar navbar-default" role="navigation">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url_for('homeRoute.index') }}">Home</a>
-                </div>
+{#                <div class="navbar-header">#}
+{#                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"#}
+{#                            data-target="#bs-example-navbar-collapse-1">#}
+{#                        <span class="sr-only">Toggle navigation</span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                    </button>#}
+{#                    <a class="navbar-brand" href="{{ url_for('homeRoute.index') }}">Home</a>#}
+{#                </div>#}
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -147,47 +167,47 @@
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
                      #}
-                        <div class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input id="search_words" type="text" class="form-control" placeholder="Search">
-                            </div>
-                            <button class="btn btn-default" onclick="search()">Search</button>
-                        </div>
+{#                        <div class="navbar-form navbar-left" role="search">#}
+{#                            <div class="form-group">#}
+{#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
+{#                            </div>#}
+{#                            <button class="btn btn-default" onclick="search()">Search</button>#}
+{#                        </div>#}
 
 
                     </ul>
 
-                    <ul class="nav navbar-nav navbar-right">
-
-                        {% if current_user.is_authenticated %}
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle"
-                                   data-toggle="dropdown">Actions<span
-                                        class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    {#                                    <li><a href="{{ url_for("userRoute.user_orders",type='finished') }}">My Orders</a></li>#}
-                                    {#                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>#}
-                                    {% if current_user.is_administrator %}
-                                        <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>
-                                    {% else %}
-                                        <li><a href="{{ url_for('userRoute.index') }}">User Console</a></li>
-                                    {% endif %}
-
-                                    <li class="divider"></li>
-                                    <li><a href="{{ url_for("userRoute.logout") }}">Logout</a></li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li class="dropdown"><a class="btn" role="button" onclick="onRegister()"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                Register/Login</a>
-                            </li>
-                            {#                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"#}
-                            {#                                                    aria-haspopup="true" aria-expanded="false">#}
-                            {#                                Login</a>#}
-                            {#                            </li>#}
-                        {% endif %}
-                    </ul>
+                    {#                    <ul class="nav navbar-nav navbar-right">#}
+                    {##}
+                    {#                        {% if current_user.is_authenticated %}#}
+                    {#                            <li class="dropdown">#}
+                    {#                                <a href="#" class="dropdown-toggle"#}
+                    {#                                   data-toggle="dropdown">Actions<span#}
+                    {#                                        class="caret"></span></a>#}
+                    {#                                <ul class="dropdown-menu" role="menu">#}
+                    {#                                    <li><a href="{{ url_for("userRoute.user_orders",type='finished') }}">My Orders</a></li>#}
+                    {#                                    <li><a href="{{ url_for('userRoute.change_password') }}">Change Password</a></li>#}
+                    {#                                    {% if current_user.is_administrator %}#}
+                    {#                                        <li><a href="{{ url_for('adminRoute.index') }}">Admin Console</a></li>#}
+                    {#                                    {% else %}#}
+                    {#                                        <li><a href="{{ url_for('userRoute.index') }}">User Console</a></li>#}
+                    {#                                    {% endif %}#}
+                    {##}
+                    {#                                    <li class="divider"></li>#}
+                    {#                                    <li><a href="{{ url_for("userRoute.logout") }}">Logout</a></li>#}
+                    {#                                </ul>#}
+                    {#                            </li>#}
+                    {#                        {% else %}#}
+                    {#                            <li class="dropdown"><a class="btn" role="button" onclick="onRegister()"#}
+                    {#                                                    aria-haspopup="true" aria-expanded="false">#}
+                    {#                                Register/Login</a>#}
+                    {#                            </li>#}
+                    {#                            <li class="dropdown"><a href="{{ url_for('userRoute.login') }}" role="button"#}
+                    {#                                                    aria-haspopup="true" aria-expanded="false">#}
+                    {#                                Login</a>#}
+                    {#                            </li>#}
+                    {#                        {% endif %}#}
+                    {#                    </ul>#}
                 </div><!-- /.navbar-collapse -->
             </nav>
         </div>
