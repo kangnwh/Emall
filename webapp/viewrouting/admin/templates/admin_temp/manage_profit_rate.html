@@ -8,10 +8,11 @@
 {% endblock %}
 
 {% block page %}
+    {#
         <div class="'row">
           <button type="button" class="btn btn-primary trigger-new-profit-rate-win" data-izimodal-transitionin="fadeInDown" data-izimodal-open="modal-new-profit-rate-win">Add New</button>
         </div>
-
+ #}
     <table class="table table-hover">
         <thead><tr>
             <th>Profit Rate</th>
@@ -29,12 +30,13 @@
                     <td>{{ udpate_profit_rate_form.valid_flg(checked= true if profit.valid_flg==1 else false) }}</td>
                      <td> <input type="submit" class="btn btn-primary"  value="Update"/></td>
                 </form>
-                    <td> <form action="{{ url_for('adminRoute.delete_profit') }}" method="post" name="delete">
+            {#         <td> <form action="{{ url_for('adminRoute.delete_profit') }}" method="post" name="delete">
                              {{ delete_new_rate_form.hidden_tag() }}
                              <div class="invisible" >{{ delete_new_rate_form.profit_id(value=profit.profit_id) }}</div>
                         <input type="submit" class="btn btn-primary " value="Delete"/>
                     </form>
                     </td>
+                     #}
             </tr>
         {% endfor %}
         </tbody>

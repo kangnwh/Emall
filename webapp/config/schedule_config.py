@@ -3,7 +3,7 @@ from flask_apscheduler import APScheduler
 scheduler = APScheduler()
 
 
-SCHEDULER_API_ENABLED = True
+SCHEDULER_API_ENABLED = False
 JOBS = [
         {
             'id': 'deliver_notification',
@@ -11,7 +11,7 @@ JOBS = [
             'args': None,
             'trigger': 'cron',
             'hour': 14,
-            'minute':40,
+            'minute':33,
             'second':0
         }
     ]
