@@ -2,42 +2,43 @@
 {% block title %}Home Page - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
 {% block link_ref %}
     {{ super() }}
-	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
 {% endblock %}
 {% set active_page = "index" %}
 
-{% block page %}
-
-    <div class="row">
-        <div class="">
-		<div id="slider">
-			<ul class="slides my-slider-ul" >
-				<li><img class="responsive" src="{{ url_for("static",filename="img/adv/1.jpg") }} "></li>
-				<li><img class="responsive" src="{{ url_for("static",filename="img/adv/2.jpg") }}"></li>
-				<li><img class="responsive" src="{{ url_for("static",filename="img/adv/3.jpg") }}"></li>
-				<li><img class="responsive" src="{{ url_for("static",filename="img/adv/4.jpg") }}"></li>
-			</ul>
-			<ul class="controls">
-				<li><img src="{{ url_for("static",filename="img/adv/prev.png") }}" alt="previous"></li>
-				<li><img src="{{ url_for("static",filename="img/adv/next.png") }}" ></li>
-			</ul>
-			<ul class="pagination">
-				<li class="active"></li>
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
-		</div>
-	</div>
-    </div>
-{% endblock %}
+{% block full_page_under_nav %}
+    {% block page %}
+        <div class="row">
+            <div class="">
+                <div id="slider">
+                    <ul class="slides my-slider-ul">
+                        <li><img class="responsive" src="{{ url_for("static",filename="img/adv/1.jpg") }} "></li>
+                        <li><img class="responsive" src="{{ url_for("static",filename="img/adv/2.jpg") }}"></li>
+                        <li><img class="responsive" src="{{ url_for("static",filename="img/adv/3.jpg") }}"></li>
+                        <li><img class="responsive" src="{{ url_for("static",filename="img/adv/4.jpg") }}"></li>
+                    </ul>
+                    <ul class="controls">
+                        <li><img src="{{ url_for("static",filename="img/adv/prev.png") }}" alt="previous"></li>
+                        <li><img src="{{ url_for("static",filename="img/adv/next.png") }}"></li>
+                    </ul>
+                    <ul class="pagination">
+                        <li class="active"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endblock page %}
+{% endblock full_page_under_nav %}
 
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
     <script type="text/javascript">
-		$(function() {
-			  $("#slider").easySlider({});
-		  });
-	</script>
+        $(function () {
+            $("#slider").easySlider({});
+        });
+    </script>
 {% endblock scripts %}

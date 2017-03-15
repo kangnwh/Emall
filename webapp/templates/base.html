@@ -107,7 +107,7 @@
 {#                            <button class="btn btn-default" onclick="search()">Search</button>#}
 {#                        </div>#}
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for...">
+                            <input  id="search_words" type="text" class="form-control" placeholder="Search for...">
                               <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"  onclick="search()">Go!</button>
                               </span>
@@ -296,7 +296,13 @@
         function search() {
             var search_words = $("#search_words").val();
             {#            console.log("{{ url_for("homeRoute.search") }}?q=" + search_words);#}
-            window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
+             {% if current_user.is_authenticated %}
+                 window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
+
+             {% else %}
+                 $('#register-win').iziModal('open');
+            {% endif %}
+
         }
     </script>
 {% endblock scripts %}
