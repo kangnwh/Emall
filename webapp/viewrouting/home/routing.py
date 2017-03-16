@@ -204,7 +204,7 @@ def upload_user_logo():
 
 
 @homeRoute.route('/search', methods=['GET'])
-@login_required
+#@login_required
 def search():
     key_words = request.args.get("q")
     supplier_id = request.args.get("supplier")

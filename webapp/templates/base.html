@@ -55,6 +55,14 @@
 
                         <li><a href="#">Portfolio</a></li>
                         <li><a href="#">Contact Us</a></li>
+                        <li><a ></a></li>
+                        <li><a ></a></li>
+                        {% if current_user.is_active %}
+                        <li><a >Welcome : {{ current_user.email }}</a></li>
+                        <li><a >Points : {{ current_user.credit_points }}</a></li>
+                {% else %}
+
+                {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                         {% if current_user.is_authenticated %}
@@ -163,10 +171,10 @@
                         <li {% if 'L5' == active_page %} class="active"{% endif %}>
                             <a href="{{ url_for('homeRoute.User_Feedback') }}">User Feedback</a>
                         </li>
-                        {#      <li {% if 'L6' == active_page %} class="active"{% endif %}>
+                              <li {% if 'L6' == active_page %} class="active"{% endif %}>
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
-                     #}
+
 {#                        <div class="navbar-form navbar-left" role="search">#}
 {#                            <div class="form-group">#}
 {#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
@@ -296,13 +304,7 @@
         function search() {
             var search_words = $("#search_words").val();
             {#            console.log("{{ url_for("homeRoute.search") }}?q=" + search_words);#}
-             {% if current_user.is_authenticated %}
                  window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
-
-             {% else %}
-                 $('#register-win').iziModal('open');
-            {% endif %}
-
         }
     </script>
 {% endblock scripts %}

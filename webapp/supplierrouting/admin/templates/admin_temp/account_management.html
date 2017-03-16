@@ -16,7 +16,7 @@
           enctype="multipart/form-data">
         {{ update_supp_form.hidden_tag() }}
 <div class="row">
-                    {{ input_helper('col-md-12',update_supp_form.supplier_id,default_value=this_supplier.supplier_id ) }}
+                    {{ input_helper('col-md-12 disabled',update_supp_form.supplier_id,default_value=this_supplier.supplier_id ) }}
                     {{ input_helper('col-md-12',update_supp_form.email,default_value=this_supplier.email ) }}
                     {{ input_helper('col-md-12',update_supp_form.supplier_points,default_value=this_supplier.supplier_points ) }}
                     {{ input_helper('col-md-12',update_supp_form.supplier_name,default_value=this_supplier.supplier_name ) }}

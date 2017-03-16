@@ -39,7 +39,10 @@
                 }
             });
         }
-
+        function onRegister() {
+            {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
+            $('#register-win').iziModal('open');
+        }
     </script>
 
 {% endblock scripts %}
