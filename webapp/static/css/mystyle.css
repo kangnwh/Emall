@@ -249,3 +249,59 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 .margin-bottom{
     margin-bottom:0px;
 }
+
+/* Example 5 */
+
+#my-slider .sp-thumbnail-image-container {
+	width: 100px;
+	height: 80px;
+	overflow: hidden;
+	float: left;
+}
+
+#my-slider .sp-thumbnail-image {
+	height: 100%;
+}
+
+#my-slider .sp-thumbnail-text {
+	width: 170px;
+    float: right;
+    padding: 8px;
+    background-color: #F0F0F0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#my-slider .sp-thumbnail-title {
+	margin-bottom: 5px;
+	text-transform: uppercase;
+	color: #333;
+}
+
+#my-slider .sp-thumbnail-description {
+	font-size: 14px;
+	color: #333;
+}
+
+@media (max-width: 500px) {
+	#my-slider .sp-thumbnail {
+		text-align: center;
+	}
+
+	#my-slider .sp-thumbnail-image-container {
+		display: none;
+	}
+
+	#my-slider .sp-thumbnail-text {
+		width: 120px;
+	}
+
+	#my-slider .sp-thumbnail-title {
+		font-size: 12px;
+		text-transform: uppercase;
+	}
+
+	#my-slider .sp-thumbnail-description {
+		display: none;
+	}
+}
