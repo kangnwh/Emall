@@ -36,7 +36,7 @@
                         {{ input_helper("invisible",user_quote_form.prod_id,default_value=this_prod.prod_id) }}
                         {{ input_helper("invisible",user_quote_form.supplier_id,default_value=this_prod.supplier_id) }}
                         {{ readonly_input_helper("col-md-6",user_quote_form.prod_name,input_class="form-control",default_value = this_prod.prod_name) }}
-                        {{ readonly_input_helper("col-md-6",user_quote_form.lead_time,input_class="form-control ",default_value = this_prod.lead_time) }}
+                        {{ input_helper("col-md-6",user_quote_form.lead_time,input_class="form-control ",default_value = this_prod.lead_time,input_comment = "Input your required date") }}
                         {{ input_helper("col-md-6",user_quote_form.prod_size,input_class="form-control ",input_comment = this_prod.prod_size) }}
                         {{ input_helper("col-md-6",user_quote_form.special_instruction,input_class="form-control ",input_comment = this_prod.special_instruction) }}
                         {{ input_helper("col-md-6",user_quote_form.imprint_info,input_class="form-control",input_comment = this_prod.imprint_info) }}

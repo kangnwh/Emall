@@ -12,7 +12,8 @@
                     </div>
                     <div class="panel-body">
                         <div>
-
+                            <a class="" role="button"
+                       href="{{ url_for('homeRoute.indiv_prod',prod_id=indiv_prod_info.prod_id) }}" target="_blank">
                             <div class="img-responsive material_img_box "
                                  style="background-image: url('{{ (url_for("static",filename=("img/products/"+ indiv_prod_info.cover_img))) }}')"
                             >
@@ -21,15 +22,25 @@
                                 <img class="list-user-logo invisible" name="img-logo-processed"
                                      src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link) )) }}">
                             </div>
+                                </a>
                         </div>
                     </div>
                 </div>
                 <p class="one-line">
+                {% if current_user.is_authenticated %}
                     {% if indiv_prod_info.is_special_price_flg == 1 %}
                         <strong >On Sale  </strong><strong class="material-card-big">{{ indiv_prod_info.special_price_new }}</strong><del>{{ indiv_prod_info.special_price_old }}</del>
                     {% else %}
                         <strong>From </strong><strong  class="material-card-big">{{ (indiv_prod_info.v_price_ranges[0].unit_price5 if indiv_prod_info.v_price_ranges[0].unit_price5>0 else (indiv_prod_info.v_price_ranges[0].unit_price4 if indiv_prod_info.v_price_ranges[0].unit_price4>0 else    (indiv_prod_info.v_price_ranges[0].unit_price3 if indiv_prod_info.v_price_ranges[0].unit_price3>0 else (indiv_prod_info.v_price_ranges[0].unit_price2 if indiv_prod_info.v_price_ranges[0].unit_price2>0 else       (indiv_prod_info.v_price_ranges[0].unit_price1 if indiv_prod_info.v_price_ranges[0].unit_price1>0 else ''))))) if indiv_prod_info.v_price_ranges.__len__()>0 else '' }}</strong>   <strong> {{ "  - New Prod" if indiv_prod_info.is_new_prod==1 else ""  }}</strong>
                     {% endif %}
+                {% else %}
+
+                     <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                Get Price</a>
+                     </li>
+
+                {% endif %}
                 </p>
 
                 <div class="btn-group btn-group-sm">

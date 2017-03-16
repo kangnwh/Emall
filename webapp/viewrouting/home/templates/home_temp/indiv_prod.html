@@ -57,7 +57,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 " style="max-width:400px;">
-                            {#
+
                             <div class="alert alert-success">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
- #}
+
                         </div>
                     </div>
                 </div>
@@ -114,6 +114,7 @@
             </div>
 
             <div id="price_detail" class="row well"><!-- price range -->
+            {% if current_user.is_authenticated %}
                 <div class="row">
                     {% if this_prod.is_special_price_flg %}
                         <h3> Fixed Price ! <br><strong class="material-card-big">{{ this_prod.special_price_new }}</strong>
@@ -185,6 +186,13 @@
                         Quote
                     </a>
                 </div>
+            {% else %}
+                    <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                Get Price</a>
+                     </li>
+
+                {% endif %}
             </div>
 
 
@@ -295,6 +303,12 @@
             }
             parent.append('</tbody></table>');
         }
+
+        function onRegister() {
+            {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
+            $('#register-win').iziModal('open');
+        }
+
         function switch_group(group, active) {
             $("[group='" + group + "']").removeClass('success');
             $(active).addClass('success');
