@@ -272,7 +272,6 @@
     </div>
 
     <script type="text/javascript">
-
         function change_logo_choice(state) {
             var processed = $("#control-logo-processed");
             var original = $("#control-logo-original");
@@ -406,19 +405,19 @@
 
         refreshPrice();
         init_price_selection('price_selection');
-        {#        $('img').parent().zoom();#}
 
 
     </script>
+
 {% endblock %}
 
-{% block after_load %}
+{% block document_ready %}
     $("#indiv_pics").jcImgScroll({
             arrow: {
-            width: 45,
-            height: 400,
-            x: 60,
-            y: 0
+                width: 45,
+                height: 400,
+                x: 60,
+                y: 0
             },
             width: 300, //设置图片宽度
             height: 309, //设置图片高度
@@ -430,7 +429,11 @@
             offsetX: 60,
             NumBtn: false,
             title: false,
-            setZoom: .8,
-    });
-    $('img').parent().zoom();
-{% endblock after_load %}
+            setZoom: .8
+        });
+{% endblock document_ready %}
+{% block windows_onload %}
+    $("a img").parent().zoom();
+{% endblock windows_onload %}
+
+
