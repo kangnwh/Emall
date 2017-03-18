@@ -55,14 +55,14 @@
 
                         <li><a href="#">Portfolio</a></li>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a ></a></li>
-                        <li><a ></a></li>
+                        <li><a></a></li>
+                        <li><a></a></li>
                         {% if current_user.is_active %}
-                        <li><a >Welcome : {{ current_user.email }}</a></li>
-                        <li><a >Points : {{ current_user.credit_points }}</a></li>
-                {% else %}
+                            <li><a>Welcome : {{ current_user.email }}</a></li>
+                            <li><a>Points : {{ current_user.credit_points }}</a></li>
+                        {% else %}
 
-                {% endif %}
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                         {% if current_user.is_authenticated %}
@@ -108,16 +108,16 @@
                         {#                        <p>This is an empty system only providing limited functionalities.</p>#}
                     </div>
                     <div class="col-md-5">
-{#                        <div class="input-group" role="search">#}
-{#                            <div class="form-group">#}
-{#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
-{#                            </div>#}
-{#                            <button class="btn btn-default" onclick="search()">Search</button>#}
-{#                        </div>#}
+                        {#                        <div class="input-group" role="search">#}
+                        {#                            <div class="form-group">#}
+                        {#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
+                        {#                            </div>#}
+                        {#                            <button class="btn btn-default" onclick="search()">Search</button>#}
+                        {#                        </div>#}
                         <div class="input-group">
-                            <input  id="search_words" type="text" class="form-control" placeholder="Search for...">
+                            <input id="search_words" type="text" class="form-control" placeholder="Search for...">
                               <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"  onclick="search()">Go!</button>
+                                <button class="btn btn-default" type="button" onclick="search()">Go!</button>
                               </span>
                         </div><!-- /input-group -->
                     </div>
@@ -145,16 +145,16 @@
         <div class="row">
             <nav class="navbar navbar-default" role="navigation">
                 <!-- Brand and toggle get grouped for better mobile display -->
-{#                <div class="navbar-header">#}
-{#                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"#}
-{#                            data-target="#bs-example-navbar-collapse-1">#}
-{#                        <span class="sr-only">Toggle navigation</span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                    </button>#}
-{#                    <a class="navbar-brand" href="{{ url_for('homeRoute.index') }}">Home</a>#}
-{#                </div>#}
+                {#                <div class="navbar-header">#}
+                {#                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"#}
+                {#                            data-target="#bs-example-navbar-collapse-1">#}
+                {#                        <span class="sr-only">Toggle navigation</span>#}
+                {#                        <span class="icon-bar"></span>#}
+                {#                        <span class="icon-bar"></span>#}
+                {#                        <span class="icon-bar"></span>#}
+                {#                    </button>#}
+                {#                    <a class="navbar-brand" href="{{ url_for('homeRoute.index') }}">Home</a>#}
+                {#                </div>#}
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -171,18 +171,9 @@
                         <li {% if 'L5' == active_page %} class="active"{% endif %}>
                             <a href="{{ url_for('homeRoute.User_Feedback') }}">User Feedback</a>
                         </li>
-                              <li {% if 'L6' == active_page %} class="active"{% endif %}>
+                        <li {% if 'L6' == active_page %} class="active"{% endif %}>
                             <a class='btn' onclick="onUploadLogo()">Upload Your Logo </a>
                         </li>
-
-{#                        <div class="navbar-form navbar-left" role="search">#}
-{#                            <div class="form-group">#}
-{#                                <input id="search_words" type="text" class="form-control" placeholder="Search">#}
-{#                            </div>#}
-{#                            <button class="btn btn-default" onclick="search()">Search</button>#}
-{#                        </div>#}
-
-
                     </ul>
 
                     {#                    <ul class="nav navbar-nav navbar-right">#}
@@ -253,39 +244,7 @@
 {% block scripts %}
     <script src="{{ url_for("static",filename="js/sidebar-menu.js") }}"></script>
     <script>
-        $(function () {
 
-            $("#upload-user-logo-win").iziModal({
-                overlayClose: false,
-                iframe: true,
-                iframeURL: '{{ url_for('homeRoute.upload_user_logo') }}',
-                width: 1200,
-                iframeHeight: 600,
-                autoOpen: false,
-                overlayColor: 'rgba(0, 0, 0, 0.6)',
-                onClosing: function () {
-                    location.reload();
-                },
-
-            });
-            $("#register-win").iziModal({
-                title: 'Login/Register',
-                subtitle: '',
-                overlayClose: false,
-                iframe: true,
-                iframeURL: '{{ url_for('userRoute.register_login') }}',
-                width: 600,
-                iframeHeight: 400,
-                autoOpen: false,
-                radius: 15,
-                overlayColor: 'rgba(0, 0, 0, 0.6)',
-                onClosing: function () {
-                    location.reload();
-                },
-
-            });
-            $.sidebarMenu($('.sidebar-menu'));
-        });
         function onUploadLogo() {
             {#            $("#upload-user-logo-win iframe").attr('src', '{{ url_for('homeRoute.upload_user_logo') }}');#}
             $('#upload-user-logo-win').iziModal('open');
@@ -304,8 +263,45 @@
         function search() {
             var search_words = $("#search_words").val();
             {#            console.log("{{ url_for("homeRoute.search") }}?q=" + search_words);#}
-                 window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
+            {% if current_user.is_authenticated %}
+                window.open("{{ url_for("homeRoute.search") }}?q=" + search_words);
+            {% else %}
+                $('#register-win').iziModal('open');
+            {% endif %}
         }
+        $(function () {
+                    $("#upload-user-logo-win").iziModal({
+                        overlayClose: false,
+                        iframe: true,
+                        iframeURL: '{{ url_for('homeRoute.upload_user_logo') }}',
+                        width: 1200,
+                        iframeHeight: 600,
+                        autoOpen: false,
+                        overlayColor: 'rgba(0, 0, 0, 0.6)',
+                        onClosing: function () {
+                            location.reload();
+                        }
+
+                    });
+                    $("#register-win").iziModal({
+                        title: 'Login/Register',
+                        subtitle: '',
+                        overlayClose: false,
+                        iframe: true,
+                        iframeURL: '{{ url_for('userRoute.register_login') }}',
+                        width: 600,
+                        iframeHeight: 400,
+                        autoOpen: false,
+                        radius: 15,
+                        overlayColor: 'rgba(0, 0, 0, 0.6)',
+                        onClosing: function () {
+                            location.reload();
+                        }
+                    });
+                    $.sidebarMenu($('.sidebar-menu'));
+                    {% block after_load %}{% endblock after_load %}
+                }
+        );
     </script>
 {% endblock scripts %}
 

@@ -1,0 +1,10 @@
+.jcImgScroll{position:relative;height:380px;}
+.jcImgScroll li{border:1px solid #ccc;}
+.jcImgScroll li a{background:#fff;display:block;position:relative;z-index:99;}
+.jcImgScroll li.loading a{background:#fff url(img/loading.gif) no-repeat center center;}
+.jcImgScroll li img,.jcImgScroll li,.jcImgScroll em,.jcImgScroll dl{display:none;border:0 none;}
+.jcImgScroll li img{width: 100%;height: 100%;}
+.jcImgScroll em.sPrev{background:url(images/arrow-left.png) no-repeat left center;}
+.jcImgScroll em.sNext{background:url(images/arrow-right.png) no-repeat right center;}
+.jcImgScroll dl dd{background:url(images/NumBtn.png) no-repeat 0 bottom;text-indent:-9em;}
+.jcImgScroll dl dd:hover,.jcImgScroll dl dd.curr{background-position:0 0;}
