@@ -178,6 +178,11 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 .indiv-user-logo {
     height: 75px;
     width: 75px;
+    position:absolute;
+    top:100px;
+    right:100px;
+    border:0px;
+    display:inline;
 }
 
 .indiv-prod-desc-head {

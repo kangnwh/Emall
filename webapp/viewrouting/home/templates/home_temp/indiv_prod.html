@@ -272,7 +272,19 @@
     </div>
 
     <script type="text/javascript">
+        is_logo_on_pic_created = false;
+        //default settings
+        big_pic_width = 300;
+        big_pic_height = 300;
+        logo_width = 75;
+        logo_height = 75;
         function change_logo_choice(state) {
+
+            if (!is_logo_on_pic_created) {
+                create_log_for_large_pics();
+                is_logo_on_pic_created = true;
+            }
+
             var processed = $("#control-logo-processed");
             var original = $("#control-logo-original");
             if (state) {
@@ -352,6 +364,54 @@
             $('#register-win').iziModal('open');
         }
 
+        function create_log_for_large_pics() {
+            //insert logo pic on samll prod pictures
+            var orig_logo = new Image();
+            orig_logo.src = '{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}';
+            orig_logo.style = 'width:' + logo_width + 'px;height:' + logo_height + 'px;position:absolute;top:' + (big_pic_height - logo_height) / 2 + 'px; right:' + (big_pic_width - logo_width) / 2 + 'px; border:0px; display:inline';
+            orig_logo.classList = "indiv-user-logo invisible";
+            orig_logo.name = 'img-logo-original';
+            $('#indiv_pics a img:first-of-type').after(orig_logo);
+
+            var processed_logo = new Image();
+            processed_logo.src = "{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}";
+            processed_logo.style = 'width:' + logo_width + 'px;height:' + logo_height + 'px;position:absolute;top:' + (big_pic_height - logo_height) / 2 + 'px; right:' + (big_pic_width - logo_width) / 2 + 'px; border:0px; display:inline';
+            processed_logo.classList = "indiv-user-logo invisible"
+            processed_logo.name = 'img-logo-processed'
+            {#    $('#indiv_pics a img')[0].after(processed_logo);#}
+            $('#indiv_pics a img:first-of-type').after(processed_logo);
+
+
+            //insert logo pic on big prod pictures
+            big_pics = $('#indiv_pics a img:last-of-type');
+            for (i = 0; i < big_pics.length; i++) {
+                var big_orig_logo = new Image();
+                big_orig_logo.src = '{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}';
+                new_width = big_pics[i].width / big_pic_width * 75;
+                new_height = big_pics[i].height / big_pic_height * 75;
+                big_orig_logo.style = 'width:' + new_width + 'px;height:' + new_height + 'px;position:absolute;top:' + (big_pic_height - new_height) / 2 + 'px; right:' + (big_pic_width - new_width) / 2 + 'px; border:0px; display:none';
+                big_orig_logo.classList = "indiv-user-logo invisible zoomLogo";
+                big_orig_logo.name = 'img-logo-original';
+
+
+                var big_processed_logo = new Image();
+                big_processed_logo.src = "{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}";
+                big_processed_logo.style = 'width:' + new_width + 'px;height:' + new_height + 'px;position:absolute;top:' + (big_pic_height - new_height) / 2 + 'px; right:' + (big_pic_width - new_width) / 2 + 'px; border:0px; display:none';
+                big_processed_logo.classList = "indiv-user-logo invisible zoomLogo";
+                big_processed_logo.name = 'img-logo-processed';
+                big_pics[i].after(big_orig_logo);
+                big_pics[i].after(big_processed_logo);
+                $(big_pics[i]).mouseenter( function () {
+                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');
+{#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
+                });
+                $(big_pics[i]).mouseleave( function () {
+                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','none');
+{#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
+                });
+            }
+        }
+
 
         var el = $("#switch-offColor").bootstrapSwitch();
         el.bootstrapSwitch('state', false);
@@ -413,27 +473,31 @@
 
 {% block document_ready %}
     $("#indiv_pics").jcImgScroll({
-            arrow: {
-                width: 45,
-                height: 400,
-                x: 60,
-                y: 0
-            },
-            width: 300, //设置图片宽度
-            height: 309, //设置图片高度
-            imgtop: 12,//每张图片的上下偏移量
-            imgleft: -10,//每张图片的左边偏移量
-            imgwidth: 30,//每张图片的宽度偏移量
-            imgheight: 44,//每张图片的高度偏移量
-            count: {{ this_prod.prod_pics.__len__() + 1 }},
-            offsetX: 60,
-            NumBtn: false,
-            title: false,
-            setZoom: .8
-        });
+    arrow: {
+    width: 45,
+    height: 400,
+    x: 60,
+    y: 0
+    },
+    width: big_pic_width+'px', //设置图片宽度
+    height: big_pic_height+'px', //设置图片高度
+    imgtop: 12,//每张图片的上下偏移量
+    imgleft: -10,//每张图片的左边偏移量
+    imgwidth: 30,//每张图片的宽度偏移量
+    imgheight: 44,//每张图片的高度偏移量
+    count: {{ this_prod.prod_pics.__len__() + 1 }},
+    offsetX: 60,
+    NumBtn: false,
+    title: false,
+    setZoom: .8
+    });
+
+
 {% endblock document_ready %}
 {% block windows_onload %}
+    //begin to zoom
     $("a img").parent().zoom();
+
 {% endblock windows_onload %}
 
 
