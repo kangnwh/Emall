@@ -25,7 +25,7 @@
             <div class="row"><!-- slider,logo change, description -->
                 <div class="col-md-6 ">
                     <div class="row">
-                        <div class="panel panel-default middle" style="max-width:600px;">
+                        <div class="panel middle" style="max-width:600px;">
                             <div class="panel-body">
                                 <div id="indiv_pics" class="jcImgScroll" style="display:block;overflow: hidden;">
                                     <ul>
@@ -34,7 +34,7 @@
                                         </li>
                                         {% for pic in this_prod.prod_pics %}
                                             <li>
-                                                <a path="{{ url_for("static",filename=("img/products/"+ pic.image_path)) }}"></a>
+                                                <a path="{{ url_for("static",filename=("img/products/"+ pic.image_path )) }}"></a>
                                             </li>
                                         {% endfor %}
                                         {#                                        #}
@@ -126,115 +126,223 @@
                 </div>
                 <div class="col-md-6">
                     <div class="">
-
                         <strong class="indiv-prod-desc-head">Description</strong>
                         <p>{{ this_prod.prod_desc }}</p>
-                        <strong class="indiv-prod-desc-head">Colours</strong>
-                        <p>{{ this_prod.colors }}</p>
-                        <strong class="indiv-prod-desc-head">Production Size</strong>
-                        <p>{{ this_prod.prod_size }}</p>
-                        <strong class="indiv-prod-desc-head">Imprint Size</strong>
-                        <p>{{ this_prod.imprint_size }}</p>
-                        <strong class="indiv-prod-desc-head">Lead Time</strong>
-                        <p>{{ this_prod.lead_time }}</p>
-                        <strong class="indiv-prod-desc-head">Price Basis (<a href="#price_detail">
-                            <ins>Price Detail</ins>
-                        </a>)</strong>
-                        <p>{{ this_prod.price_basis }}</p>
-                        <strong class="indiv-prod-desc-head">Subcategory</strong>
-                        <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>
-                        <strong class="indiv-prod-desc-head">Other</strong>
-                        <p><strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}
-                            &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}
-                            &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>
+                        <div id="price_detail" class="row well"><!-- price range -->
+                            {% if current_user.is_authenticated %}
+                                <div class="row">
+                                    {% if this_prod.is_special_price_flg %}
+                                        <h3> Fixed Price ! <br><strong
+                                                class="material-card-big">{{ this_prod.special_price_new }}</strong>
+                                            <del>{{ this_prod.special_price_old }}</del>
+                                        </h3>
+                                    {% else %}
+                                        <div class="col-md-5">
+                                            <div class="row">
+                                                <p class="col-md-12">1. How many do you want? (minimum 100)</p>
+                                            </div>
+                                            <div class="row" style="padding-top: 30px;">
+                                                <div class="col-md-12">
+                                                    <input id="ex8" data-slider-id='ex1Slider' type="text"
+                                                           data-slider-min="0"
+                                                           data-slider-max="20000"
+                                                           data-slider-step="1" data-slider-value="14"/></div>
+                                                <div class="col-md-6">
+                                                    <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)"
+                                                           type="number">
+                                                </div>
+                                                <div class="col-md-12"><!-- select quantity -->
+
+                                                    <div class="panel-body">
+                                                        <div id="price_selection"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <table class="table table-hover text-right" style="font-size:14px;">
+                                                <thead>
+                                                <tr>
+                                                    <th class="indiv-price-big col-md-8">Unit Price</th>
+                                                    <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                                            id="unit_price"></span>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="">Setup</td>
+                                                    <td><span>$</span><span id="setup_price"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">Imprinting Prices</td>
+                                                    <td><span>$</span><span id="imprinting_prices"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">Freight Cost</td>
+                                                    <td><span>$</span><span id="freight_cost"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                                            id="total_price"></span></strong></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <a class="col-md-2 btn btn-primary" role="button"
+                                       href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">
+                                        Buy
+                                    </a>
+                                    <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"
+                                       href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">
+                                        Quote
+                                    </a>
+                                </div>
+                            {% else %}
+                                <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                    Get Price</a>
+                                </li>
+
+                            {% endif %}
+                        </div>
+                        {#                        <strong class="indiv-prod-desc-head">Colours</strong>#}
+                        {#                        <p>{{ this_prod.colors }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Production Size</strong>#}
+                        {#                        <p>{{ this_prod.prod_size }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Imprint Size</strong>#}
+                        {#                        <p>{{ this_prod.imprint_size }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Lead Time</strong>#}
+                        {#                        <p>{{ this_prod.lead_time }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Price Basis (<a href="#price_detail">#}
+                        {#                            <ins>Price Detail</ins>#}
+                        {#                        </a>)</strong>#}
+                        {#                        <p>{{ this_prod.price_basis }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Subcategory</strong>#}
+                        {#                        <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Other</strong>#}
+                        {#                        <p><strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}#}
+                        {#                            &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}#}
+                        {#                            &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>#}
+
                     </div>
                 </div>
             </div>
 
-            <div id="price_detail" class="row well"><!-- price range -->
-                {% if current_user.is_authenticated %}
-                    <div class="row">
-                        {% if this_prod.is_special_price_flg %}
-                            <h3> Fixed Price ! <br><strong
-                                    class="material-card-big">{{ this_prod.special_price_new }}</strong>
-                                <del>{{ this_prod.special_price_old }}</del>
-                            </h3>
-                        {% else %}
-                            <div class="col-md-7">
-                                <div class="row">
-                                    <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
-                                </div>
-                                <div class="row" style="padding-top: 30px;">
-                                    <div class="col-md-9">
-                                        <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
-                                               data-slider-max="20000"
-                                               data-slider-step="1" data-slider-value="14"/></div>
-                                    <div class="col-md-3">
-                                        <input id="input_qty" min="1" id="qty-input" class="form-control "
-                                               onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
-                                    </div>
-                                    <div class="col-md-12"><!-- select quantity -->
-
-                                        <div class="panel-body">
-                                            <div id="price_selection"></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-1 col-md-4">
-                                <table class="table table-hover text-right">
-                                    <thead>
-                                    <tr>
-                                        <th class="indiv-price-big col-md-7 ">Unit Price</th>
-                                        <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
-                                                id="unit_price"></span>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td class="">Setup</td>
-                                        <td><span>$</span><span id="setup_price"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="">Imprinting Prices</td>
-                                        <td><span>$</span><span id="imprinting_prices"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="">Freight Cost</td>
-                                        <td><span>$</span><span id="freight_cost"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="indiv-price-big"><strong>Total</strong></td>
-                                        <td class="indiv-price-big"><strong><span>$</span><span
-                                                id="total_price"></span></strong></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% endif %}
+            {#            <div id="price_detail" class="row well"><!-- price range -->#}
+            {#                {% if current_user.is_authenticated %}#}
+            {#                    <div class="row">#}
+            {#                        {% if this_prod.is_special_price_flg %}#}
+            {#                            <h3> Fixed Price ! <br><strong#}
+            {#                                    class="material-card-big">{{ this_prod.special_price_new }}</strong>#}
+            {#                                <del>{{ this_prod.special_price_old }}</del>#}
+            {#                            </h3>#}
+            {#                        {% else %}#}
+            {#                            <div class="col-md-7">#}
+            {#                                <div class="row">#}
+            {#                                    <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>#}
+            {#                                </div>#}
+            {#                                <div class="row" style="padding-top: 30px;">#}
+            {#                                    <div class="col-md-9">#}
+            {#                                        <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"#}
+            {#                                               data-slider-max="20000"#}
+            {#                                               data-slider-step="1" data-slider-value="14"/></div>#}
+            {#                                    <div class="col-md-3">#}
+            {#                                        <input id="input_qty" min="1" id="qty-input" class="form-control "#}
+            {#                                               onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">#}
+            {#                                    </div>#}
+            {#                                    <div class="col-md-12"><!-- select quantity -->#}
+            {##}
+            {#                                        <div class="panel-body">#}
+            {#                                            <div id="price_selection"></div>#}
+            {#                                        </div>#}
+            {##}
+            {#                                    </div>#}
+            {#                                </div>#}
+            {#                            </div>#}
+            {#                            <div class="col-md-offset-1 col-md-4">#}
+            {#                                <table class="table table-hover text-right">#}
+            {#                                    <thead>#}
+            {#                                    <tr>#}
+            {#                                        <th class="indiv-price-big col-md-7 ">Unit Price</th>#}
+            {#                                        <th class="indiv-price-big col-md-5 text-right"><span>$</span><span#}
+            {#                                                id="unit_price"></span>#}
+            {#                                        </th>#}
+            {#                                    </tr>#}
+            {#                                    </thead>#}
+            {#                                    <tbody>#}
+            {#                                    <tr>#}
+            {#                                        <td class="">Setup</td>#}
+            {#                                        <td><span>$</span><span id="setup_price"></span></td>#}
+            {#                                    </tr>#}
+            {#                                    <tr>#}
+            {#                                        <td class="">Imprinting Prices</td>#}
+            {#                                        <td><span>$</span><span id="imprinting_prices"></span></td>#}
+            {#                                    </tr>#}
+            {#                                    <tr>#}
+            {#                                        <td class="">Freight Cost</td>#}
+            {#                                        <td><span>$</span><span id="freight_cost"></span></td>#}
+            {#                                    </tr>#}
+            {#                                    <tr>#}
+            {#                                        <td class="indiv-price-big"><strong>Total</strong></td>#}
+            {#                                        <td class="indiv-price-big"><strong><span>$</span><span#}
+            {#                                                id="total_price"></span></strong></td>#}
+            {#                                    </tr>#}
+            {#                                    </tbody>#}
+            {#                                </table>#}
+            {#                            </div>#}
+            {#                        {% endif %}#}
+            {#                    </div>#}
+            {#                    <div class="row">#}
+            {#                        <a class="col-md-2 btn btn-primary" role="button"#}
+            {#                           href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">#}
+            {#                            Buy#}
+            {#                        </a>#}
+            {#                        <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"#}
+            {#                           href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">#}
+            {#                            Quote#}
+            {#                        </a>#}
+            {#                    </div>#}
+            {#                {% else %}#}
+            {#                    <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"#}
+            {#                                            aria-haspopup="true" aria-expanded="false">#}
+            {#                        Get Price</a>#}
+            {#                    </li>#}
+            {##}
+            {#                {% endif %}#}
+            {#            </div>#}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
                     </div>
-                    <div class="row">
-                        <a class="col-md-2 btn btn-primary" role="button"
-                           href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">
-                            Buy
-                        </a>
-                        <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"
-                           href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">
-                            Quote
-                        </a>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
                     </div>
-                {% else %}
-                    <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"
-                                            aria-haspopup="true" aria-expanded="false">
-                        Get Price</a>
-                    </li>
-
-                {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
             <div class="embed-responsive embed-responsive-16by9">
                 <iframe class="embed-responsive-item"
                         src="{{ url_for("homeRoute.show_feedback",prod_id=this_prod.prod_id) }}">>
@@ -274,10 +382,10 @@
     <script type="text/javascript">
         is_logo_on_pic_created = false;
         //default settings
-        big_pic_width = 300;
-        big_pic_height = 300;
-        logo_width = 75;
-        logo_height = 75;
+        big_pic_width = 400;
+        big_pic_height = 400;
+        logo_width = 80;
+        logo_height = 80;
         function change_logo_choice(state) {
 
             if (!is_logo_on_pic_created) {
@@ -329,7 +437,9 @@
                 $('#imprinting_prices').text(price_range[price_range.length - 1].imprinting_prices);
                 $('#freight_cost').text(price_range[price_range.length - 1].freight_cost);
                 var total = price_range[price_range.length - 1].unit_price * val + price_range[price_range.length - 1].setup_cost + price_range[price_range.length - 1].imprinting_prices + price_range[price_range.length - 1].freight_cost;
-                $('#total_price').text(total);
+                var s = total + "";
+                var str = s.substring(0, s.indexOf(".") + 3);
+                $('#total_price').text(str);
                 return;
             }
             for (i = 0; i < price_range.length; i++) {
@@ -339,7 +449,9 @@
                     $('#imprinting_prices').text(price_range[i].imprinting_prices);
                     $('#freight_cost').text(price_range[i].freight_cost);
                     var total = (price_range[i].unit_price * val + price_range[i].setup_cost + price_range[i].imprinting_prices + price_range[i].freight_cost);
-                    $('#total_price').text(total.toFixed(2));
+                    var s = total + "";
+                    var str = s.substring(0, s.indexOf(".") + 3);
+                    $('#total_price').text(str);
                     break;
                 }
             }
@@ -401,13 +513,13 @@
                 big_processed_logo.name = 'img-logo-processed';
                 big_pics[i].after(big_orig_logo);
                 big_pics[i].after(big_processed_logo);
-                $(big_pics[i]).mouseenter( function () {
-                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');
-{#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
+                $(big_pics[i]).mouseenter(function () {
+                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display', 'inline');
+                    {#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
                 });
-                $(big_pics[i]).mouseleave( function () {
-                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','none');
-{#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
+                $(big_pics[i]).mouseleave(function () {
+                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display', 'none');
+                    {#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
                 });
             }
         }
@@ -485,7 +597,7 @@
     imgleft: -10,//每张图片的左边偏移量
     imgwidth: 30,//每张图片的宽度偏移量
     imgheight: 44,//每张图片的高度偏移量
-    count: {{ this_prod.prod_pics.__len__() + 1 }},
+    count: {{ this_prod.prod_pics.__len__() + 1 if this_prod.prod_pics.__len__()>0 else 0 }},
     offsetX: 60,
     NumBtn: false,
     title: false,

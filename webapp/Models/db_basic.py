@@ -21,7 +21,7 @@ else :
     db_folder = os.path.dirname(w.__file__)
     connect_str = 'sqlite:///{db_folder}//{db_name}.db'.format(db_folder=db_folder,db_name=META_DB.get('DB_NAME'))
 
-engine = create_engine(connect_str,pool_size=15)
+engine = create_engine(connect_str,pool_size=30)
 metadata = MetaData(bind=engine)
 Session = sessionmaker(bind=engine)
 
