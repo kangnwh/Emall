@@ -87,11 +87,22 @@ def add_new_prod():
         prod.special_price_old = add_form.special_price_old.data
         prod.special_price_new_real=add_form.special_price_new_real.data
         prod.special_price_new = add_form.special_price_new_real.data * (1 + prod_profit_rate)
-        print(add_form.special_price_campaign_time.data)
         prod.special_price_campaign_time = add_form.special_price_campaign_time.data if add_form.special_price_campaign_time else None
         prod.is_clearance = add_form.is_clearance.data
         prod.is_new_prod = add_form.is_new_prod.data
         prod.is_patent_prod = add_form.is_patent_prod.data
+        #new columns - 20170320
+        prod.prod_dimensions = add_form.prod_dimensions.data
+        prod.materials = add_form.materials.data
+        prod.prod_time = add_form.prod_time.data
+        prod.rush_time = add_form.rush_time.data
+        prod.rush_service = add_form.rush_service.data
+        prod.carton_size = add_form.carton_size.data
+        prod.carton_weight = add_form.carton_weight.data
+        prod.color_sku = add_form.color_sku.data
+        prod.decoration_method = add_form.decoration_method.data
+        prod.location = add_form.location.data
+        prod.decoration_size = add_form.decoration_size.data
 
         price_range = Prod_price_range()
 
@@ -255,6 +266,22 @@ def update_prod():
         new_prod['prod_cat_sub_id'] = update_form.prod_cat_sub_id.data
         new_prod['colors'] = update_form.colors.data
         new_prod['is_special_price_flg'] = update_form.is_special_price_flg.data
+
+        #new columns - 2017-0320
+        new_prod['prod_dimensions'] = update_form.prod_dimensions.data
+        new_prod['materials'] = update_form.materials.data
+        new_prod['prod_time'] = update_form.prod_time.data
+        new_prod['rush_time'] = update_form.rush_time.data
+        new_prod['rush_service'] = update_form.rush_service.data
+        new_prod['carton_size'] = update_form.carton_size.data
+        new_prod['carton_weight'] = update_form.carton_weight.data
+        new_prod['color_sku'] = update_form.color_sku.data
+        new_prod['decoration_method'] = update_form.decoration_method.data
+        new_prod['location'] = update_form.location.data
+        new_prod['decoration_size'] = update_form.decoration_size.data
+
+
+
         if new_prod['is_special_price_flg']:
             prod_profit_rate = s.query(Prod_profit_rate).order_by(
             Prod_profit_rate.profit_rate_create_ts.desc()).first().profit_rate / 100
