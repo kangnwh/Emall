@@ -320,25 +320,74 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-heading">Features</div>
                         <div class="panel-body">
-                            Panel content
+
+                            <dl class="dl-horizontal">
+                                <dt>Lead Time</dt>
+                                <dd><kbd>{{ this_prod.lead_time }}</kbd></dd>
+                                <dt>Prod Size</dt>
+                                <dd><kbd>{{ this_prod.prod_size }}</kbd></dd>
+                                <dt>Imprint Size</dt>
+                                <dd><kbd>{{ this_prod.imprint_size }}</kbd></dd>
+                                <dt>Price Basis</dt>
+                                <dd><kbd>{{ this_prod.price_basis }}</kbd></dd>
+                                <dt>Special Price</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_special_price_flg else 'X' }}</kbd></dd>
+                                <dt>New Special Price</dt>
+                                <dd><kbd>{{ '√' if this_prod.special_price_new else 'X' }}</kbd></dd>
+                                <dt>Clearance</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_clearance else 'X' }}</kbd></dd>
+                                <dt>New Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_new_prod else 'X' }}</kbd></dd>
+                                <dt>Patent Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_patent_prod else 'X' }}</kbd></dd>
+                                <dt>Hot Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_hot_prod else 'X' }}</kbd></dd>
+                                <dt>Colors</dt>
+                                <dd><kbd>{{ this_prod.colors }}</kbd></dd>
+                                <dt>Prod Dimensions</dt>
+                                <dd><kbd>{{ this_prod.prod_dimensions }}</kbd></dd>
+                                <dt>Materials</dt>
+                                <dd><kbd>{{ this_prod.materials }}</kbd></dd>
+                                <dt>Color Sku</dt>
+                                <dd><kbd>{{ this_prod.color_sku }}</kbd></dd>
+
+                            </dl>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 ">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-heading">Shipping</div>
                         <div class="panel-body">
-                            Panel content
+                            <dl class="dl-horizontal">
+                                <dt>Prod Time</dt>
+                                <dd><kbd>{{ this_prod.prod_time if this_prod.prod_time else 'None'}}</kbd></dd>
+                                <dt>Rush Time</dt>
+                                <dd><kbd>{{ this_prod.rush_time if this_prod.rush_time  else 'None' }}</kbd></dd>
+                                <dt>Rush Service</dt>
+                                <dd><kbd>{{ this_prod.rush_service if this_prod.rush_service  else 'None' }}</kbd></dd>
+                                <dt>Carton Size</dt>
+                                <dd><kbd>{{ this_prod.carton_size if this_prod.carton_size  else 'None' }}</kbd></dd>
+                                <dt>Carton Weight</dt>
+                                <dd><kbd>{{ this_prod.carton_weight  if this_prod.carton_weight  else 'None' }}</kbd></dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-primary">
-                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-heading">Decoratione</div>
                         <div class="panel-body">
-                            Panel content
+                            <dl class="dl-horizontal">
+                                <dt>Decoration Method</dt>
+                                <dd><kbd>{{ this_prod.decoration_method if this_prod.decoration_method else 'None'}}</kbd></dd>
+                                <dt>Location</dt>
+                                <dd><kbd>{{ this_prod.location if this_prod.location else 'None' }}</kbd></dd>
+                                <dt>Decoration Size</dt>
+                                <dd><kbd>{{ this_prod.decoration_size  if this_prod.decoration_size else 'None' }}</kbd></dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
