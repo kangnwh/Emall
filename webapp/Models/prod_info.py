@@ -36,6 +36,17 @@ class Prod_info(Base):
     cover_img = Column(String(200),default='default.png')
     reject_reason = Column(String(500))
     special_price_new_real=Column(DECIMAL(12,2))
+    prod_dimensions=Column(String(100))
+    materials=Column(String(200))
+    prod_time=Column(String(200))
+    rush_time=Column(String(200))
+    rush_service=Column(String(200))
+    carton_size=Column(String(100))
+    carton_weight=Column(String(100))
+    color_sku=Column(String(100))
+    decoration_method=Column(String(200))
+    location=Column(String(500))
+    decoration_size=Column(String(100))
 
     def __repr__(self):
         return '<prod_info prod_id:%d,prod_name:%s>' % (self.prod_id,self.prod_name)
