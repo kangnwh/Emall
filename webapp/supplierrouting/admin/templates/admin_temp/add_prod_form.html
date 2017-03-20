@@ -16,7 +16,8 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <button type="submit" class='col-md-3 btn btn-primary' value="Update">Add</button>
-                            <a class='col-md-3 btn btn-warning' href="{{ url_for("supplierRoute.publish_prod") }}">Close</a>
+                            <a class='col-md-3 btn btn-warning'
+                               href="{{ url_for("supplierRoute.publish_prod") }}">Close</a>
                         </div>
                     </div>
 
@@ -27,13 +28,24 @@
                 {{ input_helper('col-md-6',add_form.prod_name ) }}
                 {{ input_helper('col-md-6',add_form.lead_time ) }}
                 {{ input_helper('col-md-12',add_form.prod_desc ) }}
-
                 {{ input_helper('col-md-6',add_form.prod_size ) }}
-
                 {{ input_helper('col-md-6',add_form.imprint_size ) }}
                 {{ input_helper('col-md-6',add_form.price_basis ) }}
-                {{ file_input_helper('col-md-6',add_form.cover_img_file ) }}
+                {#                new columns - 20170320#}
+                {{ input_helper('col-md-6',add_form.prod_dimensions ) }}
+                {{ input_helper('col-md-6',add_form.materials ) }}
+                {{ input_helper('col-md-6',add_form.prod_time ) }}
+                {{ input_helper('col-md-6',add_form.rush_time ) }}
+                {{ input_helper('col-md-6',add_form.rush_service ) }}
+                {{ input_helper('col-md-6',add_form.carton_size ) }}
+                {{ input_helper('col-md-6',add_form.carton_weight ) }}
+                {{ input_helper('col-md-6',add_form.color_sku ) }}
+                {{ input_helper('col-md-6',add_form.decoration_method ) }}
+                {{ input_helper('col-md-6',add_form.location ) }}
+                {{ input_helper('col-md-6',add_form.decoration_size ) }}
 
+
+                {{ file_input_helper('col-md-6',add_form.cover_img_file ) }}
                 {{ input_helper('col-md-12',add_form.colors ) }}
                 <div class="col-md-6">
                     Level One Category
@@ -70,7 +82,7 @@
                 <div class="panel panel-primary">
                     <!-- Default panel contents -->
                     <div class="panel-heading">Please provide the prices for different quantity orders</div>
-                    <kbd>{{config.get("RATE_NOTIFICATION")}}</kbd>
+                    <kbd>{{ config.get("RATE_NOTIFICATION") }}</kbd>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="row">

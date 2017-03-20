@@ -73,6 +73,18 @@ class ProductionBase(Form):
     #Pictures
     cover_img_file = FileField('Upload Cover Picture',[DataRequired()])
 
+    #new columns - 20170320
+    prod_dimensions = StringField('Prod Dimensions')
+    materials = StringField("Materials")
+    prod_time = StringField("Prod Time")
+    rush_time = StringField("Rush Time")
+    rush_service = StringField("Rush Service")
+    carton_size = StringField("Carton Size")
+    carton_weight = StringField("Carton Weight")
+    color_sku = StringField("Color SKU")
+    decoration_method = StringField("Decoration Method")
+    location = StringField("Location")
+    decoration_size = StringField("Decoration Size")
 
 
 class AddNewProduction(ProductionBase):
