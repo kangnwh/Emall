@@ -19,10 +19,41 @@
                     <div class="items">
                         {% for hot in hot_prod_list %}
                             <div class="flex-item">
-                                <img class="img-responsive col-md-3"
+                                <img class="img-responsive" style="width:270px;height:150px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=hot.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
+{#                        <div class="items">#}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/1.jpg") }}"/>#}
+{#							</div>#}
+{##}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/2.jpg") }}"/>#}
+{#							</div>#}
+{##}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/3.jpg") }}"/>#}
+{#							</div>#}
+{##}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/1.jpg") }}"/>#}
+{#							</div>#}
+{##}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/2.jpg") }}"/>#}
+{#							</div>#}
+{##}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/3.jpg") }}"/>#}
+{#							</div>#}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/1.jpg") }}"/>#}
+{#							</div>#}
+{#							<div class="flex-item">#}
+{#								<img class="img-responsive" src="{{ url_for("static",filename="img/adv/2.jpg") }}"/>#}
+{#							</div>#}
+{#						</div>#}
                     </div>
 
                     <div class="carousel-inner" role="listbox">
@@ -49,7 +80,7 @@
                     <div class="items">
                         {% for new_p in new_prod_list %}
                             <div class="flex-item">
-                                <img class="img-responsive  col-md-3"
+                                <img class="img-responsive" style="width:270px;height:150px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=new_p.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
@@ -78,7 +109,7 @@
                     <div class="items">
                         {% for onsale_p in onsale_prod_list %}
                             <div class="flex-item">
-                                <img class="img-responsive col-md-3"
+                                <img class="img-responsive" style="width:270px;height:150px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=onsale_p.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
