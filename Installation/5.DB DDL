@@ -419,3 +419,16 @@ create table email_advertisement(
     index(email_advertisement_id),
     foreign key( supplier_id)   references supplier(supplier_id) on delete cascade on update cascade
 );
+
+create table adv_page_info
+(
+adv_level int, #1 home 2,3,4 panel
+adv_level_name varchar(200)
+);
+
+create table adv_page_detail_info
+(
+adv_level int,
+adv_prod_id int,
+adv_prod_order int
+);
