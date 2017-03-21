@@ -81,13 +81,13 @@
 			//初始化获取DOM数据
 			object.prototype.Initial = function(callback){
 				if(options.count > this.length) { //this.length
-					alert("\"Count\" parameter can not be greater than the total number of pictures, you must base !");
+					//alert("\"Count\" parameter can not be greater than the total number of pictures, you must base !");
 					return false;
 				} else if(options.count < 0) {
-					alert("\"Count\" parameter can not be negative, you must base  !");
+					//alert("\"Count\" parameter can not be negative, you must base  !");
 					return false;
 				} else if(options.count%2 === 0) {
-					alert("\"Count\" parameter must base  !");
+					//alert("\"Count\" parameter must base  !");
 					return false;
 				};
 				this.arrNumList = [];
