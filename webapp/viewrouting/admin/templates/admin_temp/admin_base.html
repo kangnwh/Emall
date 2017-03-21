@@ -61,6 +61,13 @@
                 <li {% if 9 == active_page %} class="active"{% endif %}>
                     <a href="{{ url_for('adminRoute.ad_list') }}">Email Advertisement<span class="float-right  badge">{{ current_user.get_approval_pending_advertisment(current_user.user_id) }}</span></a>
                 </li>
+                <li {% if 10 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.show_adv_title') }}">Change Adv Panel Title</a>
+                </li>
+                <li {% if 11 == active_page %} class="active"{% endif %}>
+                    <a href="{{ url_for('adminRoute.show_adv_prod') }}">Change Adv Prod</a>
+                </li>
+
                 <li>
                     <a href="{{ url_for('adminRoute.logout') }}">Logout</a></li>
             </ul>

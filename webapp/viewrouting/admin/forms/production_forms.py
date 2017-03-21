@@ -134,3 +134,13 @@ class UpdateRebateForm(Form):
 
 class DeleteRebateForm(Form):
     rebate_ref_id = IntegerField('Rebate Ref Id', validators = [DataRequired()])
+
+class UpdateAdvTitleForm(Form):
+    adv_level = IntegerField('Advertisement Level')
+    adv_level_name =  StringField('Advertisement Title Name')
+
+class UpdateAdvProdForm(Form):
+    adv_id = IntegerField('Advertisement Id')
+    adv_level = IntegerField('Advertisement Level')
+    adv_prod_id =  IntegerField('Prod Id')
+    adv_prod_order =  IntegerField('Prod Order')

@@ -16,8 +16,12 @@ from webapp.Models.prod_pic_info import Prod_pic_info
 from webapp.Models.prod_price_range import Prod_price_range
 from webapp.Models.order_system import Order_system
 from webapp.Models.quote_system import Quote_system
+from webapp.Models.adv_page_info import Adv_page_info
+from webapp.Models.adv_page_detail_info import Adv_page_detail_info
 from webapp.Models.prod_profit_rate import Prod_profit_rate
 from webapp.Models.prod_sub_cat import Prod_sub_cat
+from webapp.Models.adv_page_info import Adv_page_info
+from webapp.Models.adv_page_detail_info import Adv_page_detail_info
 from webapp.Models.user import User
 from webapp.Models.email_advertisement import Email_advertisement
 from webapp.common import generate_md5, admin_check, generate_sidebar,saveImage,update_config_value,prod_search_filter,order_search_filter,quote_search_filter,get_host_info
@@ -25,7 +29,8 @@ from webapp.common.mails import email_notifier,send_advertisement
 from webapp.viewrouting.admin.forms.category_forms import DeleteLevelOneForm, CreateNewLevelOneForm, UpdateLevelOneForm,\
     DeleteLevelTwoForm, CreateNewLevelTwoForm, UpdateLevelTwoForm
 # from webapp.viewrouting.admin.forms.production_forms import AddNewProduction, DeleteProduction, UpdateProduction,CreateNewProfitRateForm,\
-from webapp.viewrouting.admin.forms.production_forms import CreateNewProfitRateForm,UpdateProfitRateForm,DeleteProfitRateForm,CreateNewRebateForm,UpdateRebateForm,DeleteRebateForm
+from webapp.viewrouting.admin.forms.production_forms import CreateNewProfitRateForm,UpdateProfitRateForm,DeleteProfitRateForm,CreateNewRebateForm,UpdateRebateForm,DeleteRebateForm,\
+                                                              UpdateAdvTitleForm,UpdateAdvProdForm
 from webapp.viewrouting.admin.forms.user_forms import CreateNewForm, DeleteUserForm, UpdateUserForm, ResetPassForm
 from webapp.viewrouting.admin.forms.parameter_forms import ParameterForm
 
@@ -1219,3 +1224,68 @@ def _deliver_notification():
     s.close()
 
     return jsonify("succ")
+
+@admin_check
+def _show_adv_title():
+    udpate_adv_title_form = UpdateAdvTitleForm()
+    s = Session()
+    adv_list=s.query(Adv_page_info).all()
+    s.close()
+
+    return render_template('admin_temp/all_adv_pages.html',
+                           adv_list=adv_list,
+                           udpate_adv_title_form=udpate_adv_title_form)
+
+@admin_check
+def _update_adv_title():
+    udpate_adv_title_form = UpdateAdvTitleForm()
+    if udpate_adv_title_form.validate_on_submit():
+        adv_level = udpate_adv_title_form.adv_level.data
+        adv_level_name = udpate_adv_title_form.adv_level_name.data
+
+        s = Session()
+        s.query(Adv_page_info).filter_by(adv_level=adv_level).update(
+                {
+                    "adv_level_name": adv_level_name
+                }
+        )
+        s.commit()
+        s.close()
+    else:
+        flash(udpate_adv_title_form.errors, category='danger')
+    return redirect(url_for('adminRoute.show_adv_title'))
+
+
+@admin_check
+def _show_adv_prod():
+    udpate_adv_prod_form = UpdateAdvProdForm()
+    s = Session()
+    adv_prod_list=s.query(Adv_page_detail_info).all()
+    s.close()
+
+    return render_template('admin_temp/all_adv_prod_pages.html',
+                           adv_prod_list=adv_prod_list,
+                           udpate_adv_prod_form=udpate_adv_prod_form)
+
+@admin_check
+def _update_adv_prod():
+    udpate_adv_prod_form = UpdateAdvProdForm()
+    if udpate_adv_prod_form.validate_on_submit():
+        adv_id = udpate_adv_prod_form.adv_id.data
+        adv_level = udpate_adv_prod_form.adv_level.data
+        adv_prod_id = udpate_adv_prod_form.adv_prod_id.data
+        adv_prod_order = udpate_adv_prod_form.adv_prod_order.data
+
+        s = Session()
+        s.query(Adv_page_detail_info).filter_by(adv_id=adv_id).update(
+                {
+                    "adv_level": adv_level,
+                    "adv_prod_id": adv_prod_id,
+                    "adv_prod_order": adv_prod_order,
+                }
+        )
+        s.commit()
+        s.close()
+    else:
+        flash(udpate_adv_prod_form.errors, category='danger')
+    return redirect(url_for('adminRoute.show_adv_prod'))
