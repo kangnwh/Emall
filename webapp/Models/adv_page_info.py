@@ -8,7 +8,7 @@ from datetime import datetime
 class Adv_page_info(Base):
     __tablename__= 'adv_page_info'
     #__table_args__ = {'schema':'admin'}
-    adv_level = Column(Integer)
+    adv_level = Column(Integer, primary_key = True)
     adv_level_name = Column(String(200))
 
     def __repr__(self):

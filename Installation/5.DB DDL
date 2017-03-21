@@ -428,7 +428,10 @@ adv_level_name varchar(200)
 
 create table adv_page_detail_info
 (
+adv_id int not null auto_increment,
 adv_level int,
 adv_prod_id int,
-adv_prod_order int
+adv_prod_order int,
+ primary key(adv_id),
+foreign key( adv_prod_id)   references prod_info(prod_id) on delete cascade on update cascade
 );
