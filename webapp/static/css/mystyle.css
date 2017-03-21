@@ -310,3 +310,10 @@ body, button, input, select, textarea, h1, h2, h3, h4, h5, h6 {
 		display: none;
 	}
 }
+
+.category-header {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 5px solid #20cac9;
+    font-style: italic;
+}

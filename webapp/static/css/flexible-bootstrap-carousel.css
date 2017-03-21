@@ -1,0 +1,38 @@
+/*!
+
+Flexible Bootstrap Carousel v0.3.6
+
+Copyright (c) 2017 Dan Dev
+
+Released under the MIT license
+https://github.com/DanDevG/flexible-bootstrap-carousel/master/LICENSE.md
+
+*/
+
+.carousel.flexible .items {
+	display: none;
+}
+
+.carousel.flexible .carousel-inner .item-inner-container {
+	display: -webkit-box;
+    display: -ms-flexbox;
+	display: flex;
+	flex-wrap: nowrap;
+	-webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+	justify-content: space-between;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.carousel.flexible .carousel-inner .item .item-inner {
+	padding: 0 10px;
+}
+
+.carousel.flexible .carousel-inner .item .item-inner:first-of-type {
+	padding-left: 0;
+}
+
+.carousel.flexible .carousel-inner .item .item-inner:last-of-type {
+	padding-right: 0;
+}

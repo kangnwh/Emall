@@ -31,9 +31,15 @@ def index():
     #ADD query for adv pictures
     s = Session()
     home_adv_list  = s.query(Adv_page_detail_info).filter_by(adv_level=1).order_by(Adv_page_detail_info.adv_prod_order).all()
-    print('result')
-    print(home_adv_list)
-    return render_template('home_temp/index.html',home_adv_list=home_adv_list)
+    hot_prod_list = s.query(Prod_info).filter_by(is_hot_prod=1).order_by(Prod_info.prod_id).all()[:7]
+    new_prod_list = s.query(Prod_info).filter_by(is_new_prod=1).order_by(Prod_info.prod_id).all()[:7]
+    onsale_prod_list = s.query(Prod_info).filter_by(is_special_price_flg=1).order_by(Prod_info.prod_id).all()[:7]
+
+    return render_template('home_temp/index.html',
+                           home_adv_list=home_adv_list,
+                           hot_prod_list=hot_prod_list,
+                           new_prod_list=new_prod_list,
+                           onsale_prod_list=onsale_prod_list)
 
 
 @homeRoute.route('/Free_Shipping', methods=['GET', 'POST'])
