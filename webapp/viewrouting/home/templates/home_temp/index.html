@@ -20,7 +20,7 @@
                         {% for hot in hot_prod_list %}
                             <div class="flex-item">
                                 <img class="img-responsive"
-                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=hot.cover_img)) }} "/>
+                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=hot.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
                     </div>
@@ -53,7 +53,7 @@
                         {% for new_p in new_prod_list %}
                             <div class="flex-item">
                                 <img class="img-responsive"
-                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=new_p.cover_img)) }} "/>
+                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=new_p.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
                     </div>
@@ -82,7 +82,7 @@
                         {% for onsale_p in onsale_prod_list %}
                             <div class="flex-item">
                                 <img class="img-responsive"
-                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=onsale_p.cover_img)) }} "/>
+                                     src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=onsale_p.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
                     </div>
