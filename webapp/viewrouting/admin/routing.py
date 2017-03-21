@@ -7,8 +7,8 @@ from webapp.viewrouting.admin.real_routing import _index,_account_management,_pr
                                                     _manage_supplier_rebate_rate,_delete_rebate,_update_rebate,_add_rebate,\
                                                     _manage_profit_rate,_delete_profit,_add_profit,_update_profit,_supplier_management,_update_supplier,_reset_supp_passwd,\
                                                     _pending_approval_list,_check_pending_approval_prod,_reject_or_approve,_manage_config,_update_config,\
-                                                    _search,_order_search,_quote_search,_admin_cancel_compliment,\
-                                                    _ad_list,_approve_ad,_reject_ad,_send_ad,_deliver_notification
+                                                    _search,_order_search,_quote_search,_admin_cancel_compliment,_update_adv_title,\
+                                                    _ad_list,_approve_ad,_reject_ad,_send_ad,_deliver_notification,_show_adv_title,_show_adv_prod,_update_adv_prod
                                                     #_publish_prod, _add_new_prod,_update_prod,_delete_prod,_delete_cover_page,_delete_extra_pics,
 adminRoute = Blueprint('adminRoute', __name__,
                       template_folder='templates', static_folder='static')
@@ -272,3 +272,23 @@ def reject_ad():
 @adminRoute.route('/deliver_notification', methods=['GET'])
 def deliver_notification():
     return _deliver_notification()
+
+@adminRoute.route('/show_adv_title',methods=['GET'])
+@login_required
+def show_adv_title():
+    return _show_adv_title()
+
+@adminRoute.route('/update_adv_title', methods=['POST'])
+@login_required
+def update_adv_title():
+    return _update_adv_title()
+
+@adminRoute.route('/show_adv_prod',methods=['GET'])
+@login_required
+def show_adv_prod():
+    return _show_adv_prod()
+
+@adminRoute.route('/update_adv_prod', methods=['POST'])
+@login_required
+def update_adv_prod():
+    return _update_adv_prod()

@@ -1,0 +1,41 @@
+{% extends "admin_temp/admin_base.html" %}
+{% set active_page = 10 %}
+{% block title %}Advertisement Title Management - {{ config.get('APP_NAME','An Empty System') }} {% endblock title %}
+{% block link_ref %}
+    {{ super() }}
+
+	<link rel="stylesheet" href="{{ url_for("static",filename="css/adv/style.css") }}">
+{% endblock %}
+
+{% block page %}
+
+    <table class="table table-hover">
+        <thead><tr>
+            <th>Advertisement Level</th>
+            <th>Advertisement Level Title</th>
+            <th></th>
+        </tr></thead>
+        <tbody>
+        {%  for adv in adv_list %}
+
+            <tr>
+                <form action="{{ url_for('adminRoute.update_adv_title') }}" method="post">
+                    {{ udpate_adv_title_form.hidden_tag() }}
+                    <td >{{adv.adv_level}}</td>
+                    <td >{{udpate_adv_title_form.adv_level_name(value=adv.adv_level_name,size=20)}}</td>
+                     <td> <input type="submit" class="btn btn-primary"  value="Update"/></td>
+                </form>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for("static",filename="js/easySlider.js") }}"></script>
+    <script type="text/javascript">
+
+	</script>
+{% endblock scripts %}
