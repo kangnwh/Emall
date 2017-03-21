@@ -19,8 +19,10 @@
                     <div class="items">
                         {% for hot in hot_prod_list %}
                             <div class="flex-item">
+                            <a href="{{  url_for("homeRoute.indiv_prod",prod_id=hot.prod_info.prod_id) }}" target="_blank">
                                 <img class="img-responsive" style="height:200px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=hot.prod_info.cover_img)) }} "/>
+                            </a>
                             </div>
                         {% endfor %}
 {#                        <div class="items">#}
@@ -80,8 +82,10 @@
                     <div class="items">
                         {% for new_p in new_prod_list %}
                             <div class="flex-item">
+                            <a href="{{  url_for("homeRoute.indiv_prod",prod_id=new_p.prod_info.prod_id) }}" target="_blank">
                                 <img class="img-responsive"  style="height:200px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=new_p.prod_info.cover_img)) }} "/>
+                            </a>
                             </div>
                         {% endfor %}
                     </div>
@@ -109,8 +113,10 @@
                     <div class="items">
                         {% for onsale_p in onsale_prod_list %}
                             <div class="flex-item">
+                            <a href="{{  url_for("homeRoute.indiv_prod",prod_id=onsale_p.prod_info.prod_id) }}" target="_blank">
                                 <img class="img-responsive"  style="height:200px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=onsale_p.prod_info.cover_img)) }} "/>
+                            </a>
                             </div>
                         {% endfor %}
                     </div>
@@ -132,6 +138,7 @@
                 </div>
             {#            </div>#}
             {#            </div>#}
+        </div>
         </div>
     {% endblock page %}
 {% endblock full_page_under_nav %}
