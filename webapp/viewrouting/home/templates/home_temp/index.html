@@ -19,7 +19,7 @@
                     <div class="items">
                         {% for hot in hot_prod_list %}
                             <div class="flex-item">
-                                <img class="img-responsive" style="width:270px;height:150px;"
+                                <img class="img-responsive" style="height:200px;"
                                      src="{{ url_for("static",filename="img/products/{prod_cov}".format(prod_cov=hot.prod_info.cover_img)) }} "/>
                             </div>
                         {% endfor %}
