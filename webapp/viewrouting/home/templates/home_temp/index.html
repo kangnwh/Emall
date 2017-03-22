@@ -46,7 +46,7 @@
 
             <div class="col-md-12" style=" margin-top: 50px;">
                 <div class="category-header">
-                    <h3>New Products</h3></div>
+                    <h3>{{ new_prod_title.adv_level_name }}</h3></div>
                 <div  id="new_prod_slider" class="carousel flexible default slide" data-ride="carousel" data-interval="5000" data-wrap="true">
                     <div class="items">
                         {% for new_p in new_prod_list %}
@@ -77,7 +77,7 @@
             </div>
             <div class="col-md-12" style=" margin-top: 50px;">
                 <div class="category-header">
-                    <h3>On Sale Products</h3></div>
+                    <h3>{{ onsale_prod_title.adv_level_name }}</h3></div>
                 <div  id="onsale_prod_slider" class="carousel flexible default slide" data-ride="carousel" data-interval="5000" data-wrap="true">
                     <div class="items">
                         {% for onsale_p in onsale_prod_list %}
