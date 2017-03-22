@@ -35,11 +35,19 @@ def index():
     new_prod_list = s.query(Adv_page_detail_info).filter_by(adv_level=3).order_by(Adv_page_detail_info.adv_prod_order).all()
     onsale_prod_list = s.query(Adv_page_detail_info).filter_by(adv_level=4).order_by(Adv_page_detail_info.adv_prod_order).all()
 
+    hot_prod_title = s.query(Adv_page_info).filter_by(adv_level=2).first()
+    new_prod_title = s.query(Adv_page_info).filter_by(adv_level=3).first()
+    onsale_prod_title = s.query(Adv_page_info).filter_by(adv_level=4).first()
+
+    s.close()
     return render_template('home_temp/index.html',
                            home_adv_list=home_adv_list,
                            hot_prod_list=hot_prod_list,
                            new_prod_list=new_prod_list,
-                           onsale_prod_list=onsale_prod_list)
+                           onsale_prod_list=onsale_prod_list,
+                           hot_prod_title=hot_prod_title,
+                           new_prod_title=new_prod_title,
+                           onsale_prod_title=onsale_prod_title)
 
 
 @homeRoute.route('/Free_Shipping', methods=['GET', 'POST'])
