@@ -1,4 +1,3 @@
-
 {% extends "headers.html" %}
 
 {% block mainpage %}
@@ -20,8 +19,6 @@
                     <ul class="nav navbar-nav navbar-left" data-in="fadeInDown" data-out="fadeOutUp">
                         <li class="active"><a href="{{ url_for('homeRoute.index') }}">Home</a></li>
                         <li><a href="#">About Us</a></li>
-
-                        <li><a href="#">Portfolio</a></li>
                         <li><a href="#">Contact Us</a></li>
                         <li><a></a></li>
                         <li><a></a></li>
@@ -68,11 +65,11 @@
         </nav>
     </div>
     <div class="bs-docs-header" tabindex="-1">
-        <div class="jumbotron no-padding-top ">
+        <div class="jumbotron no-padding-top" style="background-color: #337ab7;color: white;">
             <div class="container ">
                 <div class="row">
                     <div class="col-md-6">
-                        <h1>{{ config.get('APP_NAME','Reprot.py') }}</h1>
+                        <h1>HOHOPROMO</h1>
                         {#                        <p>This is an empty system only providing limited functionalities.</p>#}
                     </div>
                     <div class="col-md-5">
@@ -127,6 +124,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+                        <li >
+                            <a href="{{ url_for("homeRoute.hot_prods") }}"><kbd>Menu</kbd></a>
+                        </li>
                         <li {% if 'L2' == active_page %} class="active"{% endif %}>
                             <a href="#">Free Artwork</a>
                         </li>
