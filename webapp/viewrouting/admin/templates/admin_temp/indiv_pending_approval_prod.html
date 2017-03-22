@@ -39,174 +39,288 @@
                     <div class=" right-line"><kbd>Prod ID:{{ this_prod.prod_id }}</kbd></div>
                 </div>
                 <div class="row"><!-- slider,logo change, description -->
-                    <div class="col-md-5 ">
-                        <div class="row">
-                            <div class="panel panel-default middle" style="max-width:400px;">
-                                <div class="panel-body">
-                                    <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
-                                        <li data-thumb="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}">
-                                            <div class="indiv_pic_size "
-                                                 style="background-image: url('{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}')">
-                                                <img class="indiv-user-logo invisible" name='img-logo-original'
-                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                                <img class="indiv-user-logo invisible" name='img-logo-processed'
-                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
-                                            </div>
-
+                <div class="col-md-6 ">
+                    <div class="row">
+                        <div class="panel middle" style="max-width:600px;">
+                            <div class="panel-body">
+                                <div id="indiv_pics" class="jcImgScroll" style="display:block;overflow: hidden;">
+                                    <ul>
+                                        <li>
+                                            <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
                                         </li>
                                         {% for pic in this_prod.prod_pics %}
-                                            <li data-thumb="{{ url_for("static",filename=("img/products/"+ pic.image_path)) }}">
-                                                <div class="indiv_pic_size "
-                                                     style="background-image: url('{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}')">
-                                                    <img class="indiv-user-logo invisible" name='img-logo-original'
-                                                         src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                                    <img class="indiv-user-logo invisible" name='img-logo-processed'
-                                                         src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
-                                                </div>
-
-                                                <p>{{ pic.img_desc }}</p>
+                                            <li>
+                                                <a path="{{ url_for("static",filename=("img/products/"+ pic.image_path )) }}"></a>
                                             </li>
                                         {% endfor %}
+                                        {#                                        #}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
+                                        {#                                        <li><a#}
+                                        {#                                               path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>#}
+                                        {#                                        </li>#}
                                     </ul>
                                 </div>
+                                {##}
+                                {#                                                                <ul id="image-gallery" class="gallery list-unstyled cS-hidden">#}
+                                {#                                                                    <li data-thumb="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}">#}
+                                {#                                                                        <div class="indiv_pic_size "#}
+                                {#                                                                             style="background-image: url('{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}')">#}
+                                {#                                                                            <img class="indiv-user-logo invisible" name='img-logo-original'#}
+                                {#                                                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>#}
+                                {#                                                                            <img class="indiv-user-logo invisible" name='img-logo-processed'#}
+                                {#                                                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>#}
+                                {#                                                                        </div>#}
+                                {##}
+                                {#                                                                    </li>#}
+                                {#                                                                    {% for pic in this_prod.prod_pics %}#}
+                                {#                                                                        <li data-thumb="{{ url_for("static",filename=("img/products/"+ pic.image_path)) }}">#}
+                                {#                                                                            <div class="indiv_pic_size "#}
+                                {#                                                                                 style="background-image: url('{{ (url_for("static",filename=("img/products/"+ pic.image_path))) }}')">#}
+                                {#                                                                                <img class="indiv-user-logo invisible" name='img-logo-original'#}
+                                {#                                                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>#}
+                                {#                                                                                <img class="indiv-user-logo invisible" name='img-logo-processed'#}
+                                {#                                                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>#}
+                                {#                                                                            </div>#}
+                                {##}
+                                {#                                                                            <p>{{ pic.img_desc }}</p>#}
+                                {#                                                                        </li>#}
+                                {#                                                                    {% endfor %}#}
+                                {#                                                                </ul>#}
                             </div>
                         </div>
-                        <div class="row">
-                            {#
-                            <div class="col-md-12 " style="max-width:400px;">
-                                <div class="alert alert-success">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <input id="switch-offColor" type="checkbox" data-off-color="warning"
-                                                   data-label-text="Logo">
-                                        </div>
-
-                                        <div class="col-md-offset-1 col-md-3">
-                                            <div class="btn btn-default panel-primary invisible "
-                                                 id="control-logo-processed"
-                                                 onclick="switch_logo('control-logo-processed','control-logo-original')">
-                                                <img class="list-user-logo"
-                                                     src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 ">
-                                            <div class="btn btn-default invisible" id="control-logo-original"
-                                                 onclick="switch_logo('control-logo-original','control-logo-processed')">
-                                                <img class="list-user-logo"
-                                                     src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                             #}
-                        </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="">
-
-                            <strong class="indiv-prod-desc-head">Description</strong>
-                            <p>{{ this_prod.prod_desc }}</p>
-                            <strong class="indiv-prod-desc-head">Colours</strong>
-                            <p>{{ this_prod.colors }}</p>
-                            <strong class="indiv-prod-desc-head">Production Size</strong>
-                            <p>{{ this_prod.prod_size }}</p>
-                            <strong class="indiv-prod-desc-head">Imprint Size</strong>
-                            <p>{{ this_prod.imprint_size }}</p>
-                            <strong class="indiv-prod-desc-head">Lead Time</strong>
-                            <p>{{ this_prod.lead_time }}</p>
-                            <strong class="indiv-prod-desc-head">Price Basis (<a href="#price_detail">
-                                <ins>Price Detail</ins>
-                            </a>)</strong>
-                            <p>{{ this_prod.price_basis }}</p>
-                            <strong class="indiv-prod-desc-head">Subcategory</strong>
-                            <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>
-                        <strong class="indiv-prod-desc-head">Other</strong>
-                        <p> <strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}   &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}   &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>
-                        </div>
-                    </div>
-                </div>
-                <div id="price_detail" class="row well"><!-- price range -->
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="row">
-                                <h4 class="col-md-12">1. How many do you want? (minimum 100)</h4>
-                            </div>
-                            <div class="row" style="padding-top: 30px;">
-                                <div class="col-md-9">
-                                    <input id="ex8" data-slider-id='ex1Slider' type="text" data-slider-min="0"
-                                           data-slider-max="20000"
-                                           data-slider-step="1" data-slider-value="14"/></div>
-                                <div class="col-md-3">
-                                    <input id="input_qty" min="1" id="qty-input" class="form-control "
-                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)" type="number">
-                                </div>
-                                <div class="col-md-12"><!-- select quantity -->
+                        <div class="col-md-12 " style="max-width:400px;">
 
-                                    <div class="panel-body">
-                                        <div id="price_selection"></div>
+                            <div class="alert alert-success">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input id="switch-offColor" type="checkbox" data-off-color="warning"
+                                               data-label-text="Logo">
                                     </div>
 
+                                    <div class="col-md-offset-1 col-md-3">
+                                        <div class="btn btn-default panel-primary invisible "
+                                             id="control-logo-processed"
+                                             onclick="switch_logo('control-logo-processed','control-logo-original')">
+                                            <img class="list-user-logo"
+                                                 src="{{ url_for("static",filename=("img/user_logos/GEN_{file}".format(file=current_user.logo_link))) }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 ">
+                                        <div class="btn btn-default invisible" id="control-logo-original"
+                                             onclick="switch_logo('control-logo-original','control-logo-processed')">
+                                            <img class="list-user-logo"
+                                                 src="{{ url_for("static",filename=("img/user_logos/{file}".format(file=current_user.logo_link))) }}"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-offset-1 col-md-4">
-                            <table class="table table-hover text-right">
-                                <thead>
-                                <tr>
-                                    <th class="indiv-price-big col-md-7 ">Unit Price</th>
-                                    <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
-                                            id="unit_price"></span>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="">Setup</td>
-                                    <td><span>$</span><span id="setup_price"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="">Imprinting Prices</td>
-                                    <td><span>$</span><span id="imprinting_prices"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="">Freight Cost</td>
-                                    <td><span>$</span><span id="freight_cost"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="indiv-price-big"><strong>Total</strong></td>
-                                    <td class="indiv-price-big"><strong><span>$</span><span
-                                            id="total_price"></span></strong></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- reject reason modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="Reject Reason"
-                         aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                        &times;
-                                    </button>
-                                    <h4 class="modal-title" id="myModalLabel">
-                                        Please Provide Reject Reason
-                                    </h4>
-                                </div>
-                                <div class="modal-body form-group">
-                                    <textarea id="feedback_content" class="form-control" rows=3></textarea>
-                                </div>
-                                <div class="modal-footer" id="modal_footer">
 
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button id="feedback_sub" type="button" class="btn btn-primary" onclick="ajax_reject_or_approve({{ this_prod.prod_id }},'reject')">Confim Reject</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal -->
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="">
+                        <strong class="indiv-prod-desc-head">Description</strong>
+                        <p>{{ this_prod.prod_desc }}</p>
+                        <div id="price_detail" class="row well"><!-- price range -->
+                            {% if current_user.is_authenticated %}
+                                <div class="row">
+                                    {% if this_prod.is_special_price_flg %}
+                                        <h3> Fixed Price ! <br><strong
+                                                class="material-card-big">{{ this_prod.special_price_new }}</strong>
+                                            <del>{{ this_prod.special_price_old }}</del>
+                                        </h3>
+                                    {% else %}
+                                        <div class="col-md-5">
+                                            <div class="row">
+                                                <p class="col-md-12">1. How many do you want? (minimum 100)</p>
+                                            </div>
+                                            <div class="row" style="padding-top: 30px;">
+                                                <div class="col-md-12">
+                                                    <input id="ex8" data-slider-id='ex1Slider' type="text"
+                                                           data-slider-min="0"
+                                                           data-slider-max="20000"
+                                                           data-slider-step="1" data-slider-value="14"/></div>
+                                                <div class="col-md-6">
+                                                    <input id="input_qty" min="1" id="qty-input" class="form-control "
+                                                           onchange="qtyChange(this)" onkeyup="qtyChange(this)"
+                                                           type="number">
+                                                </div>
+                                                <div class="col-md-12"><!-- select quantity -->
+
+                                                    <div class="panel-body">
+                                                        <div id="price_selection"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-offset-1 col-md-5">
+                                            <table class="table table-hover text-right" style="font-size:14px;">
+                                                <thead>
+                                                <tr>
+                                                    <th class="indiv-price-big col-md-8">Unit Price</th>
+                                                    <th class="indiv-price-big col-md-5 text-right"><span>$</span><span
+                                                            id="unit_price"></span>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="">Setup</td>
+                                                    <td><span>$</span><span id="setup_price"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">Imprinting Prices</td>
+                                                    <td><span>$</span><span id="imprinting_prices"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="">Freight Cost</td>
+                                                    <td><span>$</span><span id="freight_cost"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="indiv-price-big"><strong>Total</strong></td>
+                                                    <td class="indiv-price-big"><strong><span>$</span><span
+                                                            id="total_price"></span></strong></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                </div>
+{#                                <div class="row">#}
+{#                                    <a class="col-md-2 btn btn-primary" role="button"#}
+{#                                       href="{{ url_for('orderRoute.create_order',prod_id=this_prod.prod_id) }}">#}
+{#                                        Buy#}
+{#                                    </a>#}
+{#                                    <a class="col-md-offset-1 col-md-2 btn btn-success" role="button"#}
+{#                                       href="{{ url_for('orderRoute.create_quote',prod_id=this_prod.prod_id) }}">#}
+{#                                        Quote#}
+{#                                    </a>#}
+{#                                </div>#}
+                            {% else %}
+                                <li class="dropdown"><a class="btn btn-success" role="button" onclick="onRegister()"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                    Get Price</a>
+                                </li>
+
+                            {% endif %}
+                        </div>
+                        {#                        <strong class="indiv-prod-desc-head">Colours</strong>#}
+                        {#                        <p>{{ this_prod.colors }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Production Size</strong>#}
+                        {#                        <p>{{ this_prod.prod_size }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Imprint Size</strong>#}
+                        {#                        <p>{{ this_prod.imprint_size }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Lead Time</strong>#}
+                        {#                        <p>{{ this_prod.lead_time }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Price Basis (<a href="#price_detail">#}
+                        {#                            <ins>Price Detail</ins>#}
+                        {#                        </a>)</strong>#}
+                        {#                        <p>{{ this_prod.price_basis }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Subcategory</strong>#}
+                        {#                        <p>{{ this_prod.prod_sub_cat.prod_cat_sub_name }}</p>#}
+                        {#                        <strong class="indiv-prod-desc-head">Other</strong>#}
+                        {#                        <p><strong>{{ "[Clearance]  " if this_prod.is_clearance==1 else " " }}#}
+                        {#                            &nbsp {{ " [New Prod]  " if this_prod.is_new_prod==1 else "  " }}#}
+                        {#                            &nbsp {{ " [Patent Prod] " if this_prod.is_patent_prod==1 else " " }}</strong></p>#}
+
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Features</div>
+                        <div class="panel-body">
+
+                            <dl class="dl-horizontal">
+                                <dt>Lead Time</dt>
+                                <dd><kbd>{{ this_prod.lead_time }}</kbd></dd>
+                                <dt>Prod Size</dt>
+                                <dd><kbd>{{ this_prod.prod_size }}</kbd></dd>
+                                <dt>Imprint Size</dt>
+                                <dd><kbd>{{ this_prod.imprint_size }}</kbd></dd>
+                                <dt>Price Basis</dt>
+                                <dd><kbd>{{ this_prod.price_basis }}</kbd></dd>
+                                <dt>Clearance</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_clearance else 'X' }}</kbd></dd>
+                                <dt>New Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_new_prod else 'X' }}</kbd></dd>
+                                <dt>Patent Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_patent_prod else 'X' }}</kbd></dd>
+                                <dt>Hot Prod</dt>
+                                <dd><kbd>{{ '√' if this_prod.is_hot_prod else 'X' }}</kbd></dd>
+                                <dt>Colors</dt>
+                                <dd><kbd>{{ this_prod.colors }}</kbd></dd>
+                                <dt>Prod Dimensions</dt>
+                                <dd><kbd>{{ this_prod.prod_dimensions }}</kbd></dd>
+                                <dt>Materials</dt>
+                                <dd><kbd>{{ this_prod.materials }}</kbd></dd>
+                                <dt>Color Sku</dt>
+                                <dd><kbd>{{ this_prod.color_sku }}</kbd></dd>
+
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Shipping</div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Prod Time</dt>
+                                <dd><kbd>{{ this_prod.prod_time if this_prod.prod_time else 'None'}}</kbd></dd>
+                                <dt>Rush Time</dt>
+                                <dd><kbd>{{ this_prod.rush_time if this_prod.rush_time  else 'None' }}</kbd></dd>
+                                <dt>Rush Service</dt>
+                                <dd><kbd>{{ this_prod.rush_service if this_prod.rush_service  else 'None' }}</kbd></dd>
+                                <dt>Carton Size</dt>
+                                <dd><kbd>{{ this_prod.carton_size if this_prod.carton_size  else 'None' }}</kbd></dd>
+                                <dt>Carton Weight</dt>
+                                <dd><kbd>{{ this_prod.carton_weight  if this_prod.carton_weight  else 'None' }}</kbd></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Decoratione</div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Decoration Method</dt>
+                                <dd><kbd>{{ this_prod.decoration_method if this_prod.decoration_method else 'None'}}</kbd></dd>
+                                <dt>Location</dt>
+                                <dd><kbd>{{ this_prod.location if this_prod.location else 'None' }}</kbd></dd>
+                                <dt>Decoration Size</dt>
+                                <dd><kbd>{{ this_prod.decoration_size  if this_prod.decoration_size else 'None' }}</kbd></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             </div>
         </div>
