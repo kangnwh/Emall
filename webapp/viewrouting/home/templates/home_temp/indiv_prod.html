@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row invisible" id="switch_logo_button">
                         <div class="col-md-12 " style="max-width:400px;">
 
                             <div class="alert alert-success">
@@ -610,7 +610,11 @@
 {% block windows_onload %}
     //begin to zoom
     $("a img").parent().zoom();
-
+    $("#switch_logo_button").removeClass('invisible');
+{#    if (!is_logo_on_pic_created) {#}
+{#                create_log_for_large_pics();#}
+{#                is_logo_on_pic_created = true;#}
+{#            }#}
 {% endblock windows_onload %}
 
 
