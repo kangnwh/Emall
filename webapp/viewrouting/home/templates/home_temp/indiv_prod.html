@@ -29,16 +29,19 @@
                             <div class="panel-body">
                                 <div id="indiv_pics" class="jcImgScroll" style="display:block;overflow: hidden;">
                                     <ul>
-                                        {% if this_prod.prod_pics.__len__() % 2 == 0 %}
-                                            <li>
-                                                <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
-                                            </li>
-                                        {% endif %}
+                                        <li>
+                                            <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
+                                        </li>
                                         {% for pic in this_prod.prod_pics %}
                                             <li>
                                                 <a path="{{ url_for("static",filename=("img/products/"+ pic.image_path )) }}"></a>
                                             </li>
                                         {% endfor %}
+                                        {% if this_prod.prod_pics.__len__() % 2 != 0 %}
+                                            <li>
+                                                <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
 
@@ -598,7 +601,9 @@
     imgleft: -10,//每张图片的左边偏移量
     imgwidth: 30,//每张图片的宽度偏移量
     imgheight: 44,//每张图片的高度偏移量
-    count: {{ this_prod.prod_pics.__len__() + 1 if this_prod.prod_pics.__len__() % 2 == 0 else this_prod.prod_pics.__len__() }},
+    count:
+    {{ this_prod.prod_pics.__len__() + 2 if this_prod.prod_pics.__len__() % 2 != 0 else this_prod.prod_pics.__len__() + 1  }}
+    ,
     offsetX: 60,
     NumBtn: false,
     title: false,
@@ -611,10 +616,10 @@
     //begin to zoom
     $("a img").parent().zoom();
     $("#switch_logo_button").removeClass('invisible');
-{#    if (!is_logo_on_pic_created) {#}
-{#                create_log_for_large_pics();#}
-{#                is_logo_on_pic_created = true;#}
-{#            }#}
+    {#    if (!is_logo_on_pic_created) {#}
+    {#                create_log_for_large_pics();#}
+    {#                is_logo_on_pic_created = true;#}
+    {#            }#}
 {% endblock windows_onload %}
 
 
