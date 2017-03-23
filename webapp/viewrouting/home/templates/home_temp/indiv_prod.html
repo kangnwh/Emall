@@ -391,7 +391,7 @@
         logo_width = 80;
         logo_height = 80;
         function change_logo_choice(state) {
-            $('.indiv-user-logo.zoomLogo').addClass('invisible');
+{#            $('.indiv-user-logo.zoomLogo').addClass('invisible');#}
             if (!is_logo_on_pic_created) {
                 create_log_for_large_pics();
                 is_logo_on_pic_created = true;
@@ -522,7 +522,8 @@
                     {#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
                 });
                 $(big_pics[i]).mouseleave(function () {
-                    $('.indiv-user-logo.zoomLogo').addClass('invisible');
+
+                    $('.indiv-user-logo.zoomLogo').css('display', 'none');
 {#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display', 'none');#}
                     {#                    $(this).parent().children('.zoomLogo:not(.invisible)').css('display','inline');#}
                 });
