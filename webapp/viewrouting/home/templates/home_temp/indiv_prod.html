@@ -29,9 +29,11 @@
                             <div class="panel-body">
                                 <div id="indiv_pics" class="jcImgScroll" style="display:block;overflow: hidden;">
                                     <ul>
-                                        <li>
-                                            <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
-                                        </li>
+                                        {% if this_prod.prod_pics.__len__() % 2 == 0 %}
+                                            <li>
+                                                <a path="{{ url_for("static",filename=("img/products/"+ this_prod.cover_img)) }}"></a>
+                                            </li>
+                                        {% endif %}
                                         {% for pic in this_prod.prod_pics %}
                                             <li>
                                                 <a path="{{ url_for("static",filename=("img/products/"+ pic.image_path )) }}"></a>
@@ -309,7 +311,7 @@
                         <div class="panel-body">
                             <dl class="dl-horizontal">
                                 <dt>Prod Time</dt>
-                                <dd><kbd>{{ this_prod.prod_time if this_prod.prod_time else 'None'}}</kbd></dd>
+                                <dd><kbd>{{ this_prod.prod_time if this_prod.prod_time else 'None' }}</kbd></dd>
                                 <dt>Rush Time</dt>
                                 <dd><kbd>{{ this_prod.rush_time if this_prod.rush_time  else 'None' }}</kbd></dd>
                                 <dt>Rush Service</dt>
@@ -317,7 +319,8 @@
                                 <dt>Carton Size</dt>
                                 <dd><kbd>{{ this_prod.carton_size if this_prod.carton_size  else 'None' }}</kbd></dd>
                                 <dt>Carton Weight</dt>
-                                <dd><kbd>{{ this_prod.carton_weight  if this_prod.carton_weight  else 'None' }}</kbd></dd>
+                                <dd><kbd>{{ this_prod.carton_weight  if this_prod.carton_weight  else 'None' }}</kbd>
+                                </dd>
                             </dl>
                         </div>
                     </div>
@@ -328,11 +331,14 @@
                         <div class="panel-body">
                             <dl class="dl-horizontal">
                                 <dt>Decoration Method</dt>
-                                <dd><kbd>{{ this_prod.decoration_method if this_prod.decoration_method else 'None'}}</kbd></dd>
+                                <dd>
+                                    <kbd>{{ this_prod.decoration_method if this_prod.decoration_method else 'None' }}</kbd>
+                                </dd>
                                 <dt>Location</dt>
                                 <dd><kbd>{{ this_prod.location if this_prod.location else 'None' }}</kbd></dd>
                                 <dt>Decoration Size</dt>
-                                <dd><kbd>{{ this_prod.decoration_size  if this_prod.decoration_size else 'None' }}</kbd></dd>
+                                <dd><kbd>{{ this_prod.decoration_size  if this_prod.decoration_size else 'None' }}</kbd>
+                                </dd>
                             </dl>
                         </div>
                     </div>
@@ -474,7 +480,7 @@
         function create_log_for_large_pics() {
             //insert logo pic on samll prod pictures
             var orig_logo = new Image();
-            orig_logo.src = '{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}';
+            orig_logo.src = '{{ (url_for("static",filename=("img/user_logos/"+ current_user.logo_link))) }}';
             orig_logo.style = 'width:' + logo_width + 'px;height:' + logo_height + 'px;position:absolute;top:' + (big_pic_height - logo_height) / 2 + 'px; right:' + (big_pic_width - logo_width) / 2 + 'px; border:0px; display:inline';
             orig_logo.classList = "indiv-user-logo invisible";
             orig_logo.name = 'img-logo-original';
@@ -493,7 +499,7 @@
             big_pics = $('#indiv_pics a img:last-of-type');
             for (i = 0; i < big_pics.length; i++) {
                 var big_orig_logo = new Image();
-                big_orig_logo.src = '{{ (url_for("static",filename=("img/products/"+ this_prod.cover_img))) }}';
+                big_orig_logo.src = '{{ (url_for("static",filename=("img/user_logos/"+ current_user.logo_link))) }}';
                 new_width = big_pics[i].width / big_pic_width * 75;
                 new_height = big_pics[i].height / big_pic_height * 75;
                 big_orig_logo.style = 'width:' + new_width + 'px;height:' + new_height + 'px;position:absolute;top:' + (big_pic_height - new_height) / 2 + 'px; right:' + (big_pic_width - new_width) / 2 + 'px; border:0px; display:none';
@@ -592,7 +598,7 @@
     imgleft: -10,//每张图片的左边偏移量
     imgwidth: 30,//每张图片的宽度偏移量
     imgheight: 44,//每张图片的高度偏移量
-    count: {{ this_prod.prod_pics.__len__() + 1 if this_prod.prod_pics.__len__()>0 else 0 }},
+    count: {{ this_prod.prod_pics.__len__() + 1 if this_prod.prod_pics.__len__() % 2 == 0 else this_prod.prod_pics.__len__() }},
     offsetX: 60,
     NumBtn: false,
     title: false,
