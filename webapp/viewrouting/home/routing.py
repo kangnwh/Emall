@@ -35,8 +35,8 @@ def index():
     new_prod_list = s.query(Adv_page_detail_info).filter_by(adv_level=3).order_by(Adv_page_detail_info.adv_prod_order).all()
     onsale_prod_list = s.query(Adv_page_detail_info).filter_by(adv_level=4).order_by(Adv_page_detail_info.adv_prod_order).all()
 
-    hot_prod_title = s.query(Adv_page_info).filter_by(adv_level=2).first()
-    new_prod_title = s.query(Adv_page_info).filter_by(adv_level=3).first()
+    hot_prod_title = s.query(Adv_page_info).filter_by(adv_level=3).first()
+    new_prod_title = s.query(Adv_page_info).filter_by(adv_level=2).first()
     onsale_prod_title = s.query(Adv_page_info).filter_by(adv_level=4).first()
 
 
