@@ -1,7 +1,12 @@
 
 # DB INFORMATION
 META_DB = {
-
+    'DB_TYPE'    : ,
+    'DB_HOST'    : ,
+    'DB_PORT'    : ,
+    'DB_USER'    : ,
+    'DB_PASSWORD':    ,
+    'DB_NAME'    : 
 
 }
 
