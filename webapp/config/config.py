@@ -6,7 +6,7 @@ META_DB = {
     'DB_PORT'    : ,
     'DB_USER'    : ,
     'DB_PASSWORD': ,
-    'DB_NAME'    : 'emall'
+    'DB_NAME'    : ''
 
 }
 
