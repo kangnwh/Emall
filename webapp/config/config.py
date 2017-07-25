@@ -1,12 +1,7 @@
 
 # DB INFORMATION
 META_DB = {
-    'DB_TYPE': 'mysql',
-    'DB_HOST': '106.14.31.132',
-    'DB_PORT': 3306,
-    'DB_USER': 'emall',
-    'DB_PASSWORD': 'dbpw4LS!',
-    'DB_NAME': 'emall'
+
 
 }
 

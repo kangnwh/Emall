@@ -1,3 +1,4 @@
+use emall;
 drop table user_feedback;
 drop table advertise_info;
 drop table compliment_system;

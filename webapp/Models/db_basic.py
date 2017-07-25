@@ -6,7 +6,16 @@ from webapp.config.config import META_DB
 
 Base = declarative_base()
 
-if META_DB.get('DB_TYPE') != 'sqlite' :
+if META_DB.get('DB_TYPE') == 'mysql':
+    connect_str = 'mysql+pymysql://{db_user}:{db_password}@{db_ip}:{db_port}/{db_name}?charset=utf8'.format(
+        # db_type = META_DB.get('DB_TYPE'),
+        db_user = META_DB.get('DB_USER'),
+        db_password = META_DB.get('DB_PASSWORD'),
+        db_ip = META_DB.get('DB_HOST'),
+        db_port = META_DB.get('DB_PORT'),
+        db_name = META_DB.get('DB_NAME'),
+    )
+elif META_DB.get('DB_TYPE') != 'sqlite' :
     connect_str = '{db_type}://{db_user}:{db_password}@{db_ip}:{db_port}/{db_name}?charset=utf8'.format(
         db_type = META_DB.get('DB_TYPE'),
         db_user = META_DB.get('DB_USER'),
