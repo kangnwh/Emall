@@ -1,7 +1,7 @@
 
 # DB INFORMATION
 META_DB = {
-    'DB_TYPE'    : ,
+    'DB_TYPE'    : 'mysql',
     'DB_HOST'    : ,
     'DB_PORT'    : ,
     'DB_USER'    : ,
