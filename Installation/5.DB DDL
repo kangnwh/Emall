@@ -382,6 +382,7 @@ supplier_rebate_create_ts  datetime default now(),
 primary key(rebate_ref_id),
 index(rebate_ref_id)
 );
+insert into supplier_rebate_ref values(1,0,100,0.01,'basic levle',current_timestamp);
 
 create table supplier_pts_hist
 (
